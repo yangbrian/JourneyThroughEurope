@@ -1,7 +1,9 @@
 package jte.app;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import jte.ui.JTEUI;
 
 /**
  * The Main JavaFX application class
@@ -17,6 +19,11 @@ public class App extends Application{
     public void start(Stage primaryStage) {
         String title = "Journey Through Europe";
         primaryStage.setTitle(title);
+
+        JTEUI root = new JTEUI(primaryStage);
+
+        Scene scene = new Scene(root, 1280, 800);
+        primaryStage.setScene(scene);
 
         primaryStage.show();
     }
