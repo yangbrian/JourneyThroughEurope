@@ -22,7 +22,7 @@ public class App extends Application{
 
         JTEUI root = new JTEUI(primaryStage);
 
-        Scene scene = new Scene(root, 1280, 800);
+        Scene scene = new Scene(root.getMainPane(), 1280, 800);
         primaryStage.setScene(scene);
 
         primaryStage.show();

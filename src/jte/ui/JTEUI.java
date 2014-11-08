@@ -1,7 +1,6 @@
 package jte.ui;
 
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import jte.game.JTEGameStateManager;
 
@@ -9,16 +8,21 @@ import jte.game.JTEGameStateManager;
  * Main JTE User Interface
  * @author Brian Yang
  */
-public class JTEUI extends StackPane {
+public class JTEUI {
+    public enum JTEUIState {
+        SPLASH_SCREEN,
+        PLAYER_SELECT,
+        GAME_PLAY
+    }
+    private BorderPane mainPane;
     private Stage primaryStage;
-    private StackPane mainPane;
 
     /** Handles all types of events, including button clicks */
     private JTEEventHandler eventHandler;
 
     /** UI types */
     private JTEGamePlayUI gamePlayPane;
-    private FlowPane setupPane;
+    private JTEGameSetupUI setupPane;
     private JTESplashUI splashScreen;
 
     /** manages the state of the JTE game */
@@ -26,17 +30,26 @@ public class JTEUI extends StackPane {
 
     public JTEUI(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        splashScreen = new JTESplashUI();
-        this.getChildren().add(splashScreen);
-    }
-
-
-    public void initMainPane() {
-
+        this.mainPane = new BorderPane();
+        this.eventHandler = new JTEEventHandler(this);
+        initSplashScreen();
+        initSetupPane();
     }
 
     public void initSplashScreen() {
+        splashScreen = new JTESplashUI();
+        splashScreen.getNewGameButton().setOnAction(event -> {
+            eventHandler.respondToNewGameRequest();
+        });
+        splashScreen.getQuitButton().setOnAction(event -> {
+            eventHandler.respondToExitRequest(primaryStage);
+        });
 
+        mainPane.setCenter(splashScreen);
+    }
+
+    public void initSetupPane() {
+        setupPane = new JTEGameSetupUI();
     }
 
     public void initGamePlayScreen() {
@@ -59,7 +72,19 @@ public class JTEUI extends StackPane {
 
     }
 
-    public void changeView() {
+    public void changeView(JTEUIState view) {
+        switch (view) {
+            case SPLASH_SCREEN:
+                break;
+            case PLAYER_SELECT:
+                System.out.println("Player select");
+                mainPane.setCenter(setupPane);
+                break;
+            default:
+        }
+    }
 
+    public BorderPane getMainPane() {
+        return mainPane;
     }
 }

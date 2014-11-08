@@ -1,6 +1,9 @@
 package jte.ui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -12,6 +15,7 @@ import javafx.scene.layout.VBox;
 public class JTESplashUI extends BorderPane {
     private Button newGameButton;
     private Button loadGameButton;
+
     private Button aboutButton;
     private Button quitButton;
 
@@ -29,6 +33,25 @@ public class JTESplashUI extends BorderPane {
 
         menu.getChildren().addAll(newGameButton, loadGameButton, aboutButton, quitButton);
 
-        this.setCenter(menu);
+        menu.setAlignment(Pos.BOTTOM_CENTER);
+        menu.setSpacing(25);
+
+        this.setBottom(menu);
+    }
+
+    public Button getAboutButton() {
+        return aboutButton;
+    }
+
+    public Button getQuitButton() {
+        return quitButton;
+    }
+
+    public Button getLoadGameButton() {
+        return loadGameButton;
+    }
+
+    public Button getNewGameButton() {
+        return newGameButton;
     }
 }
