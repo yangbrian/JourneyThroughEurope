@@ -1,6 +1,11 @@
 package jte.ui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 
@@ -17,19 +22,29 @@ public class JTEGameSetupUI extends FlowPane {
 
     public JTEGameSetupUI() {
         toolbar = new HBox();
-        ComboBox emailComboBox = new ComboBox();
-        emailComboBox.getItems().addAll(
-                "jacob.smith@example.com",
-                "isabella.johnson@example.com",
-                "ethan.williams@example.com",
-                "emma.jones@example.com",
-                "michael.brown@example.com"
+        Label playerSelect = new Label("Select the number of players: ");
+        ComboBox playerCount = new ComboBox();
+        playerCount.getItems().addAll(
+                "1", "2", "3", "4", "5", "6"
         );
 
-        toolbar.getChildren().add(emailComboBox);
+        playerCount.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            createSelections(Integer.parseInt(newValue.toString()));
+        });
+
+
+        toolbar.getChildren().addAll(playerSelect, playerCount);
+        this.getChildren().add(toolbar);
     }
 
     public void createSelections(int players) {
+        for (int i = 0; i < players; i++) {
+            BorderPane playerSelect = new BorderPane();
+            playerSelect.setPrefSize(150, 150);
 
+            Label newPlayer = new Label("New Player " + i);
+            playerSelect.setTop(newPlayer);
+            this.getChildren().add(playerSelect);
+        }
     }
 }
