@@ -1,5 +1,6 @@
 package jte.ui;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,13 +24,15 @@ public class JTEGamePlayUI extends BorderPane {
     Pane map2;
     Pane map3;
     Pane map4;
+    JTEUI ui;
 
     private JTEGameInfo info;
 
-    public JTEGamePlayUI(JTEGameInfo info) {
+    public JTEGamePlayUI(JTEUI ui, JTEGameInfo info) {
         initCardToolbar();
         initPlayerSidebar();
         this.info = info;
+        this.ui = ui;
         this.setWidth(1280);
         initMap();
 
@@ -37,17 +40,22 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void initCardToolbar() {
         cardToolbar = new VBox();
-        cardToolbar.setMinWidth(300);
+        cardToolbar.setMinWidth(305);
         cardToolbar.setSpacing(10);
+        cardToolbar.setPadding(new Insets(15));
         cardToolbar.setStyle("-fx-background-color:gray");
         this.setLeft(cardToolbar);
     }
 
     public void initPlayerSidebar() {
         playerSidebar = new VBox();
-        playerSidebar.setMinWidth(300);
+        playerSidebar.setMinWidth(305);
+        playerSidebar.setPadding(new Insets(15));
         playerSidebar.setStyle("-fx-background-color:gray");
         this.setRight(playerSidebar);
+
+        Label currentCity = new Label("No city clicked on yet.");
+        playerSidebar.getChildren().add(currentCity);
     }
 
     public void initMap() {
@@ -66,9 +74,9 @@ public class JTEGamePlayUI extends BorderPane {
         ImageView map4Img = new ImageView(new Image("file:images/map4.jpg"));
 
         map.getChildren().add(map1Img);
-        //map2.getChildren().add(map2Img);
-        //map3.getChildren().add(map3Img);
-        //map4.getChildren().add(map4Img);
+        map2.getChildren().add(map2Img);
+        map3.getChildren().add(map3Img);
+        map4.getChildren().add(map4Img);
 
         map.getChildren().addAll(map1);
         map1Img.toFront();
@@ -94,6 +102,9 @@ public class JTEGamePlayUI extends BorderPane {
                     System.out.println("Something went wrong with the city data...");
             }
             city.relocate(city.getX() - 5, city.getY());
+            city.setOnMouseClicked(e -> {
+                ui.getEventHandler().respondToCityClick(city);
+            });
         }
 
         this.setCenter(map);
@@ -101,5 +112,12 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void changePartition(int quarter) {
 
+    }
+
+    public void displayCity(CityNode city) {
+        Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
+        currentCity.setStyle("-fx-color: #fff; -fx-font-size: 2.0em; -fx-font-weight: 600;");
+        playerSidebar.getChildren().remove(0);
+        playerSidebar.getChildren().add(currentCity);
     }
 }

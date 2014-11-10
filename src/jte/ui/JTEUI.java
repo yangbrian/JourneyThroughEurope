@@ -3,12 +3,15 @@ package jte.ui;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import jte.game.JTEGameStateManager;
+import jte.game.components.CityNode;
 
 /**
  * Main JTE User Interface
  * @author Brian Yang
  */
 public class JTEUI {
+
+
     public enum JTEUIState {
         SPLASH_SCREEN,
         PLAYER_SELECT,
@@ -58,7 +61,7 @@ public class JTEUI {
     }
 
     public void initGamePlayScreen() {
-        gamePlayPane = new JTEGamePlayUI(gsm.getInfo());
+        gamePlayPane = new JTEGamePlayUI(this, gsm.getInfo());
     }
 
     public void initMap() {
@@ -95,5 +98,17 @@ public class JTEUI {
 
     public BorderPane getMainPane() {
         return mainPane;
+    }
+
+    /**
+     * Method used for the purposes of testing for HW 5
+     * @param city city that got clicked on
+     */
+    public void displayCity(CityNode city) {
+        gamePlayPane.displayCity(city);
+    }
+
+    public JTEEventHandler getEventHandler() {
+        return eventHandler;
     }
 }

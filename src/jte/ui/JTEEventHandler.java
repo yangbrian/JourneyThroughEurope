@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jte.game.components.CityNode;
 
 /**
  * @author
@@ -25,6 +26,10 @@ public class JTEEventHandler {
 
     public void respondToGameStartRequest() {
         ui.changeView(JTEUI.JTEUIState.GAME_PLAY);
+    }
+
+    public void respondToCityClick(CityNode city) {
+        ui.displayCity(city);
     }
 
     /**
