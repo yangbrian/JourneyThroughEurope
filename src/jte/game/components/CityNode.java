@@ -20,7 +20,7 @@ public class CityNode extends Circle {
     private int y;
 
     public CityNode(String name, int quarter, int x, int y) {
-        super(10, Color.RED);
+        super(5, Color.RED);
         this.name = name;
         this.region = region;
         this.quarter = quarter;

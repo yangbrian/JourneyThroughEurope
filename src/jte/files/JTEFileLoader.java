@@ -29,9 +29,9 @@ public class JTEFileLoader {
                 String[] values = nextLine.split("\\s+"); // should be five parts (or 6 if city has a space)
                 CityNode city = null;
                 if (values.length == 5)
-                    city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]));
+                    city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3);
                 else
-                    city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4]), Integer.parseInt(values[5]));
+                    city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4])/3, Integer.parseInt(values[5])/3);
                 cities.put(values[0], city);
             }
         } catch (IOException e) {
