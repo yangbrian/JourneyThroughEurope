@@ -32,6 +32,7 @@ public class JTEUI {
         this.primaryStage = primaryStage;
         this.mainPane = new BorderPane();
         this.eventHandler = new JTEEventHandler(this);
+        this.gsm = new JTEGameStateManager(this);
         initSplashScreen();
         initSetupPane();
         initGamePlayScreen();
@@ -57,7 +58,7 @@ public class JTEUI {
     }
 
     public void initGamePlayScreen() {
-        gamePlayPane = new JTEGamePlayUI();
+        gamePlayPane = new JTEGamePlayUI(gsm.getInfo());
     }
 
     public void initMap() {
