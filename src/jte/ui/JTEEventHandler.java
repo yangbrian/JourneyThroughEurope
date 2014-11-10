@@ -23,6 +23,10 @@ public class JTEEventHandler {
         ui.changeView(JTEUI.JTEUIState.PLAYER_SELECT);
     }
 
+    public void respondToGameStartRequest() {
+        ui.changeView(JTEUI.JTEUIState.GAME_PLAY);
+    }
+
     /**
      * This method responds to when the user requests to exit the application.
      *

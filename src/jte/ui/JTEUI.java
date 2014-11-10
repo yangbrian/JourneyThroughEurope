@@ -34,6 +34,7 @@ public class JTEUI {
         this.eventHandler = new JTEEventHandler(this);
         initSplashScreen();
         initSetupPane();
+        initGamePlayScreen();
     }
 
     public void initSplashScreen() {
@@ -50,10 +51,13 @@ public class JTEUI {
 
     public void initSetupPane() {
         setupPane = new JTEGameSetupUI();
+        setupPane.getStartGameButton().setOnAction(event -> {
+            eventHandler.respondToGameStartRequest();
+        });
     }
 
     public void initGamePlayScreen() {
-
+        gamePlayPane = new JTEGamePlayUI();
     }
 
     public void initMap() {
@@ -79,6 +83,10 @@ public class JTEUI {
             case PLAYER_SELECT:
                 System.out.println("Player select");
                 mainPane.setCenter(setupPane);
+                break;
+            case GAME_PLAY:
+                System.out.println("Game Start");
+                mainPane.setCenter(gamePlayPane);
                 break;
             default:
         }
