@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 /**
- * @author
+ * @author Brian Yang
  */
 public class CityNode extends Circle {
 
@@ -19,8 +19,8 @@ public class CityNode extends Circle {
     private int x;
     private int y;
 
-    public CityNode(String name, int quarter, int x, int y) {
-        super(8, Color.RED);
+    public CityNode(String name, int quarter, int x, int y, int region) {
+        super(8, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
         this.name = name;
         this.region = region;
         this.quarter = quarter;

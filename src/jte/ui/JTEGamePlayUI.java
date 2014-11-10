@@ -55,7 +55,16 @@ public class JTEGamePlayUI extends BorderPane {
         this.setRight(playerSidebar);
 
         Label currentCity = new Label("No city clicked on yet.");
-        playerSidebar.getChildren().add(currentCity);
+        Label cityDetails = new Label("No city selected, so no airport.");
+        cityDetails.setPrefWidth(250);
+        currentCity.setPrefWidth(250);
+        cityDetails.setStyle("-fx-font-size: 1.1em");
+        currentCity.setStyle("-fx-font-size: 2.0em");
+        cityDetails.setTextFill(Color.WHITE);
+        currentCity.setTextFill(Color.WHITE);
+        cityDetails.setWrapText(true);
+        currentCity.setWrapText(true);
+        playerSidebar.getChildren().addAll(currentCity, cityDetails);
     }
 
     public void initMap() {
@@ -116,8 +125,17 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void displayCity(CityNode city) {
         Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
-        currentCity.setStyle("-fx-color: #fff; -fx-font-size: 2.0em; -fx-font-weight: 600;");
+        Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
+        cityDetails.setPrefWidth(250);
+        currentCity.setPrefWidth(250);
+        cityDetails.setStyle("-fx-font-size: 1.1em");
+        currentCity.setStyle("-fx-font-size: 2.0em");
+        cityDetails.setTextFill(Color.WHITE);
+        currentCity.setTextFill(Color.WHITE);
+        cityDetails.setWrapText(true);
+        currentCity.setWrapText(true);
+        playerSidebar.getChildren().remove(0); // remove existing label
         playerSidebar.getChildren().remove(0);
-        playerSidebar.getChildren().add(currentCity);
+        playerSidebar.getChildren().addAll(currentCity, cityDetails); // add new one
     }
 }

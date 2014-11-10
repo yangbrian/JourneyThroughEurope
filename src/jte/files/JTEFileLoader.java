@@ -26,12 +26,12 @@ public class JTEFileLoader {
             String nextLine = null; // skip the first line which is just the column headers
 
             while((nextLine = reader.readLine()) != null) {
-                String[] values = nextLine.split("\\s+"); // should be five parts (or 6 if city has a space)
+                String[] values = nextLine.split("\\s+"); // should be 6 parts (or 7 if city has a space)
                 CityNode city = null;
-                if (values.length == 5)
-                    city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3);
+                if (values.length == 6)
+                    city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3, Integer.parseInt(values[5]));
                 else
-                    city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4])/3, Integer.parseInt(values[5])/3);
+                    city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4])/3, Integer.parseInt(values[5])/3, Integer.parseInt(values[6]));
                 cities.put(values[0], city);
             }
         } catch (IOException e) {
