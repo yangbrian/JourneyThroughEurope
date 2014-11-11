@@ -46,6 +46,9 @@ public class JTEUI {
         splashScreen.getNewGameButton().setOnAction(event -> {
             eventHandler.respondToNewGameRequest();
         });
+        splashScreen.getAboutButton().setOnAction(event -> {
+            eventHandler.respondToAboutRequest(primaryStage);
+        });
         splashScreen.getQuitButton().setOnAction(event -> {
             eventHandler.respondToExitRequest(primaryStage);
         });
@@ -110,5 +113,9 @@ public class JTEUI {
 
     public JTEEventHandler getEventHandler() {
         return eventHandler;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

@@ -2,6 +2,7 @@ package jte.ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -51,6 +52,7 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar = new VBox();
         playerSidebar.setMinWidth(305);
         playerSidebar.setPadding(new Insets(15));
+        playerSidebar.setSpacing(50);
         playerSidebar.setStyle("-fx-background-color:#81b5dd");
         this.setRight(playerSidebar);
 
@@ -64,7 +66,21 @@ public class JTEGamePlayUI extends BorderPane {
         currentCity.setTextFill(Color.WHITE);
         cityDetails.setWrapText(true);
         currentCity.setWrapText(true);
-        playerSidebar.getChildren().addAll(currentCity, cityDetails);
+
+
+        Button about = new Button("About JTE");
+        about.setStyle("-fx-font-size: 1.9em");
+        about.setOnAction(e -> {
+            ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage());
+        });
+
+        Button history = new Button("Game History");
+        history.setStyle("-fx-font-size: 1.9em");
+        history.setOnAction(e -> {
+            ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage());
+        });
+
+        playerSidebar.getChildren().addAll(currentCity, cityDetails, about, history);
     }
 
     public void initMap() {
@@ -139,6 +155,7 @@ public class JTEGamePlayUI extends BorderPane {
         currentCity.setWrapText(true);
         playerSidebar.getChildren().remove(0); // remove existing label
         playerSidebar.getChildren().remove(0);
-        playerSidebar.getChildren().addAll(currentCity, cityDetails); // add new one
+        playerSidebar.getChildren().add(0, cityDetails);
+        playerSidebar.getChildren().add(0, currentCity);
     }
 }
