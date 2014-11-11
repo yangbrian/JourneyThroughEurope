@@ -80,7 +80,13 @@ public class JTEGamePlayUI extends BorderPane {
             ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage());
         });
 
-        playerSidebar.getChildren().addAll(currentCity, cityDetails, about, history);
+        Button quit = new Button("Quit");
+        quit.setStyle("-fx-font-size: 1.9em");
+        quit.setOnAction(e -> {
+            ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage());
+        });
+
+        playerSidebar.getChildren().addAll(currentCity, cityDetails, about, history, quit);
     }
 
     public void initMap() {
