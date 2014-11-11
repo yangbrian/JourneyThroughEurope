@@ -43,7 +43,7 @@ public class JTEGamePlayUI extends BorderPane {
         cardToolbar.setMinWidth(305);
         cardToolbar.setSpacing(10);
         cardToolbar.setPadding(new Insets(15));
-        cardToolbar.setStyle("-fx-background-color:gray");
+        cardToolbar.setStyle("-fx-background-color:#81b5dd");
         this.setLeft(cardToolbar);
     }
 
@@ -51,7 +51,7 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar = new VBox();
         playerSidebar.setMinWidth(305);
         playerSidebar.setPadding(new Insets(15));
-        playerSidebar.setStyle("-fx-background-color:gray");
+        playerSidebar.setStyle("-fx-background-color:#81b5dd");
         this.setRight(playerSidebar);
 
         Label currentCity = new Label("No city clicked on yet.");
@@ -70,12 +70,15 @@ public class JTEGamePlayUI extends BorderPane {
     public void initMap() {
         map = new StackPane();
         map.setAlignment(Pos.CENTER_LEFT);
-        map.setPrefWidth(670);
+        map.setMaxWidth(670);
         map1 = new Pane();
-        map1.setPrefWidth(670);
+        //map1.setPrefWidth(670);
         map2 = new Pane();
+        //map2.setPrefWidth(670);
         map3 = new Pane();
+        //map3.setPrefWidth(670);
         map4 = new Pane();
+        //map4.setPrefWidth(670);
 
         ImageView map1Img = new ImageView(new Image("file:images/map1.jpg"));
         ImageView map2Img = new ImageView(new Image("file:images/map2.jpg"));
@@ -87,7 +90,7 @@ public class JTEGamePlayUI extends BorderPane {
         map3.getChildren().add(map3Img);
         map4.getChildren().add(map4Img);
 
-        map.getChildren().addAll(map1);
+        map.getChildren().addAll(map1, map2, map3, map4);
         map1Img.toFront();
         map1.toFront();
 
@@ -110,7 +113,7 @@ public class JTEGamePlayUI extends BorderPane {
                 default:
                     System.out.println("Something went wrong with the city data...");
             }
-            city.relocate(city.getX() - 5, city.getY());
+            city.relocate(city.getX() - 5, city.getY() - 3);
             city.setOnMouseClicked(e -> {
                 ui.getEventHandler().respondToCityClick(city);
             });

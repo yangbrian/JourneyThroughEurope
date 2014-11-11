@@ -5,14 +5,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
  * @author
  */
-public class JTESplashUI extends BorderPane {
+public class JTESplashUI extends StackPane {
     private Button newGameButton;
     private Button loadGameButton;
 
@@ -36,7 +38,9 @@ public class JTESplashUI extends BorderPane {
         menu.setAlignment(Pos.BOTTOM_CENTER);
         menu.setSpacing(25);
 
-        this.setBottom(menu);
+        ImageView splash = new ImageView(new Image("file:images/splash.jpg"));
+
+        this.getChildren().addAll(splash, menu);
     }
 
     public Button getAboutButton() {
