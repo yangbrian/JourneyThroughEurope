@@ -34,7 +34,7 @@ public class JTEFileLoader {
                     city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4])/3, Integer.parseInt(values[5])/3, Integer.parseInt(values[6]));
                 cities.put(values[0], city);
             }
-        } catch (IOException e) {
+        } catch (NumberFormatException | IOException e) {
             System.out.println("City data does not exist or system unable to read it.");
             e.printStackTrace();
         }

@@ -3,12 +3,11 @@ package jte.ui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -24,6 +23,8 @@ public class JTEGameSetupUI extends FlowPane {
     private Button startGame;
 
     public JTEGameSetupUI() {
+        this.setStyle("-fx-background-color:#81b5dd; -fx-font-size: 1.2em");
+
         HBox toolbar = new HBox();
         Label playerSelect = new Label("Select the number of players: ");
         ComboBox playerCount = new ComboBox();
@@ -38,7 +39,7 @@ public class JTEGameSetupUI extends FlowPane {
                 createSelections(Integer.parseInt(oldValue.toString()), Integer.parseInt(newValue.toString()));
         });
 
-        startGame = new Button("Start Game");
+        startGame = new Button("GO!!");
 
         this.setPadding(new Insets(20));
 
@@ -52,29 +53,54 @@ public class JTEGameSetupUI extends FlowPane {
     }
 
     public void createSelections(int oldPlayers, int players) {
-        if (oldPlayers < players) { // add in new ones without replacing the current ones
+        // add in new ones without replacing the current ones
+        if (oldPlayers < players) {
             for (int i = oldPlayers; i < players; i++) {
                 BorderPane playerSelect = new BorderPane();
                 playerSelect.setPrefSize(400, 350);
+                playerSelect.setStyle("-fx-background-color: #004ba7; -fx-background-radius: 10px; -fx-background-insets: 10px");
+                playerSelect.setPadding(new Insets(20));
 
-                Label newPlayer = new Label("New Player " + (i+1));
+                Label newPlayer = new Label("New Player " + (i + 1));
+                newPlayer.setTextFill(Color.WHITE);
                 playerSelect.setTop(newPlayer);
+
+                VBox playerOptions = new VBox();
+                playerOptions.setSpacing(25);
+                playerOptions.setPadding(new Insets(15));
+
+                ToggleGroup playerType = new ToggleGroup();
+
+                RadioButton human = new RadioButton();
+                human.setText("Human");
+                human.setTextFill(Color.WHITE);
+                human.setToggleGroup(playerType);
+
+                RadioButton computer = new RadioButton();
+                computer.setText("Computer");
+                computer.setTextFill(Color.WHITE);
+                computer.setToggleGroup(playerType);
+
+                TextField name = new TextField();
+                name.setPrefColumnCount(50);
+                name.setPromptText("Player name");
+
+                playerOptions.getChildren().addAll(human, computer, name);
+
+                playerSelect.setCenter(playerOptions);
+
+                ImageView playerPiece = new ImageView(new Image("file:images/flag_"+ (i+1) + ".png"));
+                playerSelect.setRight(playerPiece);
+
                 this.getChildren().add(playerSelect);
             }
-        } else { // remove excess player slots from the end
+        }
+        else { // remove excess player slots from the end
             for (int i = this.getChildren().size() - 1; i > players; i--) {
                 System.out.println(i);
                 this.getChildren().remove(i);
             }
         }
-//        for (int i = 0; i < players; i++) {
-//            BorderPane playerSelect = new BorderPane();
-//            playerSelect.setPrefSize(400, 350);
-//
-//            Label newPlayer = new Label("New Player " + (i+1));
-//            playerSelect.setTop(newPlayer);
-//            this.getChildren().add(playerSelect);
-//        }
     }
 
     public Button getStartGameButton() {

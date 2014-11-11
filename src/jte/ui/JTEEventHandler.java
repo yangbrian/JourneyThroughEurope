@@ -1,5 +1,6 @@
 package jte.ui;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -47,12 +48,13 @@ public class JTEEventHandler {
         HBox optionPane = new HBox();
         Button yesButton = new Button(options[0]);
         Button noButton = new Button(options[1]);
-        optionPane.setSpacing(10.0);
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
         optionPane.getChildren().addAll(yesButton, noButton);
         Label exitLabel = new Label("Are you sure you want to quit?");
         exitPane.setCenter(exitLabel);
         exitPane.setBottom(optionPane);
-        Scene scene = new Scene(exitPane, 50, 100);
+        Scene scene = new Scene(exitPane, 200, 150);
         dialogStage.setScene(scene);
         dialogStage.show();
         // WHAT'S THE USER'S DECISION?

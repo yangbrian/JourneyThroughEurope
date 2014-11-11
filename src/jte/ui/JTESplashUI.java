@@ -26,7 +26,9 @@ public class JTESplashUI extends StackPane {
 
     public JTESplashUI() {
         menu = new VBox();
-        menu.setPadding(new Insets(30, 30, 30, 30));
+        menu.setPadding(new Insets(30));
+
+        this.setStyle("-fx-font-size: 1.9em");
 
         newGameButton = new Button("New Game");
         loadGameButton = new Button("Load Game");
