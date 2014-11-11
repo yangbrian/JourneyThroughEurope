@@ -40,6 +40,8 @@ public class JTEGameSetupUI extends FlowPane {
         });
 
         startGame = new Button("GO!!");
+        startGame.setStyle("-fx-background-color:#004ba7");
+        startGame.setTextFill(Color.WHITE);
 
         this.setPadding(new Insets(20));
 

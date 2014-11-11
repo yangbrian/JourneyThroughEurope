@@ -51,6 +51,7 @@ public class JTEEventHandler {
         BorderPane aboutPane = new BorderPane();
         HBox optionPane = new HBox();
         Button okButton = new Button("Return to Game");
+        okButton.setStyle("-fx-font-size: 1.1em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
 
         optionPane.setSpacing(20.0);
         optionPane.setPadding(new Insets(20));
@@ -97,6 +98,7 @@ public class JTEEventHandler {
         BorderPane aboutPane = new BorderPane();
         HBox optionPane = new HBox();
         Button okButton = new Button("Close");
+        okButton.setStyle("-fx-font-size: 1.1em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
 
         optionPane.setSpacing(20.0);
         optionPane.setPadding(new Insets(20));

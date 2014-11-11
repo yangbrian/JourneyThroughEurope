@@ -69,19 +69,19 @@ public class JTEGamePlayUI extends BorderPane {
 
 
         Button about = new Button("About JTE");
-        about.setStyle("-fx-font-size: 1.9em");
+        about.setStyle("-fx-font-size: 1.9em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
         about.setOnAction(e -> {
             ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage());
         });
 
         Button history = new Button("Game History");
-        history.setStyle("-fx-font-size: 1.9em");
+        history.setStyle("-fx-font-size: 1.9em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
         history.setOnAction(e -> {
             ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage());
         });
 
         Button quit = new Button("Quit");
-        quit.setStyle("-fx-font-size: 1.9em");
+        quit.setStyle("-fx-font-size: 1.9em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
         quit.setOnAction(e -> {
             ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage());
         });
