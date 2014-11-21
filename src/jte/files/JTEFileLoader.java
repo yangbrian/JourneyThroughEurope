@@ -33,8 +33,6 @@ public class JTEFileLoader {
                 else
                     city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4])/3, Integer.parseInt(values[5])/3, Integer.parseInt(values[6]));
                 cities.put(values[0], city);
-                if (values[0].equals("ARKHANGEL'SK") )
-                    System.out.println("STOP");
             }
         } catch (NumberFormatException | IOException e) {
             System.out.println("City data does not exist or system unable to read it.");
@@ -68,7 +66,7 @@ public class JTEFileLoader {
                         break;
                 }
             }
-        } catch (NumberFormatException | IOException e) {
+        } catch (IOException e) {
             System.out.println("Error reading neighbor data.");
             e.printStackTrace();
         }

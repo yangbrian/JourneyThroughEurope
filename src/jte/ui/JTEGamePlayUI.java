@@ -1,5 +1,7 @@
 package jte.ui;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.Transition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import jte.game.JTEGameInfo;
 import jte.game.components.CityNode;
 
@@ -28,6 +32,8 @@ public class JTEGamePlayUI extends BorderPane {
     Pane map4;
     JTEUI ui;
 
+    ArrayList<FadeTransition> neighborAnimation;
+
     private JTEGameInfo info;
 
     public JTEGamePlayUI(JTEUI ui, JTEGameInfo info) {
@@ -38,6 +44,7 @@ public class JTEGamePlayUI extends BorderPane {
         this.setWidth(1280);
         initMap();
 
+        neighborAnimation = new ArrayList<>();
     }
 
     public void initCardToolbar() {
@@ -136,7 +143,7 @@ public class JTEGamePlayUI extends BorderPane {
                 default:
                     System.out.println("Something went wrong with the city data...");
             }
-            city.relocate(city.getX() - 5, city.getY() - 3);
+            //city.relocate(city.getX() - 5, city.getY() - 3);
             city.setOnMouseClicked(e -> {
                 ui.getEventHandler().respondToCityClick(city);
             });
@@ -150,6 +157,7 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void displayCity(CityNode city) {
+        stopCityAnimation();
         Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
         Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
 
@@ -157,17 +165,40 @@ public class JTEGamePlayUI extends BorderPane {
         ArrayList<CityNode> landNeighbors = city.getRoads();
         ArrayList<CityNode> seaNeighbors = city.getShips();
 
-        for (CityNode c : landNeighbors)
+        for (CityNode c : landNeighbors) {
             neighbors += "Land: " + c.getName() + "\n";
-        for (CityNode c : seaNeighbors)
+
+            c.setFill(Color.GOLDENROD);
+
+            FadeTransition neighborFade = new FadeTransition(Duration.millis(500), c);
+            neighborFade.setFromValue(1.0);
+            neighborFade.setToValue(0.1);
+            neighborFade.setCycleCount(Transition.INDEFINITE);
+            neighborFade.setAutoReverse(true);
+            neighborFade.play();
+
+            neighborAnimation.add(neighborFade); // keep track of them so the animation can be stopped on click
+        }
+        for (CityNode c : seaNeighbors) {
             neighbors += "Sea: " + c.getName() + "\n";
+
+            c.setFill(Color.GOLDENROD);
+
+            FadeTransition neighborFade = new FadeTransition(Duration.millis(500), c);
+            neighborFade.setFromValue(1.0);
+            neighborFade.setToValue(0.1);
+            neighborFade.setCycleCount(Transition.INDEFINITE);
+            neighborFade.setAutoReverse(true);
+            neighborFade.play();
+
+            neighborAnimation.add(neighborFade); // keep track of them so the animation can be stopped on click
+        }
 
         Label neighborDetails = new Label(neighbors);
         neighborDetails.setPrefWidth(250);
         neighborDetails.setStyle("-fx-font-size: 1.0em");
         neighborDetails.setTextFill(Color.WHITE);
         neighborDetails.setWrapText(true);
-
 
 
         cityDetails.setPrefWidth(250);
@@ -186,5 +217,13 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar.getChildren().add(0, currentCity);
 
 
+    }
+
+    public void stopCityAnimation() {
+        for (FadeTransition fade : neighborAnimation) {
+            fade.stop();
+            ((CityNode)(fade.getNode())).resetColor();
+        }
+        neighborAnimation.clear();
     }
 }

@@ -21,8 +21,10 @@ public class CityNode extends Circle {
     private int x;
     private int y;
 
+    private Color original;
+
     public CityNode(String name, int quarter, int x, int y, int region) {
-        super(8, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
+        super(x, y, 8, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
         this.name = name;
         this.region = region;
         this.quarter = quarter;
@@ -32,6 +34,8 @@ public class CityNode extends Circle {
 
         roads = new ArrayList<>();
         ships = new ArrayList<>();
+
+        this.original = region == 0 ? Color.BLACK : Color.RED;
     }
 
     public int getQuarter() {
@@ -88,5 +92,13 @@ public class CityNode extends Circle {
 
     public void addShip(CityNode city) {
         ships.add(city);
+    }
+
+    /**
+     * Reset the color of the city node after the neighbor animation
+     */
+    public void resetColor() {
+        this.setFill(original);
+        this.setOpacity(1.0);
     }
 }
