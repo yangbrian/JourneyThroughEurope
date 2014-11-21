@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import jte.game.JTEGameInfo;
 import jte.game.components.CityNode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -151,6 +152,24 @@ public class JTEGamePlayUI extends BorderPane {
     public void displayCity(CityNode city) {
         Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
         Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
+
+        String neighbors = "";
+        ArrayList<CityNode> landNeighbors = city.getRoads();
+        ArrayList<CityNode> seaNeighbors = city.getShips();
+
+        for (CityNode c : landNeighbors)
+            neighbors += "Land: " + c.getName() + "\n";
+        for (CityNode c : seaNeighbors)
+            neighbors += "Sea: " + c.getName() + "\n";
+
+        Label neighborDetails = new Label(neighbors);
+        neighborDetails.setPrefWidth(250);
+        neighborDetails.setStyle("-fx-font-size: 1.0em");
+        neighborDetails.setTextFill(Color.WHITE);
+        neighborDetails.setWrapText(true);
+
+
+
         cityDetails.setPrefWidth(250);
         currentCity.setPrefWidth(250);
         cityDetails.setStyle("-fx-font-size: 1.1em");
@@ -161,7 +180,11 @@ public class JTEGamePlayUI extends BorderPane {
         currentCity.setWrapText(true);
         playerSidebar.getChildren().remove(0); // remove existing label
         playerSidebar.getChildren().remove(0);
+        playerSidebar.getChildren().remove(0);
+        playerSidebar.getChildren().add(0, neighborDetails);
         playerSidebar.getChildren().add(0, cityDetails);
         playerSidebar.getChildren().add(0, currentCity);
+
+
     }
 }

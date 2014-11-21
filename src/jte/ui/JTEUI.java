@@ -118,4 +118,8 @@ public class JTEUI {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+
+    public JTEGameStateManager getGsm() {
+        return gsm;
+    }
 }

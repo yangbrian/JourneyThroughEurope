@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
+import java.util.ArrayList;
+
 /**
  * @author Brian Yang
  */
@@ -12,8 +14,8 @@ public class CityNode extends Circle {
     private int quarter;
 
     private String name;
-    private CityNode[] roads;
-    private CityNode[] ships;
+    private ArrayList<CityNode> roads;
+    private ArrayList<CityNode> ships;
     private int region;
     private boolean occupied;
     private int x;
@@ -27,6 +29,9 @@ public class CityNode extends Circle {
         this.occupied = false;
         this.x = x;
         this.y = y;
+
+        roads = new ArrayList<>();
+        ships = new ArrayList<>();
     }
 
     public int getQuarter() {
@@ -43,22 +48,6 @@ public class CityNode extends Circle {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public CityNode[] getRoads() {
-        return roads;
-    }
-
-    public void setRoads(CityNode[] roads) {
-        this.roads = roads;
-    }
-
-    public CityNode[] getShips() {
-        return ships;
-    }
-
-    public void setShips(CityNode[] ships) {
-        this.ships = ships;
     }
 
     public int getRegion() {
@@ -83,5 +72,21 @@ public class CityNode extends Circle {
 
     public int getY() {
         return y;
+    }
+
+    public ArrayList<CityNode> getRoads() {
+        return roads;
+    }
+
+    public ArrayList<CityNode> getShips() {
+        return ships;
+    }
+
+    public void addRoad(CityNode city) {
+        roads.add(city);
+    }
+
+    public void addShip(CityNode city) {
+        ships.add(city);
     }
 }
