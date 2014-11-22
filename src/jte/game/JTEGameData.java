@@ -32,4 +32,15 @@ public class JTEGameData {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
+    public void drawCards(String[] cards) {
+        ArrayList<String> playerCards = new ArrayList<>();
+        for (String c : cards)
+            playerCards.add(c);
+        players.get(current).setCards(playerCards);
+    }
+
+    public ArrayList<String> getCards() {
+        return players.get(current).getCards();
+    }
 }

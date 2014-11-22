@@ -64,11 +64,10 @@ public class JTEUI {
         setupPane.getStartGameButton().setOnAction(event -> {
             eventHandler.respondToGameStartRequest();
         });
-        gsm.setGameData(setupPane.getPlayers());
     }
 
     public void initGamePlayScreen() {
-        gamePlayPane = new JTEGamePlayUI(this, gsm.getInfo());
+        gamePlayPane = new JTEGamePlayUI(this);
     }
 
     public void initMap() {
@@ -97,15 +96,12 @@ public class JTEUI {
                 break;
             case GAME_PLAY:
                 System.out.println("Game Start");
-                drawCards();
+                gsm.setGameData(setupPane.getPlayers());
+                gamePlayPane.drawCards();
                 mainPane.setCenter(gamePlayPane);
                 break;
             default:
         }
-    }
-
-    private void drawCards() {
-        ArrayList<Player> players = gsm.getData().getPlayers();
     }
 
     public BorderPane getMainPane() {

@@ -9,7 +9,7 @@ public class Player {
 
     private String name;
     private boolean human;
-    private ArrayList<Card> cards;
+    private ArrayList<String> cards;
 
     public Player(String name, boolean human) {
         this.name = name;
@@ -32,11 +32,11 @@ public class Player {
         return human;
     }
 
-    public void setCards(ArrayList<Card> cards) {
+    public void setCards(ArrayList<String> cards) {
         this.cards = cards;
     }
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<String> getCards() {
         return cards;
     }
 }

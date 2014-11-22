@@ -28,11 +28,8 @@ public class JTEFileLoader {
 
             while((nextLine = reader.readLine()) != null) {
                 String[] values = nextLine.split("\\s+"); // should be 6 parts (or 7 if city has a space)
-                CityNode city = null;
-                if (values.length == 6)
-                    city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3, Integer.parseInt(values[5]));
-                else
-                    city = new CityNode(values[0], Integer.parseInt(values[3]), Integer.parseInt(values[4])/3, Integer.parseInt(values[5])/3, Integer.parseInt(values[6]));
+                CityNode city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3, Integer.parseInt(values[5]), values[1].toUpperCase());
+
                 cities.put(values[0], city);
             }
         } catch (NumberFormatException | IOException e) {
@@ -45,7 +42,7 @@ public class JTEFileLoader {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/cityNeighbors.csv"), "UTF-8"));
 
             String nextLine = null; // skip the first line which is just the column headers
-            CityNode current = new CityNode("Test City", 0, 0, 0, 0); // default test city
+            CityNode current = new CityNode("Test City", 0, 0, 0, 0, "Red"); // default test city
 
             while((nextLine = reader.readLine()) != null) {
 
@@ -57,7 +54,6 @@ public class JTEFileLoader {
                             System.out.println("FAIL: " + values[1]);
                         break;
                     case("Land neighbour"):
-                        System.out.println("LAND: " + values[1]);
                         current.addRoad(cities.get(values[1]));
                         break;
                     case("Sea neighbour"):
@@ -74,16 +70,7 @@ public class JTEFileLoader {
         return cities;
     }
 
-    public HashMap<String, Card>[] loadCards(String color) {
-
-        HashMap<String, Card> cards = new HashMap<>();
-
-        // Every city has a card, so get all the cities
-        HashMap<String, CityNode> cities = ui.getGsm().getInfo().getCities();
-
-        for (String name : cities.keySet()) {
-
-        }
-
+    public Card makeCard(String name, String color) {
+        return null;
     }
 }

@@ -18,6 +18,9 @@ public class JTEGameStateManager {
     private JTEFileLoader fileHandler;
     private JTEUI ui;
 
+    /** number of cards to draw */
+    public static final int CARDS = 3;
+
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
         fileHandler = new JTEFileLoader(ui);
@@ -42,5 +45,15 @@ public class JTEGameStateManager {
 
     public JTEGameData getData() {
         return currentGame;
+    }
+
+    public void drawCards() {
+
+        for (int i = 0; i < currentGame.getPlayers().size(); i++) {
+            System.out.println("PLAYER " + i + " DRAWING CARDS.");
+            String[] cards = info.drawCards(CARDS, currentGame.getCurrentNumber());
+            currentGame.drawCards(cards);
+            currentGame.nextPlayer();
+        }
     }
 }

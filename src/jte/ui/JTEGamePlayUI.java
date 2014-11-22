@@ -12,7 +12,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import jte.game.JTEGameData;
 import jte.game.JTEGameInfo;
+import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 
 import java.util.ArrayList;
@@ -35,16 +37,38 @@ public class JTEGamePlayUI extends BorderPane {
     ArrayList<FadeTransition> neighborAnimation;
 
     private JTEGameInfo info;
+    private JTEGameStateManager gsm;
+    private JTEGameData currentGame;
 
-    public JTEGamePlayUI(JTEUI ui, JTEGameInfo info) {
+    public JTEGamePlayUI(JTEUI ui) {
         initCardToolbar();
         initPlayerSidebar();
-        this.info = info;
         this.ui = ui;
+        this.gsm = ui.getGsm();
+        this.info = gsm.getInfo();
+
         this.setWidth(1280);
         initMap();
 
         neighborAnimation = new ArrayList<>();
+    }
+
+    public void drawCards() {
+
+        // draw cards
+        gsm.drawCards();
+
+        this.currentGame = gsm.getData();
+
+        for (int i = 0; i < currentGame.getPlayers().size(); i++) {
+            ArrayList<String> cards = currentGame.getCards();
+            for (String c : cards) {
+                System.out.println("CARD: " + i + "file:images/cards/" + c + ".jpg");
+                ImageView image = new ImageView(new Image("file:images/cards/" + c + ".jpg"));
+                this.getChildren().add(image);
+            }
+            currentGame.nextPlayer();
+        }
     }
 
     public void initCardToolbar() {
