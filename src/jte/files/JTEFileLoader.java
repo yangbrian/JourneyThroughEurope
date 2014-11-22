@@ -1,5 +1,6 @@
 package jte.files;
 
+import jte.game.components.Card;
 import jte.game.components.CityNode;
 import jte.ui.JTEUI;
 
@@ -71,5 +72,18 @@ public class JTEFileLoader {
             e.printStackTrace();
         }
         return cities;
+    }
+
+    public HashMap<String, Card>[] loadCards(String color) {
+
+        HashMap<String, Card> cards = new HashMap<>();
+
+        // Every city has a card, so get all the cities
+        HashMap<String, CityNode> cities = ui.getGsm().getInfo().getCities();
+
+        for (String name : cities.keySet()) {
+
+        }
+
     }
 }

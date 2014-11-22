@@ -10,9 +10,9 @@ import java.util.HashMap;
  */
 public class JTEGameInfo {
     private HashMap<String, CityNode> cities;
-    private Card[] yellowCards;
-    private Card[] greenCards;
-    private Card[] redCards;
+    private HashMap<String, Card> yellowCards;
+    private HashMap<String, Card> greenCards;
+    private HashMap<String, Card> redCards;
 
 
     public JTEGameInfo(HashMap<String, CityNode> cities) {

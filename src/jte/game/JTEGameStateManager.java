@@ -1,8 +1,11 @@
 package jte.game;
 
 import jte.files.JTEFileLoader;
+import jte.game.components.Player;
 import jte.ui.JTEGameSetupUI;
 import jte.ui.JTEUI;
+
+import java.util.ArrayList;
 
 /**
  * @author Brian Yang
@@ -27,5 +30,17 @@ public class JTEGameStateManager {
 
     public JTEGameInfo getInfo() {
         return info;
+    }
+
+    public void setGameState(JTEGameSetupUI.JTEGameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public void setGameData(ArrayList<Player> players) {
+        this.currentGame = new JTEGameData(players);
+    }
+
+    public JTEGameData getData() {
+        return currentGame;
     }
 }

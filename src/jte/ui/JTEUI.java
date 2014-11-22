@@ -4,6 +4,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
+import jte.game.components.Player;
+
+import java.util.ArrayList;
 
 /**
  * Main JTE User Interface
@@ -61,6 +64,7 @@ public class JTEUI {
         setupPane.getStartGameButton().setOnAction(event -> {
             eventHandler.respondToGameStartRequest();
         });
+        gsm.setGameData(setupPane.getPlayers());
     }
 
     public void initGamePlayScreen() {
@@ -93,10 +97,15 @@ public class JTEUI {
                 break;
             case GAME_PLAY:
                 System.out.println("Game Start");
+                drawCards();
                 mainPane.setCenter(gamePlayPane);
                 break;
             default:
         }
+    }
+
+    private void drawCards() {
+        ArrayList<Player> players = gsm.getData().getPlayers();
     }
 
     public BorderPane getMainPane() {
