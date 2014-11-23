@@ -17,6 +17,7 @@ import jte.game.JTEGameData;
 import jte.game.JTEGameInfo;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
+import jte.game.components.Player;
 import jte.ui.components.Map;
 
 import java.io.FileNotFoundException;
@@ -81,8 +82,7 @@ public class JTEGamePlayUI extends BorderPane {
                     cardImage.setOpacity(0);
                     if (!first) // bottom most card doesn't have shadow
                         cardImage.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 0);");
-                    else
-                        first = false;
+
                     cardToolbar[i].getChildren().add(cardImage);
 
                     FadeTransition displayImage = new FadeTransition(Duration.millis(100), cardImage);
@@ -103,6 +103,11 @@ public class JTEGamePlayUI extends BorderPane {
 
                     animations.add(cardDeal);
 
+                    final int playerNumber = i;
+                    if (first) {
+                        cardDeal.setOnFinished(event -> ui.getEventHandler().placeFlag(playerNumber));
+                        first = false;
+                    }
 
                     YOffset += 80;
 
@@ -179,61 +184,6 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar.getChildren().addAll(currentCity, cityDetails, about, history, quit);
     }
 
-//    public void initMap() {
-//        map = new StackPane();
-//        map.setAlignment(Pos.CENTER_LEFT);
-//        map.setMaxWidth(670);
-//        map1 = new Pane();
-//        //map1.setPrefWidth(670);
-//        map2 = new Pane();
-//        //map2.setPrefWidth(670);
-//        map3 = new Pane();
-//        //map3.setPrefWidth(670);
-//        map4 = new Pane();
-//        //map4.setPrefWidth(670);
-//
-//        ImageView map1Img = new ImageView(new Image("file:images/map1.jpg"));
-//        ImageView map2Img = new ImageView(new Image("file:images/map2.jpg"));
-//        ImageView map3Img = new ImageView(new Image("file:images/map3.jpg"));
-//        ImageView map4Img = new ImageView(new Image("file:images/map4.jpg"));
-//
-//        map.getChildren().add(map1Img);
-//        map2.getChildren().add(map2Img);
-//        map3.getChildren().add(map3Img);
-//        map4.getChildren().add(map4Img);
-//
-//        map.getChildren().addAll(map1, map2, map3, map4);
-//        map1Img.toFront();
-//        map1.toFront();
-//
-//        HashMap<String, CityNode> cities = info.getCities();
-//        for (CityNode city : cities.values()) {
-//            int quarter = city.getQuarter();
-//            switch (quarter) {
-//                case 1:
-//                    map1.getChildren().add(city);
-//                    break;
-//                case 2:
-//                    map2.getChildren().add(city);
-//                    break;
-//                case 3:
-//                    map3.getChildren().add(city);
-//                    break;
-//                case 4:
-//                    map4.getChildren().add(city);
-//                    break;
-//                default:
-//                    System.out.println("Something went wrong with the city data...");
-//            }
-//            //city.relocate(city.getX() - 5, city.getY() - 3);
-//            city.setOnMouseClicked(e -> {
-//                ui.getEventHandler().respondToCityClick(city);
-//            });
-//        }
-//
-//        this.setCenter(map);
-//    }
-
     public void initMap() {
         map = new Map(ui);
         this.setCenter(map);
@@ -259,7 +209,7 @@ public class JTEGamePlayUI extends BorderPane {
 
             FadeTransition neighborFade = new FadeTransition(Duration.millis(500), c);
             neighborFade.setFromValue(1.0);
-            neighborFade.setToValue(0.1);
+            neighborFade.setToValue(0.2);
             neighborFade.setCycleCount(Transition.INDEFINITE);
             neighborFade.setAutoReverse(true);
             neighborFade.play();
@@ -273,7 +223,7 @@ public class JTEGamePlayUI extends BorderPane {
 
             FadeTransition neighborFade = new FadeTransition(Duration.millis(500), c);
             neighborFade.setFromValue(1.0);
-            neighborFade.setToValue(0.1);
+            neighborFade.setToValue(0.2);
             neighborFade.setCycleCount(Transition.INDEFINITE);
             neighborFade.setAutoReverse(true);
             neighborFade.play();
@@ -312,5 +262,9 @@ public class JTEGamePlayUI extends BorderPane {
             ((CityNode)(fade.getNode())).resetColor();
         }
         neighborAnimation.clear();
+    }
+
+    public void placeFlags(int player) {
+        map.placeFlags(player);
     }
 }

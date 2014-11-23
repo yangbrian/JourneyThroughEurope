@@ -39,4 +39,8 @@ public class Player {
     public ArrayList<String> getCards() {
         return cards;
     }
+
+    public String getHome() {
+        return cards.get(0);
+    }
 }

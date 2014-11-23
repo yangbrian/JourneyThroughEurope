@@ -85,9 +85,7 @@ public class JTEEventHandler {
         dialogStage.setScene(scene);
         dialogStage.show();
 
-        okButton.setOnAction(e -> {
-            dialogStage.close();
-        });
+        okButton.setOnAction(e -> dialogStage.close());
     }
 
     public void respondToHistoryRequest(Stage primaryStage) {
@@ -124,8 +122,10 @@ public class JTEEventHandler {
         dialogStage.setScene(scene);
         dialogStage.show();
 
-        okButton.setOnAction(e -> {
-            dialogStage.close();
-        });
+        okButton.setOnAction(e -> dialogStage.close());
+    }
+
+    public void placeFlag(int player) {
+        ui.getGamePlayPane().placeFlags(player);
     }
 }
