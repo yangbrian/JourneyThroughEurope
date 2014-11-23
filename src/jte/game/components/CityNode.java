@@ -25,7 +25,8 @@ public class CityNode extends Circle {
     private Color original;
 
     public CityNode(String name, int quarter, int x, int y, int region, String color) {
-        super(x, y, 8, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
+        super(x, y, 10, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
+        this.setOpacity(1.0);
         this.name = name;
         this.region = region;
         this.quarter = quarter;

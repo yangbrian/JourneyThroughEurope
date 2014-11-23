@@ -27,25 +27,25 @@ public class JTEFileLoader {
             String nextLine = null;
 
             while((nextLine = reader.readLine()) != null) {
-                String[] values = nextLine.split("\\s+"); // should be 6 parts
+                String[] values = nextLine.split(","); // should be 6 parts
                 int currentX = Integer.parseInt(values[3]);
                 int currentY = Integer.parseInt(values[4]);
                 switch(Integer.parseInt(values[2])) { // apply offsets to adjust for scaling
                     case 1:
-                        currentX = currentX/3;
-                        currentY = currentY/3;
+                        currentX = (int)(currentX * 0.4);
+                        currentY = (int)(currentY * 0.4);
                         break;
                     case 2:
-                        currentX = currentX/3 + 670 - 12;
-                        currentY = currentY/3 - 5;
+                        currentX = (int)(currentX * 0.4) + 805;
+                        currentY = (int)(currentY * 0.4);
                         break;
                     case 3:
-                        currentX = currentX/3 - 5;
-                        currentY = currentY/3 + 862 - 25;
+                        currentX = (int)(currentX * 0.4);
+                        currentY = (int)(currentY * 0.4) + 1024;
                         break;
                     case 4:
-                        currentX = currentX/3 + 662 - 14;
-                        currentY = currentY/3 + 862 - 16;
+                        currentX = (int)(currentX * 0.4) + 794;
+                        currentY = (int)(currentY * 0.4) + 1028;
                         break;
                 }
 

@@ -50,7 +50,6 @@ public class JTEGameStateManager {
     public void drawCards() {
 
         for (int i = 0; i < currentGame.getPlayers().size(); i++) {
-            System.out.println("PLAYER " + i + " DRAWING CARDS.");
             String[] cards = info.drawCards(CARDS, currentGame.getCurrentNumber());
             currentGame.drawCards(cards);
             currentGame.nextPlayer();
