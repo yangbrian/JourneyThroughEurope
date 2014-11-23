@@ -71,6 +71,7 @@ public class JTEGamePlayUI extends BorderPane {
         for (int i = 0; i < currentGame.getPlayers().size(); i++) {
             int YOffset = 0;
             ArrayList<String> cards = currentGame.getPlayer(i).getCards();
+            boolean first = true;
             for (String c : cards) {
                 System.out.println("CARD: " + i + "file:images/cards/" + c + ".jpg");
                 ImageView cardImage;
@@ -78,6 +79,10 @@ public class JTEGamePlayUI extends BorderPane {
                     cardImage = new ImageView(new Image("file:images/cards/" + c + ".jpg", 295, 419, true, true));
 
                     cardImage.setOpacity(0);
+                    if (!first) // bottom most card doesn't have shadow
+                        cardImage.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 0);");
+                    else
+                        first = false;
                     cardToolbar[i].getChildren().add(cardImage);
 
                     FadeTransition displayImage = new FadeTransition(Duration.millis(100), cardImage);
