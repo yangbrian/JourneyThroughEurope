@@ -30,6 +30,15 @@ public class JTEFileLoader {
                 String[] values = nextLine.split("\\s+"); // should be 6 parts (or 7 if city has a space)
                 CityNode city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3, Integer.parseInt(values[5]), values[1].toUpperCase());
 
+                switch(city.getRegion()) {
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                }
+
                 cities.put(values[0], city);
             }
         } catch (NumberFormatException | IOException e) {
