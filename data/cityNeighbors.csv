@@ -77,7 +77,7 @@ Land neighbour,GLASGOW
 Land neighbour,LEEDS
 Sea neighbour,BERGEN
 Sea neighbour,BREMEN
-City name,ARKHANGEL
+City name,ARKHANGELSK
 Land neighbour,LENINGRAD
 Land neighbour,MOSKVA
 Sea neighbour,HAMMERFEST
@@ -179,7 +179,7 @@ Sea neighbour,FAROER
 City name,HAMMERFEST
 Land neighbour,ROVANIEMI
 Sea neighbour,NARVIK
-Sea neighbour,ARKHANGEL'SK
+Sea neighbour,ARKHANGELSK
 City name,ROVANIEMI
 Land neighbour,HAMMERFEST
 Land neighbour,LULEA
@@ -214,7 +214,7 @@ Land neighbour,HELSINKI
 Land neighbour,TALLIN
 Land neighbour,VITEBSK
 Land neighbour,MOSKVA
-Land neighbour,ARKHANGEL'SK
+Land neighbour,ARKHANGELSK
 City name,WARSZAWA
 Land neighbour,RIGA
 Land neighbour,MINSK
@@ -231,7 +231,7 @@ City name,MOSKVA
 Land neighbour,LENINGRAD
 Land neighbour,SMOLENSK
 Land neighbour,CHARKOV
-Land neighbour,ARKHANGEL'SK
+Land neighbour,ARKHANGELSK
 City name,DUBLIN
 Land neighbour,BELFAST
 Land neighbour,CORK

@@ -22,13 +22,12 @@ public class JTEFileLoader {
         HashMap<String, CityNode> cities = new HashMap<>();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/jteCities.csv"), "UTF-16"));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/jteCities.csv")));
 
             String nextLine = null;
 
             while((nextLine = reader.readLine()) != null) {
                 String[] values = nextLine.split("\\s+"); // should be 6 parts
-
                 int currentX = Integer.parseInt(values[3]);
                 int currentY = Integer.parseInt(values[4]);
                 switch(Integer.parseInt(values[2])) { // apply offsets to adjust for scaling
