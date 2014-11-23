@@ -45,7 +45,7 @@ public class JTEGamePlayUI extends BorderPane {
     private JTEGameData currentGame;
 
     public JTEGamePlayUI(JTEUI ui) {
-        initCardToolbar();
+
         initPlayerSidebar();
         this.ui = ui;
         this.gsm = ui.getGsm();
@@ -58,6 +58,7 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void drawCards() {
+        initCardToolbar();
         this.setLeft(cardToolbar[0]);
         // draw cards
         gsm.drawCards();
@@ -85,7 +86,7 @@ public class JTEGamePlayUI extends BorderPane {
 
                     Path path = new Path();
                     path.getElements().add(new MoveTo(600,400));
-                    path.getElements().add (new LineTo(150,250 + YOffset));
+                    path.getElements().add (new LineTo(155,260 + YOffset));
                     PathTransition cardDeal = new PathTransition();
                     cardDeal.setDuration(Duration.millis(500));
                     cardDeal.setPath(path);
@@ -113,12 +114,16 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void initCardToolbar() {
-        cardToolbar = new Pane[6];
+        cardToolbar = new Pane[gsm.getData().getPlayers().size()];
         for (int i = 0; i < this.cardToolbar.length; i++) {
             cardToolbar[i] = new Pane();
             cardToolbar[i].setMinWidth(305);
-            cardToolbar[i].setPadding(new Insets(5));
-            cardToolbar[i].setStyle("-fx-background-color:#81b5dd");
+            cardToolbar[i].getStyleClass().add("sidebar");
+
+            Label playerName = new Label(gsm.getData().getPlayer(i).getName());
+            playerName.getStyleClass().addAll("label-large", "player-name");
+
+            cardToolbar[i].getChildren().add(playerName);
             //this.setLeft(cardToolbar[i]);
         }
     }
@@ -132,35 +137,33 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar.setMinWidth(305);
         playerSidebar.setPadding(new Insets(15));
         playerSidebar.setSpacing(50);
-        playerSidebar.setStyle("-fx-background-color:#81b5dd");
+        playerSidebar.getStyleClass().add("sidebar");
         this.setRight(playerSidebar);
 
         Label currentCity = new Label("No city clicked on yet.");
         Label cityDetails = new Label("No city selected, so no airport.");
         cityDetails.setPrefWidth(250);
         currentCity.setPrefWidth(250);
-        cityDetails.setStyle("-fx-font-size: 1.1em");
-        currentCity.setStyle("-fx-font-size: 2.0em");
-        cityDetails.setTextFill(Color.WHITE);
-        currentCity.setTextFill(Color.WHITE);
+        cityDetails.getStyleClass().add("label-med");
+        currentCity.getStyleClass().add("label-large");
         cityDetails.setWrapText(true);
         currentCity.setWrapText(true);
 
 
         Button about = new Button("About JTE");
-        about.setStyle("-fx-font-size: 1.9em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+        about.getStyleClass().add("button-normal");
         about.setOnAction(e -> {
             ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage());
         });
 
         Button history = new Button("Game History");
-        history.setStyle("-fx-font-size: 1.9em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+        history.getStyleClass().add("button-normal");
         history.setOnAction(e -> {
             ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage());
         });
 
         Button quit = new Button("Quit");
-        quit.setStyle("-fx-font-size: 1.9em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+        quit.getStyleClass().add("button-normal");
         quit.setOnAction(e -> {
             ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage());
         });

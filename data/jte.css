@@ -1,0 +1,31 @@
+/* CSE 219 Journey Through Europe
+   Brian Yang */
+
+.label-small {
+
+}
+
+.label-med {
+    -fx-font-size: 1.1em;
+    -fx-text-fill: #fff;
+}
+
+.label-large {
+    -fx-font-size: 2.0em;
+    -fx-text-fill: #fff;
+}
+
+.player-name {
+    -fx-padding: 9px 0 0 9px;
+}
+
+.sidebar {
+    -fx-background-color:#81b5dd;
+    -fx-padding: 10px;
+}
+
+.button-normal {
+    -fx-font-size: 1.9em;
+    -fx-background-color:#ecc323;
+    -fx-background-radius: 30;
+}
