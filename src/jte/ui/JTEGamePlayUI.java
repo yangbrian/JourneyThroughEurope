@@ -17,6 +17,7 @@ import jte.game.JTEGameData;
 import jte.game.JTEGameInfo;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
+import jte.ui.components.Map;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ public class JTEGamePlayUI extends BorderPane {
 
     Pane[] cardToolbar;
     VBox playerSidebar;
-    StackPane map;
+    //StackPane map;
+    Map map;
     Pane map1;
     Pane map2;
     Pane map3;
@@ -172,58 +174,63 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar.getChildren().addAll(currentCity, cityDetails, about, history, quit);
     }
 
+//    public void initMap() {
+//        map = new StackPane();
+//        map.setAlignment(Pos.CENTER_LEFT);
+//        map.setMaxWidth(670);
+//        map1 = new Pane();
+//        //map1.setPrefWidth(670);
+//        map2 = new Pane();
+//        //map2.setPrefWidth(670);
+//        map3 = new Pane();
+//        //map3.setPrefWidth(670);
+//        map4 = new Pane();
+//        //map4.setPrefWidth(670);
+//
+//        ImageView map1Img = new ImageView(new Image("file:images/map1.jpg"));
+//        ImageView map2Img = new ImageView(new Image("file:images/map2.jpg"));
+//        ImageView map3Img = new ImageView(new Image("file:images/map3.jpg"));
+//        ImageView map4Img = new ImageView(new Image("file:images/map4.jpg"));
+//
+//        map.getChildren().add(map1Img);
+//        map2.getChildren().add(map2Img);
+//        map3.getChildren().add(map3Img);
+//        map4.getChildren().add(map4Img);
+//
+//        map.getChildren().addAll(map1, map2, map3, map4);
+//        map1Img.toFront();
+//        map1.toFront();
+//
+//        HashMap<String, CityNode> cities = info.getCities();
+//        for (CityNode city : cities.values()) {
+//            int quarter = city.getQuarter();
+//            switch (quarter) {
+//                case 1:
+//                    map1.getChildren().add(city);
+//                    break;
+//                case 2:
+//                    map2.getChildren().add(city);
+//                    break;
+//                case 3:
+//                    map3.getChildren().add(city);
+//                    break;
+//                case 4:
+//                    map4.getChildren().add(city);
+//                    break;
+//                default:
+//                    System.out.println("Something went wrong with the city data...");
+//            }
+//            //city.relocate(city.getX() - 5, city.getY() - 3);
+//            city.setOnMouseClicked(e -> {
+//                ui.getEventHandler().respondToCityClick(city);
+//            });
+//        }
+//
+//        this.setCenter(map);
+//    }
+
     public void initMap() {
-        map = new StackPane();
-        map.setAlignment(Pos.CENTER_LEFT);
-        map.setMaxWidth(670);
-        map1 = new Pane();
-        //map1.setPrefWidth(670);
-        map2 = new Pane();
-        //map2.setPrefWidth(670);
-        map3 = new Pane();
-        //map3.setPrefWidth(670);
-        map4 = new Pane();
-        //map4.setPrefWidth(670);
-
-        ImageView map1Img = new ImageView(new Image("file:images/map1.jpg"));
-        ImageView map2Img = new ImageView(new Image("file:images/map2.jpg"));
-        ImageView map3Img = new ImageView(new Image("file:images/map3.jpg"));
-        ImageView map4Img = new ImageView(new Image("file:images/map4.jpg"));
-
-        map.getChildren().add(map1Img);
-        map2.getChildren().add(map2Img);
-        map3.getChildren().add(map3Img);
-        map4.getChildren().add(map4Img);
-
-        map.getChildren().addAll(map1, map2, map3, map4);
-        map1Img.toFront();
-        map1.toFront();
-
-        HashMap<String, CityNode> cities = info.getCities();
-        for (CityNode city : cities.values()) {
-            int quarter = city.getQuarter();
-            switch (quarter) {
-                case 1:
-                    map1.getChildren().add(city);
-                    break;
-                case 2:
-                    map2.getChildren().add(city);
-                    break;
-                case 3:
-                    map3.getChildren().add(city);
-                    break;
-                case 4:
-                    map4.getChildren().add(city);
-                    break;
-                default:
-                    System.out.println("Something went wrong with the city data...");
-            }
-            //city.relocate(city.getX() - 5, city.getY() - 3);
-            city.setOnMouseClicked(e -> {
-                ui.getEventHandler().respondToCityClick(city);
-            });
-        }
-
+        map = new Map();
         this.setCenter(map);
     }
 
