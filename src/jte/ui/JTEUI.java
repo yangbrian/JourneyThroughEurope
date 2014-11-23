@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public class JTEUI {
 
-
     public enum JTEUIState {
         SPLASH_SCREEN,
         PLAYER_SELECT,

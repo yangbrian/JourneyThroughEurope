@@ -1,17 +1,22 @@
 package jte.game.components;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 
 /**
  * @author
  */
-public class Player {
+public class Player extends ImageView {
 
     private String name;
     private boolean human;
     private ArrayList<String> cards;
 
-    public Player(String name, boolean human) {
+    public Player(String name, boolean human, int number) {
+        super(new Image("file:images/piece_" + (number + 1) + ".png"));
+
         this.name = name;
         this.human = human;
     }
@@ -33,6 +38,7 @@ public class Player {
     }
 
     public void setCards(ArrayList<String> cards) {
+
         this.cards = cards;
     }
 

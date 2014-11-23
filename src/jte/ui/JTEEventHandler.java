@@ -1,6 +1,7 @@
 package jte.ui;
 
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -127,5 +128,16 @@ public class JTEEventHandler {
 
     public void placeFlag(int player) {
         ui.getGamePlayPane().placeFlags(player);
+    }
+
+    public void hoverOverCity(boolean hover) {
+        if(hover)
+            ui.getMainPane().getScene().setCursor(Cursor.HAND);
+        else
+            ui.getMainPane().getScene().setCursor(Cursor.DEFAULT);
+    }
+
+    public void startGame() {
+        ui.getGsm().startGame();
     }
 }

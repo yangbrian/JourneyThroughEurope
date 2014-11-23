@@ -52,6 +52,10 @@ public class Map extends ScrollPane {
             mapPane.getChildren().add(city);
             System.out.println("City draw: " + city.getName());
             city.setOnMouseClicked(e -> ui.getEventHandler().respondToCityClick(city));
+
+            // change cursor when hovering over city
+            city.setOnMouseEntered(event -> ui.getEventHandler().hoverOverCity(true));
+            city.setOnMouseExited(event -> ui.getEventHandler().hoverOverCity(false));
         }
     }
 
@@ -60,8 +64,8 @@ public class Map extends ScrollPane {
         CityNode home = ui.getGsm().getInfo().getCities().get(player.getHome());
 
         ImageView flag = new ImageView(new Image("file:images/flag_" + (playerNumber+1) + ".png"));
-        flag.setX(home.getX() - 100);
-        flag.setY(home.getY() - 125);
+        flag.setX(home.getX() - 95);
+        flag.setY(home.getY() - 130);
 
         // scroll to the home cities as the card is shown
         final Timeline timeline = new Timeline();
@@ -80,9 +84,32 @@ public class Map extends ScrollPane {
         dropFlag.setToY(0.4);
         dropFlag.setCycleCount(1);
 
+        player.relocate(home.getX() - 100, home.getY() - 125);
+
+        ScaleTransition dropPlayer = new ScaleTransition(Duration.millis(1000), player);
+        dropPlayer.setFromX(0.9);
+        dropPlayer.setFromY(0.9);
+        dropPlayer.setToX(0.4);
+        dropPlayer.setToY(0.4);
+        dropPlayer.setCycleCount(1);
+
         // index 1 to go in front of the map (0) but beneath the city nodes so they remain clickable
         mapPane.getChildren().add(1, flag);
 
+        mapPane.getChildren().add(player);
+
         dropFlag.play(); // play the flag drop
+        dropPlayer.play();
+    }
+
+    public void focusPlayer(Player current) {
+        // scroll to the home cities as the card is shown
+        final Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+          new KeyValue(this.hvalueProperty(), (current.getX() - 225)/670)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+          new KeyValue(this.vvalueProperty(), (current.getY() - 400)/860)));
+        timeline.play();
     }
 }

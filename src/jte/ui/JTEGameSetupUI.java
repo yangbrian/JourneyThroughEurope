@@ -20,10 +20,6 @@ import java.util.List;
  */
 public class JTEGameSetupUI extends FlowPane {
 
-    public enum JTEGameState {
-        SPLASH_SCREEN, PLAYER_SELECT, GAME_IN_PROGRESS, GAME_OVER
-    }
-
     private Button startGame;
     private ArrayList<Player> players;
 
@@ -66,7 +62,7 @@ public class JTEGameSetupUI extends FlowPane {
         if (oldPlayers < players) {
             for (int i = oldPlayers; i < players; i++) {
 
-                this.players.add(i, new Player("Player " + (i + 1), true));
+                this.players.add(i, new Player("Player " + (i + 1), true, i));
                 BorderPane playerSelect = new BorderPane();
                 playerSelect.setPrefSize(400, 350);
                 playerSelect.setStyle("-fx-background-color: #004ba7; -fx-background-radius: 10px; -fx-background-insets: 10px");

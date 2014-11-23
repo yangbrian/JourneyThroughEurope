@@ -110,8 +110,7 @@ public class JTEGamePlayUI extends BorderPane {
                     }
 
                     YOffset += 80;
-
-                    if (YOffset/80 == JTEGameStateManager.CARDS) {
+                    if (YOffset/80 == JTEGameStateManager.CARDS && i != currentGame.getPlayers().size() - 1) {
                         cardDeal.setOnFinished(event -> gsm.nextPlayer());
                     }
                 } catch (IllegalArgumentException e) {
@@ -123,6 +122,7 @@ public class JTEGamePlayUI extends BorderPane {
         sequence.getChildren().addAll(animations);
         sequence.setCycleCount(1);
         sequence.play();
+        sequence.setOnFinished(e -> ui.getEventHandler().startGame()); // cards done dealing, let's start the game!
 
     }
 
@@ -266,5 +266,9 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void placeFlags(int player) {
         map.placeFlags(player);
+    }
+
+    public void focusPlayer(Player current) {
+        map.focusPlayer(current);
     }
 }

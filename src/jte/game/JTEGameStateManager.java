@@ -12,9 +12,13 @@ import java.util.ArrayList;
  */
 public class JTEGameStateManager {
 
+    public enum JTEGameState {
+        SPLASH_SCREEN, PLAYER_SELECT, CARD_DEALING, GAME_IN_PROGRESS, GAME_OVER
+    }
+
     private JTEGameData currentGame;
     private JTEGameInfo info;
-    private JTEGameSetupUI.JTEGameState gameState;
+    private JTEGameState gameState;
     private JTEFileLoader fileHandler;
     private JTEUI ui;
 
@@ -35,7 +39,7 @@ public class JTEGameStateManager {
         return info;
     }
 
-    public void setGameState(JTEGameSetupUI.JTEGameState gameState) {
+    public void setGameState(JTEGameState gameState) {
         this.gameState = gameState;
     }
 
@@ -59,5 +63,13 @@ public class JTEGameStateManager {
     public void nextPlayer() {
         currentGame.nextPlayer();
         ui.getGamePlayPane().changeSidebar();
+        if (gameState == JTEGameState.GAME_IN_PROGRESS) {
+            ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
+        }
+    }
+
+    public void startGame() {
+        gameState = JTEGameState.GAME_IN_PROGRESS;
+        nextPlayer();
     }
 }
