@@ -86,7 +86,8 @@ public class JTEGamePlayUI extends BorderPane {
 
                     Path path = new Path();
                     path.getElements().add(new MoveTo(600,400));
-                    path.getElements().add (new LineTo(155,260 + YOffset));
+                    //path.getElements().add (new LineTo(155,260 + YOffset));
+                    path.getElements().add(new QuadCurveTo(300, 800, 155, 260 + YOffset));
                     PathTransition cardDeal = new PathTransition();
                     cardDeal.setDuration(Duration.millis(500));
                     cardDeal.setPath(path);
