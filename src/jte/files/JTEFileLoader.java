@@ -24,20 +24,40 @@ public class JTEFileLoader {
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/jteCities.csv"), "UTF-16"));
 
-            String nextLine = null; // skip the first line which is just the column headers
+            String nextLine = null;
 
             while((nextLine = reader.readLine()) != null) {
-                String[] values = nextLine.split("\\s+"); // should be 6 parts (or 7 if city has a space)
-                CityNode city = new CityNode(values[0], Integer.parseInt(values[2]), Integer.parseInt(values[3])/3, Integer.parseInt(values[4])/3, Integer.parseInt(values[5]), values[1].toUpperCase());
+                String[] values = nextLine.split("\\s+"); // should be 6 parts
 
-                switch(city.getRegion()) {
+                int currentX = Integer.parseInt(values[3]);
+                int currentY = Integer.parseInt(values[4]);
+                switch(Integer.parseInt(values[2])) { // apply offsets to adjust for scaling
+                    case 1:
+                        currentX = currentX/3;
+                        currentY = currentY/3;
+                        break;
                     case 2:
+                        currentX = currentX/3 + 670 - 12;
+                        currentY = currentY/3 - 5;
                         break;
                     case 3:
+                        currentX = currentX/3 - 5;
+                        currentY = currentY/3 + 862 - 25;
                         break;
                     case 4:
+                        currentX = currentX/3 + 662 - 14;
+                        currentY = currentY/3 + 862 - 16;
                         break;
                 }
+
+                CityNode city = new CityNode(
+                  values[0],                    // name
+                  Integer.parseInt(values[2]),  // quarter
+                  currentX,                     // x
+                  currentY,                     // y
+                  Integer.parseInt(values[5]),  // flight region
+                  values[1].toUpperCase()       // card color
+                );
 
                 cities.put(values[0], city);
             }

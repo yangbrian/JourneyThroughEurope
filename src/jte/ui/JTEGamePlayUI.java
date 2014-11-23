@@ -235,7 +235,7 @@ public class JTEGamePlayUI extends BorderPane {
 //    }
 
     public void initMap() {
-        map = new Map();
+        map = new Map(ui);
         this.setCenter(map);
     }
 
