@@ -43,4 +43,8 @@ public class JTEGameData {
     public ArrayList<String> getCards() {
         return players.get(current).getCards();
     }
+
+    public Player getPlayer(int player) {
+        return players.get(player);
+    }
 }

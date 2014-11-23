@@ -19,7 +19,7 @@ public class JTEGameStateManager {
     private JTEUI ui;
 
     /** number of cards to draw */
-    public static final int CARDS = 3;
+    public static final int CARDS = 6;
 
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
@@ -55,5 +55,10 @@ public class JTEGameStateManager {
             currentGame.drawCards(cards);
             currentGame.nextPlayer();
         }
+    }
+
+    public void nextPlayer() {
+        currentGame.nextPlayer();
+        ui.getGamePlayPane().changeSidebar();
     }
 }

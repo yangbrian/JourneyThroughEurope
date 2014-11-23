@@ -1,7 +1,8 @@
 package jte.ui;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.Transition;
+import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,22 +11,25 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 import jte.game.JTEGameData;
 import jte.game.JTEGameInfo;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * @author Brian Yang
  */
 public class JTEGamePlayUI extends BorderPane {
 
-    VBox cardToolbar;
+    Pane[] cardToolbar;
     VBox playerSidebar;
     StackPane map;
     Pane map1;
@@ -54,30 +58,73 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void drawCards() {
-
+        this.setLeft(cardToolbar[0]);
         // draw cards
         gsm.drawCards();
 
         this.currentGame = gsm.getData();
 
+        LinkedList<Transition> animations = new LinkedList<>();
         for (int i = 0; i < currentGame.getPlayers().size(); i++) {
-            ArrayList<String> cards = currentGame.getCards();
+            int YOffset = 0;
+            ArrayList<String> cards = currentGame.getPlayer(i).getCards();
             for (String c : cards) {
                 System.out.println("CARD: " + i + "file:images/cards/" + c + ".jpg");
-                ImageView image = new ImageView(new Image("file:images/cards/" + c + ".jpg"));
-                this.getChildren().add(image);
+                ImageView cardImage;
+                try {
+                    cardImage = new ImageView(new Image("file:images/cards/" + c + ".jpg", 295, 419, true, true));
+
+                    cardImage.setOpacity(0);
+                    cardToolbar[i].getChildren().add(cardImage);
+
+                    FadeTransition displayImage = new FadeTransition(Duration.millis(100), cardImage);
+                    displayImage.setFromValue(0);
+                    displayImage.setToValue(1);
+                    displayImage.setCycleCount(1);
+                    animations.add(displayImage);
+
+                    Path path = new Path();
+                    path.getElements().add(new MoveTo(600,400));
+                    path.getElements().add (new LineTo(150,250 + YOffset));
+                    PathTransition cardDeal = new PathTransition();
+                    cardDeal.setDuration(Duration.millis(500));
+                    cardDeal.setPath(path);
+                    cardDeal.setNode(cardImage);
+                    cardDeal.setCycleCount(1);
+
+                    animations.add(cardDeal);
+
+
+                    YOffset += 80;
+
+                    if (YOffset/80 == JTEGameStateManager.CARDS) {
+                        cardDeal.setOnFinished(event -> gsm.nextPlayer());
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("ERROR: IMAGE NOT FOUND! " + c);
+                }
             }
-            currentGame.nextPlayer();
         }
+        SequentialTransition sequence = new SequentialTransition();
+        sequence.getChildren().addAll(animations);
+        sequence.setCycleCount(1);
+        sequence.play();
+
     }
 
     public void initCardToolbar() {
-        cardToolbar = new VBox();
-        cardToolbar.setMinWidth(305);
-        cardToolbar.setSpacing(10);
-        cardToolbar.setPadding(new Insets(15));
-        cardToolbar.setStyle("-fx-background-color:#81b5dd");
-        this.setLeft(cardToolbar);
+        cardToolbar = new Pane[6];
+        for (int i = 0; i < this.cardToolbar.length; i++) {
+            cardToolbar[i] = new Pane();
+            cardToolbar[i].setMinWidth(305);
+            cardToolbar[i].setPadding(new Insets(5));
+            cardToolbar[i].setStyle("-fx-background-color:#81b5dd");
+            //this.setLeft(cardToolbar[i]);
+        }
+    }
+
+    public void changeSidebar() {
+        this.setLeft(cardToolbar[gsm.getData().getCurrentNumber()]);
     }
 
     public void initPlayerSidebar() {

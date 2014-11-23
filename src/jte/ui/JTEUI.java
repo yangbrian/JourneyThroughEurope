@@ -97,8 +97,8 @@ public class JTEUI {
             case GAME_PLAY:
                 System.out.println("Game Start");
                 gsm.setGameData(setupPane.getPlayers());
-                gamePlayPane.drawCards();
                 mainPane.setCenter(gamePlayPane);
+                gamePlayPane.drawCards();
                 break;
             default:
         }
@@ -126,5 +126,9 @@ public class JTEUI {
 
     public JTEGameStateManager getGsm() {
         return gsm;
+    }
+
+    public JTEGamePlayUI getGamePlayPane() {
+        return gamePlayPane;
     }
 }
