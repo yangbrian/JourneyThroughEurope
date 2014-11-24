@@ -51,4 +51,8 @@ public class JTEGameData {
     public boolean hasMovesLeft() {
         return getCurrent().getMoves() > 0;
     }
+
+    public int getMovesLeft() {
+        return getCurrent().getMoves();
+    }
 }

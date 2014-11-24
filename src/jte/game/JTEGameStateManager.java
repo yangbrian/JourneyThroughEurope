@@ -92,4 +92,8 @@ public class JTEGameStateManager {
         return currentGame.hasMovesLeft();
     }
 
+    public int getMovesLeft() {
+        return currentGame.getMovesLeft();
+    }
+
 }

@@ -47,8 +47,13 @@ public class JTEEventHandler {
             CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
 
             // check if valid move
-            if (currentCity.getRoads().contains(city)) { // valid road
+            if (currentCity.getRoads().contains(city) // city is a neighbor
+                && (!city.isOccupied() || ui.getGsm().getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
+              )
+            {
                 moving = true;
+                currentCity.setOccupied(false);
+                city.setOccupied(true);
                 PathTransition move = ui.getGsm().movePlayer(city);
 
                 move.setOnFinished(event -> {
@@ -190,5 +195,39 @@ public class JTEEventHandler {
 
     public boolean respondToPlayerDrag(Player player) {
         return ui.getGsm().getData().getCurrent() == player;
+    }
+
+    public void respondToBlankGameRequest(Stage primaryStage) {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Error");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        BorderPane aboutPane = new BorderPane();
+        HBox optionPane = new HBox();
+        Button okButton = new Button("Close");
+        okButton.setStyle("-fx-font-size: 1.1em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
+        optionPane.getChildren().add(okButton);
+
+        VBox content = new VBox();
+        content.setPadding(new Insets(20));
+        content.setSpacing(20);
+
+        Label description = new Label("Starting a game with no players? That's no fun...");
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        content.getChildren().add(description);
+
+        aboutPane.setCenter(content);
+
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 400, 150);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+
+        okButton.setOnAction(e -> dialogStage.close());
     }
 }

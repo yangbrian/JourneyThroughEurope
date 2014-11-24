@@ -62,7 +62,10 @@ public class JTEUI {
     public void initSetupPane() {
         setupPane = new JTEGameSetupUI();
         setupPane.getStartGameButton().setOnAction(event -> {
-            eventHandler.respondToGameStartRequest();
+            if (setupPane.getPlayers().size() == 0)
+                eventHandler.respondToBlankGameRequest(primaryStage);
+            else
+                eventHandler.respondToGameStartRequest();
         });
     }
 
