@@ -55,8 +55,8 @@ public class JTEEventHandler {
                 currentCity.setOccupied(false);
                 city.setOccupied(true);
 
+                ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
                 if (currentCity.getShips().contains(city)) {
-                    ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
                     ui.getGsm().waitAtPort(false);
                 }
 
@@ -74,6 +74,8 @@ public class JTEEventHandler {
                         ui.getGamePlayPane().setDiceLabel(ui.getGsm().getMovesLeft());
                         ui.displayCity(city);
                     } else {
+                        if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                            ui.getGsm().waitAtPort(true);
                         ui.getGsm().nextPlayer();
                     }
                     notMoving();
