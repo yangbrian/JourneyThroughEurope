@@ -4,9 +4,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
-import jte.game.components.Player;
-
-import java.util.ArrayList;
 
 /**
  * Main JTE User Interface

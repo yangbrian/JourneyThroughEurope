@@ -15,6 +15,7 @@ public class Dice extends StackPane {
         faces = new ImageView[6];
         for (int i = 0; i < faces.length; i++) {
             faces[i] = new ImageView(new Image("file:images/die_" + (i + 1) + ".jpg"));
+            faces[i].setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 0);");
         }
         this.getChildren().addAll(faces);
 

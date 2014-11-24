@@ -93,9 +93,10 @@ public class JTEEventHandler {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
         Button okButton = new Button("Return to Game");
-        okButton.setStyle("-fx-font-size: 1.1em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+        okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
         optionPane.setPadding(new Insets(20));
@@ -138,9 +139,10 @@ public class JTEEventHandler {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
         Button okButton = new Button("Close");
-        okButton.setStyle("-fx-font-size: 1.1em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+        okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
         optionPane.setPadding(new Insets(20));
@@ -204,9 +206,10 @@ public class JTEEventHandler {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
         Button okButton = new Button("Close");
-        okButton.setStyle("-fx-font-size: 1.1em; -fx-background-color:#ecc323;-fx-background-radius: 30;");
+        okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
         optionPane.setPadding(new Insets(20));

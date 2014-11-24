@@ -35,12 +35,7 @@ public class JTEGamePlayUI extends BorderPane {
 
     Pane[] cardToolbar;
     VBox playerSidebar;
-    //StackPane map;
     Map map;
-    Pane map1;
-    Pane map2;
-    Pane map3;
-    Pane map4;
     JTEUI ui;
 
     Dice dice;
@@ -48,9 +43,7 @@ public class JTEGamePlayUI extends BorderPane {
     ArrayList<FadeTransition> neighborAnimation;
 
     Label rollDiceLabel;
-    Label movesLeftLabel;
     public static final String ROLL_DICE = "Roll dice";
-    public static final String MOVES_LEFT = "Moves left";
 
     private JTEGameInfo info;
     private JTEGameStateManager gsm;
@@ -185,32 +178,22 @@ public class JTEGamePlayUI extends BorderPane {
 
         Button about = new Button("About JTE");
         about.getStyleClass().add("button-normal");
-        about.setOnAction(e -> {
-            ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage());
-        });
+        about.setOnAction(e -> ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage()));
 
         Button history = new Button("Game History");
         history.getStyleClass().add("button-normal");
-        history.setOnAction(e -> {
-            ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage());
-        });
+        history.setOnAction(e -> ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage()));
 
         Button quit = new Button("Quit");
         quit.getStyleClass().add("button-normal");
-        quit.setOnAction(e -> {
-            ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage());
-        });
+        quit.setOnAction(e -> ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage()));
 
-        playerSidebar.getChildren().addAll(rollDiceLabel, about, dice, history, quit);
+        playerSidebar.getChildren().addAll(rollDiceLabel, dice, about, history, quit);
     }
 
     public void initMap() {
         map = new Map(ui);
         this.setCenter(map);
-    }
-
-    public void changePartition(int quarter) {
-
     }
 
     public void displayCity(CityNode city) {
@@ -298,7 +281,7 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void setDiceLabel(int moves) {
         if (moves < 0)
-            rollDiceLabel.setText(ROLL_DICE);
+            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE);
         else
             rollDiceLabel.setText(moves + " moves left. Select a city.");
     }
