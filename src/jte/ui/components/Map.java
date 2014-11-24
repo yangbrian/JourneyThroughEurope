@@ -1,9 +1,6 @@
 package jte.ui.components;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
@@ -84,16 +84,26 @@ public class Map extends ScrollPane {
         dropFlag.setToY(0.4);
         dropFlag.setCycleCount(1);
 
-        player.setLayoutX(home.getX() - 100);
-        player.setLayoutY(home.getY() - 125);
+        player.setX(0);
+        player.setY(0);
+        player.setTranslateX(home.getX() - 100);
+        player.setTranslateY(home.getY() - 125);
+
+        if (player.getTranslateX() < 0)
+            player.setTranslateX(1);
+        if (player.getTranslateY() < 0)
+            player.setTranslateY(1);
+
         //player.relocate(home.getX() - 100, home.getY() - 125);
+        //player.setTranslateX(getLayoutX());
+        //player.setTranslateY(getLayoutY());
 
 
         ScaleTransition dropPlayer = new ScaleTransition(Duration.millis(1000), player);
         dropPlayer.setFromX(0.9);
         dropPlayer.setFromY(0.9);
-        dropPlayer.setToX(0.4);
-        dropPlayer.setToY(0.4);
+        dropPlayer.setToX(0.5);
+        dropPlayer.setToY(0.5);
         dropPlayer.setCycleCount(1);
 
         // index 1 to go in front of the map (0) but beneath the city nodes so they remain clickable
@@ -110,10 +120,13 @@ public class Map extends ScrollPane {
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-          new KeyValue(this.hvalueProperty(), (current.getLayoutX() - 225)/670)));
+          new KeyValue(this.hvalueProperty(), (current.getTranslateX() - 225) / 670)));
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-          new KeyValue(this.vvalueProperty(), (current.getLayoutY() - 400)/860)));
-        System.out.println("FOCUS on " + current.getX() );
+          new KeyValue(this.vvalueProperty(), (current.getTranslateY() - 400)/860)));
         timeline.play();
+    }
+
+    public void movePlayer(Player current, CityNode city) {
+        current.move(city.getX() - 100, city.getY() - 125);
     }
 }

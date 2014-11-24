@@ -32,6 +32,7 @@ public class JTEEventHandler {
     }
 
     public void respondToCityClick(CityNode city) {
+        ui.getGsm().movePlayer(city);
         ui.displayCity(city);
     }
 

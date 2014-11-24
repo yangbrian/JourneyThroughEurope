@@ -271,4 +271,8 @@ public class JTEGamePlayUI extends BorderPane {
     public void focusPlayer(Player current) {
         map.focusPlayer(current);
     }
+
+    public void movePlayer(Player current, CityNode city) {
+        map.movePlayer(current, city);
+    }
 }

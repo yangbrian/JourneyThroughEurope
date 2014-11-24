@@ -1,7 +1,15 @@
 package jte.game.components;
 
+import javafx.animation.PathTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -13,6 +21,7 @@ public class Player extends ImageView {
     private String name;
     private boolean human;
     private ArrayList<String> cards;
+    private CityNode currentCity;
 
     public Player(String name, boolean human, int number) {
         super(new Image("file:images/piece_" + (number + 1) + ".png"));
@@ -50,8 +59,19 @@ public class Player extends ImageView {
         return cards.get(0);
     }
 
-    @Override
-    public void relocate(double x, double y) {
-        super.relocate(x, y);
+    public void move(int x, int y) {
+        Path path = new Path();
+
+        // I really don't know why the +100s are needed...
+        path.getElements().add(new MoveTo(getTranslateX() + 100, getTranslateY() + 100));
+        path.getElements().add (new LineTo(x + 100, y + 100));
+
+
+        PathTransition move = new PathTransition();
+        move.setDuration(Duration.millis(500));
+        move.setPath(path);
+        move.setNode(this);
+        move.setCycleCount(1);
+        move.play();
     }
 }

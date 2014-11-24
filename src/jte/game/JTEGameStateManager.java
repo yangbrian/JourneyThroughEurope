@@ -1,6 +1,7 @@
 package jte.game;
 
 import jte.files.JTEFileLoader;
+import jte.game.components.CityNode;
 import jte.game.components.Player;
 import jte.ui.JTEGameSetupUI;
 import jte.ui.JTEUI;
@@ -72,4 +73,10 @@ public class JTEGameStateManager {
         gameState = JTEGameState.GAME_IN_PROGRESS;
         nextPlayer();
     }
+
+
+    public void movePlayer(CityNode city) {
+        ui.getGamePlayPane().movePlayer(currentGame.getCurrent(), city);
+    }
+
 }
