@@ -7,6 +7,7 @@ import jte.game.components.CityNode;
 import jte.game.components.Player;
 import jte.ui.JTEGameSetupUI;
 import jte.ui.JTEUI;
+import jte.ui.components.Dice;
 
 import java.util.ArrayList;
 
@@ -14,8 +15,6 @@ import java.util.ArrayList;
  * @author Brian Yang
  */
 public class JTEGameStateManager {
-
-
 
     public enum JTEGameState {
         SPLASH_SCREEN, PLAYER_SELECT, CARD_DEALING, GAME_IN_PROGRESS, GAME_OVER
@@ -26,6 +25,7 @@ public class JTEGameStateManager {
     private JTEGameState gameState;
     private JTEFileLoader fileHandler;
     private JTEUI ui;
+    private boolean diceRoll;
 
     /** number of cards to draw */
     public static final int CARDS = 3;
@@ -34,6 +34,7 @@ public class JTEGameStateManager {
         this.ui = ui;
         fileHandler = new JTEFileLoader(ui);
         loadGameInfo();
+        diceRoll = false;
     }
 
     public void loadGameInfo() {
@@ -66,14 +67,13 @@ public class JTEGameStateManager {
     }
 
     public void nextPlayer() {
+        diceRoll = false;
         currentGame.nextPlayer();
         ui.getGamePlayPane().changeSidebar();
         if (gameState == JTEGameState.GAME_IN_PROGRESS) {
             ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
-
-            SequentialTransition dice = ui.getGamePlayPane().diceRoll();
-
-            ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+            ui.getGamePlayPane().setDiceLabel(-1);
+            // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
         }
     }
 
@@ -94,6 +94,21 @@ public class JTEGameStateManager {
 
     public int getMovesLeft() {
         return currentGame.getMovesLeft();
+    }
+
+
+    public void rollDie(Dice dice) {
+        int roll = dice.roll();
+
+        currentGame.getCurrent().setMoves(roll);
+        diceRoll = true;
+
+        ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+        ui.getGamePlayPane().setDiceLabel(roll);
+    }
+
+    public boolean rolled() {
+        return diceRoll;
     }
 
 }

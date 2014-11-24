@@ -42,7 +42,7 @@ public class JTEEventHandler {
 
     public void respondToCityClick(CityNode city) {
 
-        if (!moving) {
+        if (!moving && ui.getGsm().rolled()) {
             String currentCityName = ui.getGsm().getData().getCurrent().getCurrentCity();
             CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
 
@@ -58,6 +58,7 @@ public class JTEEventHandler {
 
                 move.setOnFinished(event -> {
                     if (ui.getGsm().hasMovesLeft()) {
+                        ui.getGamePlayPane().setDiceLabel(ui.getGsm().getMovesLeft());
                         ui.displayCity(city);
                     } else {
                         ui.getGsm().nextPlayer();

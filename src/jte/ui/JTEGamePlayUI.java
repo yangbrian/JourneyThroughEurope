@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -45,6 +46,11 @@ public class JTEGamePlayUI extends BorderPane {
     Dice dice;
 
     ArrayList<FadeTransition> neighborAnimation;
+
+    Label rollDiceLabel;
+    Label movesLeftLabel;
+    public static final String ROLL_DICE = "Roll dice";
+    public static final String MOVES_LEFT = "Moves left";
 
     private JTEGameInfo info;
     private JTEGameStateManager gsm;
@@ -156,23 +162,32 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar.getStyleClass().add("sidebar");
         this.setRight(playerSidebar);
 
-        Label currentCity = new Label("No city clicked on yet.");
-        Label cityDetails = new Label("No city selected, so no airport.");
-        cityDetails.setPrefWidth(250);
-        currentCity.setPrefWidth(250);
-        cityDetails.getStyleClass().add("label-med");
-        currentCity.getStyleClass().add("label-large");
-        cityDetails.setWrapText(true);
-        currentCity.setWrapText(true);
+//        Label currentCity = new Label("No city clicked on yet.");
+//        Label cityDetails = new Label("No city selected, so no airport.");
+//        cityDetails.setPrefWidth(250);
+//        currentCity.setPrefWidth(250);
+//        cityDetails.getStyleClass().add("label-med");
+//        currentCity.getStyleClass().add("label-large");
+//        cityDetails.setWrapText(true);
+//        currentCity.setWrapText(true);
 
+        rollDiceLabel = new Label(ROLL_DICE);
+        rollDiceLabel.getStyleClass().add("label-large");
+        rollDiceLabel.setWrapText(true);
+
+        this.dice = new Dice();
+        this.dice.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gsm.rollDie(dice);
+            }
+        });
 
         Button about = new Button("About JTE");
         about.getStyleClass().add("button-normal");
         about.setOnAction(e -> {
             ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage());
         });
-
-        this.dice = new Dice();
 
         Button history = new Button("Game History");
         history.getStyleClass().add("button-normal");
@@ -186,7 +201,7 @@ public class JTEGamePlayUI extends BorderPane {
             ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage());
         });
 
-        playerSidebar.getChildren().addAll(currentCity, cityDetails, about, dice, history, quit);
+        playerSidebar.getChildren().addAll(rollDiceLabel, about, dice, history, quit);
     }
 
     public void initMap() {
@@ -200,8 +215,8 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void displayCity(CityNode city) {
         stopCityAnimation();
-        Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
-        Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
+//        Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
+//        Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
 
         String neighbors = "";
         ArrayList<CityNode> landNeighbors = city.getRoads();
@@ -236,27 +251,27 @@ public class JTEGamePlayUI extends BorderPane {
             neighborAnimation.add(neighborFade); // keep track of them so the animation can be stopped on click
         }
 
-        Label neighborDetails = new Label(neighbors);
-        neighborDetails.setPrefWidth(250);
-        neighborDetails.setStyle("-fx-font-size: 1.0em");
-        neighborDetails.setTextFill(Color.WHITE);
-        neighborDetails.setWrapText(true);
-
-
-        cityDetails.setPrefWidth(250);
-        currentCity.setPrefWidth(250);
-        cityDetails.setStyle("-fx-font-size: 1.1em");
-        currentCity.setStyle("-fx-font-size: 2.0em");
-        cityDetails.setTextFill(Color.WHITE);
-        currentCity.setTextFill(Color.WHITE);
-        cityDetails.setWrapText(true);
-        currentCity.setWrapText(true);
-        playerSidebar.getChildren().remove(0); // remove existing label
-        playerSidebar.getChildren().remove(0);
-        playerSidebar.getChildren().remove(0);
-        playerSidebar.getChildren().add(0, neighborDetails);
-        playerSidebar.getChildren().add(0, cityDetails);
-        playerSidebar.getChildren().add(0, currentCity);
+//        Label neighborDetails = new Label(neighbors);
+//        neighborDetails.setPrefWidth(250);
+//        neighborDetails.setStyle("-fx-font-size: 1.0em");
+//        neighborDetails.setTextFill(Color.WHITE);
+//        neighborDetails.setWrapText(true);
+//
+//
+//        cityDetails.setPrefWidth(250);
+//        currentCity.setPrefWidth(250);
+//        cityDetails.setStyle("-fx-font-size: 1.1em");
+//        currentCity.setStyle("-fx-font-size: 2.0em");
+//        cityDetails.setTextFill(Color.WHITE);
+//        currentCity.setTextFill(Color.WHITE);
+//        cityDetails.setWrapText(true);
+//        currentCity.setWrapText(true);
+//        playerSidebar.getChildren().remove(0); // remove existing label
+//        playerSidebar.getChildren().remove(0);
+//        playerSidebar.getChildren().remove(0);
+//        playerSidebar.getChildren().add(0, neighborDetails);
+//        playerSidebar.getChildren().add(0, cityDetails);
+//        playerSidebar.getChildren().add(0, currentCity);
 
 
     }
@@ -281,7 +296,10 @@ public class JTEGamePlayUI extends BorderPane {
         return map.movePlayer(current, city);
     }
 
-    public SequentialTransition diceRoll() {
-        return null;
+    public void setDiceLabel(int moves) {
+        if (moves < 0)
+            rollDiceLabel.setText(ROLL_DICE);
+        else
+            rollDiceLabel.setText(moves + " moves left. Select a city.");
     }
 }

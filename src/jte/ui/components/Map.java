@@ -119,7 +119,7 @@ public class Map extends ScrollPane {
         player.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(ui.getEventHandler().respondToPlayerDrag(player)) { // only drag if is current player
+                if(ui.getEventHandler().respondToPlayerDrag(player) && ui.getGsm().rolled()) { // only drag if is current player
                     double offsetX = event.getSceneX() + 305 /* card toolbar */ + getHvalue() - clickX;
                     double offsetY = event.getSceneY() + getVvalue() - clickY;
 
