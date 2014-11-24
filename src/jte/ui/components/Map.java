@@ -84,7 +84,10 @@ public class Map extends ScrollPane {
         dropFlag.setToY(0.4);
         dropFlag.setCycleCount(1);
 
-        player.relocate(home.getX() - 100, home.getY() - 125);
+        player.setLayoutX(home.getX() - 100);
+        player.setLayoutY(home.getY() - 125);
+        //player.relocate(home.getX() - 100, home.getY() - 125);
+
 
         ScaleTransition dropPlayer = new ScaleTransition(Duration.millis(1000), player);
         dropPlayer.setFromX(0.9);
@@ -107,9 +110,10 @@ public class Map extends ScrollPane {
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-          new KeyValue(this.hvalueProperty(), (current.getX() - 225)/670)));
+          new KeyValue(this.hvalueProperty(), (current.getLayoutX() - 225)/670)));
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-          new KeyValue(this.vvalueProperty(), (current.getY() - 400)/860)));
+          new KeyValue(this.vvalueProperty(), (current.getLayoutY() - 400)/860)));
+        System.out.println("FOCUS on " + current.getX() );
         timeline.play();
     }
 }

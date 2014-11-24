@@ -49,4 +49,9 @@ public class Player extends ImageView {
     public String getHome() {
         return cards.get(0);
     }
+
+    @Override
+    public void relocate(double x, double y) {
+        super.relocate(x, y);
+    }
 }

@@ -23,7 +23,7 @@ public class JTEGameStateManager {
     private JTEUI ui;
 
     /** number of cards to draw */
-    public static final int CARDS = 6;
+    public static final int CARDS = 3;
 
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
