@@ -57,6 +57,12 @@ public class JTEEventHandler {
                 PathTransition move = ui.getGsm().movePlayer(city);
 
                 move.setOnFinished(event -> {
+                    Player player = ui.getGsm().getData().getCurrent();
+                    System.out.println("Landed on: " + city.getName());
+                    if (player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()) ) { // reached destination
+                        ui.getGsm().removeCard(city);
+                        player.setMoves(0);
+                    }
                     if (ui.getGsm().hasMovesLeft()) {
                         ui.getGamePlayPane().setDiceLabel(ui.getGsm().getMovesLeft());
                         ui.displayCity(city);
@@ -233,5 +239,9 @@ public class JTEEventHandler {
         dialogStage.show();
 
         okButton.setOnAction(e -> dialogStage.close());
+    }
+
+    public void respondToPortRequest() {
+
     }
 }

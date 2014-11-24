@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -80,6 +81,7 @@ public class JTEGamePlayUI extends BorderPane {
                 ImageView cardImage;
                 try {
                     cardImage = new ImageView(new Image("file:images/cards/" + c + ".jpg", 295, 419, true, true));
+                    cardImage.setUserData(c);
 
                     cardImage.setOpacity(0);
                     if (!first) // bottom most card doesn't have shadow
@@ -176,6 +178,11 @@ public class JTEGamePlayUI extends BorderPane {
             }
         });
 
+        Button portWait = new Button("Wait for Ship");
+        portWait.getStyleClass().add("button-game");
+        portWait.setTextFill(Color.WHITE);
+        portWait.setOnAction(e -> ui.getEventHandler().respondToPortRequest());
+
         Button about = new Button("About JTE");
         about.getStyleClass().add("button-normal");
         about.setOnAction(e -> ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage()));
@@ -188,7 +195,8 @@ public class JTEGamePlayUI extends BorderPane {
         quit.getStyleClass().add("button-normal");
         quit.setOnAction(e -> ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage()));
 
-        playerSidebar.getChildren().addAll(rollDiceLabel, dice, about, history, quit);
+        playerSidebar.setAlignment(Pos.CENTER);
+        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, about, history, quit);
     }
 
     public void initMap() {
@@ -283,6 +291,20 @@ public class JTEGamePlayUI extends BorderPane {
         if (moves < 0)
             rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE);
         else
-            rollDiceLabel.setText(moves + " moves left. Select a city.");
+            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + ":\n" + moves + " moves left. Select a city.");
+    }
+
+    public void removeCard(CityNode city) {
+        for (Node node : cardToolbar[gsm.getData().getCurrentNumber()].getChildren()) {
+            Object data = node.getUserData();
+            if (data != null) {
+                if (data instanceof String) {
+                    if (data.equals(city.getName())) {
+                        cardToolbar[gsm.getData().getCurrentNumber()].getChildren().remove(node);
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

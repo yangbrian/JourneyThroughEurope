@@ -24,11 +24,15 @@ public class Player extends ImageView {
     private String currentCity;
     private int moves;
 
+    private boolean portClear;
+
     public Player(String name, boolean human, int number) {
         super(new Image("file:images/piece_" + (number + 1) + ".png"));
 
         this.name = name;
         this.human = human;
+
+        this.portClear = false;
     }
 
     public void setName(String name) {
@@ -92,5 +96,17 @@ public class Player extends ImageView {
 
     public void setMoves(int moves) {
         this.moves = moves;
+    }
+
+    public void setPortClear(boolean clear) {
+        this.portClear = clear;
+    }
+
+    public boolean isPortClear() {
+        return portClear;
+    }
+
+    public void removeCard(String name) {
+        cards.remove(name);
     }
 }

@@ -30,16 +30,16 @@ public class JTEGameSetupUI extends FlowPane {
 
         HBox toolbar = new HBox();
         Label playerSelect = new Label("Select the number of players: ");
-        ComboBox playerCount = new ComboBox();
+        ComboBox<Integer> playerCount = new ComboBox<>();
         playerCount.getItems().addAll(
-                "1", "2", "3", "4", "5", "6"
+                1, 2, 3, 4, 5, 6
         );
 
         playerCount.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue == null)
-                createSelections(0, Integer.parseInt(newValue.toString()));
+                createSelections(0, newValue);
             else
-                createSelections(Integer.parseInt(oldValue.toString()), Integer.parseInt(newValue.toString()));
+                createSelections(oldValue, newValue);
         });
 
         startGame = new Button("GO!!");

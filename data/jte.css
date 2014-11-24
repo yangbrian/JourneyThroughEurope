@@ -40,12 +40,18 @@
     -fx-background-radius: 30;
 }
 
+.button-game {
+    -fx-font-size: 1.9em;
+    -fx-background-color:#004ba7;
+    -fx-background-radius: 30;
+}
+
 .dialog-button {
     -fx-font-size: 1.1em;
     -fx-background-color:#ecc323;
     -fx-background-radius: 30;
 }
 
-.button-normal:hover, .button-large:hover, .start-game-button:hover, .dialog-button:hover {
+.button-normal:hover, .button-large:hover, .start-game-button:hover, .dialog-button:hover, .button-game:hover {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 0);
 }

@@ -111,4 +111,12 @@ public class JTEGameStateManager {
         return diceRoll;
     }
 
+
+
+    public void removeCard(CityNode city) {
+
+        currentGame.getCurrent().removeCard(city.getName());
+        ui.getGamePlayPane().removeCard(city);
+    }
+
 }
