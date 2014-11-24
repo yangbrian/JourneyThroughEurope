@@ -60,9 +60,7 @@ public class Player extends ImageView {
         return cards.get(0);
     }
 
-    public void move(int x, int y) {
-        moves--;
-
+    public PathTransition move(int x, int y) {
         Path path = new Path();
 
         path.getElements().add(new MoveTo(getTranslateX() + 100, getTranslateY() + 100));
@@ -75,6 +73,9 @@ public class Player extends ImageView {
         move.setNode(this);
         move.setCycleCount(1);
         move.play();
+
+        moves--;
+        return move;
     }
 
     public void setCurrentCity(String city) {

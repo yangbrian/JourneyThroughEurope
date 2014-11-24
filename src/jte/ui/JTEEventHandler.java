@@ -1,5 +1,8 @@
 package jte.ui;
 
+import javafx.animation.PathTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -18,9 +21,11 @@ import jte.game.components.CityNode;
 public class JTEEventHandler {
 
     private JTEUI ui;
+    private boolean moving;
 
     public JTEEventHandler(JTEUI ui) {
         this.ui = ui;
+        moving = false;
     }
 
     public void respondToNewGameRequest() {
@@ -33,23 +38,34 @@ public class JTEEventHandler {
 
     public void respondToCityClick(CityNode city) {
 
-        String currentCityName = ui.getGsm().getData().getCurrent().getCurrentCity();
-        CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
+        if (!moving) {
+            String currentCityName = ui.getGsm().getData().getCurrent().getCurrentCity();
+            CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
 
-        // check if valid move
-        if (currentCity.getRoads().contains(city)) { // valid road
-            ui.getGsm().movePlayer(city);
+            // check if valid move
+            if (currentCity.getRoads().contains(city)) { // valid road
+                moving = true;
+                PathTransition move = ui.getGsm().movePlayer(city);
 
-            if (ui.getGsm().hasMovesLeft()) {
-                ui.displayCity(city);
-            } else {
-                ui.getGsm().nextPlayer();
+                move.setOnFinished(event -> {
+                    if (ui.getGsm().hasMovesLeft()) {
+                        ui.displayCity(city);
+                    } else {
+                        ui.getGsm().nextPlayer();
+                    }
+                    notMoving();
+                });
+
+
             }
-
         }
 
 
 
+    }
+
+    public final void notMoving() {
+        moving = false;
     }
 
     /**

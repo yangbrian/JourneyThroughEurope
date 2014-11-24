@@ -1,5 +1,6 @@
 package jte.game;
 
+import javafx.animation.PathTransition;
 import jte.files.JTEFileLoader;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
@@ -78,9 +79,9 @@ public class JTEGameStateManager {
     }
 
 
-    public void movePlayer(CityNode city) {
-        ui.getGamePlayPane().movePlayer(currentGame.getCurrent(), city);
+    public PathTransition movePlayer(CityNode city) {
         currentGame.getCurrent().setCurrentCity(city.getName());
+        return ui.getGamePlayPane().movePlayer(currentGame.getCurrent(), city);
     }
 
     public boolean hasMovesLeft() {

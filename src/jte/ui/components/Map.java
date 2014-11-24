@@ -129,7 +129,7 @@ public class Map extends ScrollPane {
         timeline.play();
     }
 
-    public void movePlayer(Player current, CityNode city) {
-        current.move(city.getX() - 100, city.getY() - 125);
+    public PathTransition movePlayer(Player current, CityNode city) {
+        return current.move(city.getX() - 100, city.getY() - 125);
     }
 }
