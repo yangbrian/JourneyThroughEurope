@@ -46,6 +46,8 @@ public class JTEGamePlayUI extends BorderPane {
     Label rollDiceLabel;
     public static final String ROLL_DICE = "Roll dice";
 
+    private Button portWait;
+
     private JTEGameInfo info;
     private JTEGameStateManager gsm;
     private JTEGameData currentGame;
@@ -178,10 +180,11 @@ public class JTEGamePlayUI extends BorderPane {
             }
         });
 
-        Button portWait = new Button("Wait for Ship");
+        portWait = new Button("Wait for Ship");
         portWait.getStyleClass().add("button-game");
         portWait.setTextFill(Color.WHITE);
         portWait.setOnAction(e -> ui.getEventHandler().respondToPortRequest());
+        portWait.setDisable(true); // disable until needed
 
         Button about = new Button("About JTE");
         about.getStyleClass().add("button-normal");
@@ -212,6 +215,14 @@ public class JTEGamePlayUI extends BorderPane {
         String neighbors = "";
         ArrayList<CityNode> landNeighbors = city.getRoads();
         ArrayList<CityNode> seaNeighbors = city.getShips();
+
+        if (seaNeighbors.isEmpty())
+            portWait.setDisable(true);
+        else
+            portWait.setDisable(false);
+
+        if (ui.getGsm().getData().getCurrent().isPortClear())
+            ui.getGamePlayPane().getPortWaitButton().setText("Already waited");
 
         for (CityNode c : landNeighbors) {
             neighbors += "Land: " + c.getName() + "\n";
@@ -273,6 +284,10 @@ public class JTEGamePlayUI extends BorderPane {
             ((CityNode)(fade.getNode())).resetColor();
         }
         neighborAnimation.clear();
+    }
+
+    public Button getPortWaitButton() {
+        return portWait;
     }
 
     public void placeFlags(int player) {

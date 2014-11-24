@@ -26,6 +26,7 @@ public class JTEGameStateManager {
     private JTEFileLoader fileHandler;
     private JTEUI ui;
     private boolean diceRoll;
+    private boolean portWait;
 
     /** number of cards to draw */
     public static final int CARDS = 3;
@@ -68,12 +69,14 @@ public class JTEGameStateManager {
 
     public void nextPlayer() {
         diceRoll = false;
+        ui.getGamePlayPane().getPortWaitButton().setDisable(true);
         currentGame.nextPlayer();
         ui.getGamePlayPane().changeSidebar();
         if (gameState == JTEGameState.GAME_IN_PROGRESS) {
             ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
             ui.getGamePlayPane().setDiceLabel(-1);
             // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+
         }
     }
 
@@ -98,6 +101,7 @@ public class JTEGameStateManager {
 
 
     public void rollDie(Dice dice) {
+
         int roll = dice.roll();
 
         currentGame.getCurrent().setMoves(roll);
@@ -117,6 +121,14 @@ public class JTEGameStateManager {
 
         currentGame.getCurrent().removeCard(city.getName());
         ui.getGamePlayPane().removeCard(city);
+    }
+
+    public void waitAtPort(boolean wait) {
+        currentGame.getCurrent().setPortClear(wait);
+    }
+
+    public boolean waited() {
+        return currentGame.getCurrent().isPortClear();
     }
 
 }

@@ -47,19 +47,26 @@ public class JTEEventHandler {
             CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
 
             // check if valid move
-            if (currentCity.getRoads().contains(city) // city is a neighbor
+            if ((currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && ui.getGsm().waited())) // city is a neighbor
                 && (!city.isOccupied() || ui.getGsm().getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
-              )
-            {
+              ) {
+
                 moving = true;
                 currentCity.setOccupied(false);
                 city.setOccupied(true);
+
+                if (currentCity.getShips().contains(city)) {
+                    ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
+                    ui.getGsm().waitAtPort(false);
+                }
+
+
                 PathTransition move = ui.getGsm().movePlayer(city);
 
                 move.setOnFinished(event -> {
                     Player player = ui.getGsm().getData().getCurrent();
                     System.out.println("Landed on: " + city.getName());
-                    if (player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()) ) { // reached destination
+                    if (player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome())) { // reached destination
                         ui.getGsm().removeCard(city);
                         player.setMoves(0);
                     }
@@ -71,8 +78,39 @@ public class JTEEventHandler {
                     }
                     notMoving();
                 });
+            } else if ((currentCity.getShips().contains(city) && !ui.getGsm().waited())) {
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Error");
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                dialogStage.initOwner(ui.getPrimaryStage());
+                BorderPane aboutPane = new BorderPane();
+                aboutPane.getStylesheets().add("file:data/jte.css");
+                HBox optionPane = new HBox();
+                Button okButton = new Button("Close");
+                okButton.getStyleClass().add("dialog-button");
 
+                optionPane.setSpacing(20.0);
+                optionPane.setPadding(new Insets(20));
+                optionPane.getChildren().add(okButton);
 
+                VBox content = new VBox();
+                content.setPadding(new Insets(20));
+                content.setSpacing(20);
+
+                Label description = new Label("You must wait at the port for one turn before traveling by sea.");
+                description.setWrapText(true);
+                description.setStyle("-fx-font-size: 1.2em");
+
+                content.getChildren().add(description);
+
+                aboutPane.setCenter(content);
+
+                aboutPane.setBottom(optionPane);
+                Scene scene = new Scene(aboutPane, 400, 150);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+
+                okButton.setOnAction(e -> dialogStage.close());
             }
         }
 
@@ -242,6 +280,7 @@ public class JTEEventHandler {
     }
 
     public void respondToPortRequest() {
-
+        ui.getGsm().waitAtPort(true);
+        ui.getGsm().nextPlayer();
     }
 }
