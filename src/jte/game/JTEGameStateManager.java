@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class JTEGameStateManager {
 
+
+
     public enum JTEGameState {
         SPLASH_SCREEN, PLAYER_SELECT, CARD_DEALING, GAME_IN_PROGRESS, GAME_OVER
     }
@@ -66,6 +68,7 @@ public class JTEGameStateManager {
         ui.getGamePlayPane().changeSidebar();
         if (gameState == JTEGameState.GAME_IN_PROGRESS) {
             ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
+            ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
         }
     }
 
@@ -77,6 +80,11 @@ public class JTEGameStateManager {
 
     public void movePlayer(CityNode city) {
         ui.getGamePlayPane().movePlayer(currentGame.getCurrent(), city);
+        currentGame.getCurrent().setCurrentCity(city.getName());
+    }
+
+    public boolean hasMovesLeft() {
+        return currentGame.hasMovesLeft();
     }
 
 }

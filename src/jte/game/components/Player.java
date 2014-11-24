@@ -21,7 +21,8 @@ public class Player extends ImageView {
     private String name;
     private boolean human;
     private ArrayList<String> cards;
-    private CityNode currentCity;
+    private String currentCity;
+    private int moves;
 
     public Player(String name, boolean human, int number) {
         super(new Image("file:images/piece_" + (number + 1) + ".png"));
@@ -60,9 +61,10 @@ public class Player extends ImageView {
     }
 
     public void move(int x, int y) {
+        moves--;
+
         Path path = new Path();
 
-        // I really don't know why the +100s are needed...
         path.getElements().add(new MoveTo(getTranslateX() + 100, getTranslateY() + 100));
         path.getElements().add (new LineTo(x + 100, y + 100));
 
@@ -73,5 +75,21 @@ public class Player extends ImageView {
         move.setNode(this);
         move.setCycleCount(1);
         move.play();
+    }
+
+    public void setCurrentCity(String city) {
+        this.currentCity = city;
+    }
+
+    public String getCurrentCity() {
+        return currentCity;
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
     }
 }

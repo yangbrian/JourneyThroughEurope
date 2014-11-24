@@ -63,6 +63,9 @@ public class Map extends ScrollPane {
         Player player = ui.getGsm().getData().getPlayer(playerNumber);
         CityNode home = ui.getGsm().getInfo().getCities().get(player.getHome());
 
+        // set starting city
+        player.setCurrentCity(home.getName());
+
         ImageView flag = new ImageView(new Image("file:images/flag_" + (playerNumber+1) + ".png"));
         flag.setX(home.getX() - 95);
         flag.setY(home.getY() - 130);

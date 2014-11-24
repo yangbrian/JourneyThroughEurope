@@ -47,4 +47,8 @@ public class JTEGameData {
     public Player getPlayer(int player) {
         return players.get(player);
     }
+
+    public boolean hasMovesLeft() {
+        return getCurrent().getMoves() > 0;
+    }
 }

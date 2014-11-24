@@ -32,8 +32,24 @@ public class JTEEventHandler {
     }
 
     public void respondToCityClick(CityNode city) {
-        ui.getGsm().movePlayer(city);
-        ui.displayCity(city);
+
+        String currentCityName = ui.getGsm().getData().getCurrent().getCurrentCity();
+        CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
+
+        // check if valid move
+        if (currentCity.getRoads().contains(city)) { // valid road
+            ui.getGsm().movePlayer(city);
+
+            if (ui.getGsm().hasMovesLeft()) {
+                ui.displayCity(city);
+            } else {
+                ui.getGsm().nextPlayer();
+            }
+
+        }
+
+
+
     }
 
     /**
