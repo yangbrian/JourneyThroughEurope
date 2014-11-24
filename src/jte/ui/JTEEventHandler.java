@@ -13,7 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
+import jte.game.components.Player;
+
+import java.util.ArrayList;
 
 /**
  * @author
@@ -172,5 +176,19 @@ public class JTEEventHandler {
 
     public void startGame() {
         ui.getGsm().startGame();
+    }
+
+    public CityNode playerDrop(Player player, double x, double y) {
+        ArrayList<CityNode> neighbors = ui.getGsm().getInfo().getCities().get(player.getCurrentCity()).getRoads();
+        for (CityNode city : neighbors) {
+            boolean intersect = city.intersects(x + 50, y + 50, 100, 100);
+            if (intersect)
+                return city;
+        }
+        return null;
+    }
+
+    public boolean respondToPlayerDrag(Player player) {
+        return ui.getGsm().getData().getCurrent() == player;
     }
 }

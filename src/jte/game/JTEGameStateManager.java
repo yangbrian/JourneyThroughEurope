@@ -1,6 +1,7 @@
 package jte.game;
 
 import javafx.animation.PathTransition;
+import javafx.animation.SequentialTransition;
 import jte.files.JTEFileLoader;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
@@ -69,6 +70,9 @@ public class JTEGameStateManager {
         ui.getGamePlayPane().changeSidebar();
         if (gameState == JTEGameState.GAME_IN_PROGRESS) {
             ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
+
+            SequentialTransition dice = ui.getGamePlayPane().diceRoll();
+
             ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
         }
     }

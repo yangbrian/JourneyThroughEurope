@@ -18,6 +18,7 @@ import jte.game.JTEGameInfo;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
+import jte.ui.components.Dice;
 import jte.ui.components.Map;
 
 import java.io.FileNotFoundException;
@@ -40,6 +41,8 @@ public class JTEGamePlayUI extends BorderPane {
     Pane map3;
     Pane map4;
     JTEUI ui;
+
+    Dice dice;
 
     ArrayList<FadeTransition> neighborAnimation;
 
@@ -169,6 +172,8 @@ public class JTEGamePlayUI extends BorderPane {
             ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage());
         });
 
+        this.dice = new Dice();
+
         Button history = new Button("Game History");
         history.getStyleClass().add("button-normal");
         history.setOnAction(e -> {
@@ -181,7 +186,7 @@ public class JTEGamePlayUI extends BorderPane {
             ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage());
         });
 
-        playerSidebar.getChildren().addAll(currentCity, cityDetails, about, history, quit);
+        playerSidebar.getChildren().addAll(currentCity, cityDetails, about, dice, history, quit);
     }
 
     public void initMap() {
@@ -274,5 +279,9 @@ public class JTEGamePlayUI extends BorderPane {
 
     public PathTransition movePlayer(Player current, CityNode city) {
         return map.movePlayer(current, city);
+    }
+
+    public SequentialTransition diceRoll() {
+        return null;
     }
 }

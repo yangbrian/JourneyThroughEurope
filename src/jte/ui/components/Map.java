@@ -29,6 +29,9 @@ public class Map extends ScrollPane {
     private Pane mapPane;
     private ImageView map;
 
+    private double clickX;
+    private double clickY;
+
     public Map(JTEUI ui) {
         this.ui = ui;
 
@@ -100,6 +103,50 @@ public class Map extends ScrollPane {
         //player.relocate(home.getX() - 100, home.getY() - 125);
         //player.setTranslateX(getLayoutX());
         //player.setTranslateY(getLayoutY());
+
+        final double originalX = player.getTranslateX();
+        final double originalY = player.getTranslateY();
+
+        player.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setPannable(false); // disable panning while dragging
+                clickX = event.getSceneX() + 305 /* card toolbar */ + getHvalue();
+                clickY = event.getSceneY() + getVvalue();
+            }
+        });
+
+        player.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(ui.getEventHandler().respondToPlayerDrag(player)) { // only drag if is current player
+                    double offsetX = event.getSceneX() + 305 /* card toolbar */ + getHvalue() - clickX;
+                    double offsetY = event.getSceneY() + getVvalue() - clickY;
+
+                    clickX = event.getSceneX() + 305 + getHvalue();
+                    clickY = event.getSceneY() + getVvalue();
+
+                    player.setTranslateX(player.getTranslateX() + offsetX);
+                    player.setTranslateY(player.getTranslateY() + offsetY);
+                }
+            }
+        });
+
+        player.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                setPannable(true); // re-enable panning
+                CityNode city;
+                if ((city = ui.getEventHandler().playerDrop(player, player.getTranslateX(), player.getTranslateY())) != null) {
+                    ui.getEventHandler().respondToCityClick(city);
+                    System.out.println("DRAG GOOD");
+                } else {
+                    System.out.println("DRAG BAD");
+                    player.setTranslateX(originalX);
+                    player.setTranslateY(originalY);
+                }
+            }
+        });
 
 
         ScaleTransition dropPlayer = new ScaleTransition(Duration.millis(1000), player);
