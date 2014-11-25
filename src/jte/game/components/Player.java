@@ -26,6 +26,8 @@ public class Player extends ImageView {
 
     private boolean portClear;
 
+    private boolean repeat;
+
     public Player(String name, boolean human, int number) {
         super(new Image("file:images/piece_" + (number + 1) + ".png"));
 
@@ -33,6 +35,8 @@ public class Player extends ImageView {
         this.human = human;
 
         this.portClear = false;
+
+        this.repeat = false;
     }
 
     public void setName(String name) {
@@ -108,5 +112,13 @@ public class Player extends ImageView {
 
     public void removeCard(String name) {
         cards.remove(name);
+    }
+
+    public boolean getsRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
     }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class JTEGameStateManager {
 
+
     public enum JTEGameState {
         SPLASH_SCREEN, PLAYER_SELECT, CARD_DEALING, GAME_IN_PROGRESS, GAME_OVER
     }
@@ -27,6 +28,8 @@ public class JTEGameStateManager {
     private JTEUI ui;
     private boolean diceRoll;
     private boolean portWait;
+
+    private CityNode lastCity;
 
     /** number of cards to draw */
     public static final int CARDS = 3;
@@ -80,6 +83,14 @@ public class JTEGameStateManager {
         }
     }
 
+    public void repeatPlayer() {
+        diceRoll = false;
+        ui.getGamePlayPane().getPortWaitButton().setDisable(true);
+        ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
+        currentGame.getCurrent().setRepeat(false);
+        ui.getGamePlayPane().setDiceLabel(-2);
+    }
+
     public void startGame() {
         gameState = JTEGameState.GAME_IN_PROGRESS;
         nextPlayer();
@@ -103,6 +114,9 @@ public class JTEGameStateManager {
     public void rollDie(Dice dice) {
 
         int roll = dice.roll();
+
+        if (roll == 6)
+            currentGame.getCurrent().setRepeat(true);
 
         currentGame.getCurrent().setMoves(roll);
         diceRoll = true;
@@ -131,4 +145,11 @@ public class JTEGameStateManager {
         return currentGame.getCurrent().isPortClear();
     }
 
+    public CityNode getLastCity() {
+        return lastCity;
+    }
+
+    public void setLastCity(CityNode city) {
+        this.lastCity = city;
+    }
 }

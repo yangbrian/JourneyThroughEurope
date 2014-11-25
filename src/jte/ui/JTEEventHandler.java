@@ -50,18 +50,17 @@ public class JTEEventHandler {
 
             // check if valid move
             if ((currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && ui.getGsm().waited())) // city is a neighbor
-                && (!city.isOccupied() || ui.getGsm().getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
+              && (!city.isOccupied() || ui.getGsm().getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
+              && (city != ui.getGsm().getLastCity() || currentCity.getRoads().size() <= 1) // not an avoidable backtrack
               ) {
 
                 moving = true;
                 currentCity.setOccupied(false);
                 city.setOccupied(true);
+                ui.getGsm().waitAtPort(false);
+                ui.getGsm().setLastCity(currentCity);
 
                 ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
-                if (currentCity.getShips().contains(city)) {
-                    ui.getGsm().waitAtPort(false);
-                }
-
 
                 PathTransition move = ui.getGsm().movePlayer(city);
 
@@ -81,15 +80,55 @@ public class JTEEventHandler {
                     if (ui.getGsm().hasMovesLeft()) {
                         ui.getGamePlayPane().setDiceLabel(ui.getGsm().getMovesLeft());
                         ui.displayCity(city);
+                    } else if (ui.getGsm().getData().getCurrent().getsRepeat()) {
+                        if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                            ui.getGsm().waitAtPort(true);
+                        ui.getGsm().setLastCity(null);
+                        ui.getGsm().repeatPlayer();
                     } else {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
                             ui.getGsm().waitAtPort(true);
-
+                        ui.getGsm().setLastCity(null);
                         if (!cardRemoved)
                             ui.getGsm().nextPlayer();
                     }
                     notMoving();
                 });
+            } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {
+
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Error");
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                dialogStage.initOwner(ui.getPrimaryStage());
+                BorderPane aboutPane = new BorderPane();
+                aboutPane.getStylesheets().add("file:data/jte.css");
+                HBox optionPane = new HBox();
+                Button okButton = new Button("Close");
+                okButton.getStyleClass().add("dialog-button");
+
+                optionPane.setSpacing(20.0);
+                optionPane.setPadding(new Insets(20));
+                optionPane.getChildren().add(okButton);
+
+                VBox content = new VBox();
+                content.setPadding(new Insets(20));
+                content.setSpacing(20);
+
+                Label description = new Label("This isn't a deadend, so no backtracking!");
+                description.setWrapText(true);
+                description.setStyle("-fx-font-size: 1.2em");
+
+                content.getChildren().add(description);
+
+                aboutPane.setCenter(content);
+
+                aboutPane.setBottom(optionPane);
+                Scene scene = new Scene(aboutPane, 400, 150);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+
+                okButton.setOnAction(e -> dialogStage.close());
+
             } else if ((currentCity.getShips().contains(city) && !ui.getGsm().waited())) {
                 Stage dialogStage = new Stage();
                 dialogStage.setTitle("Error");
@@ -293,6 +332,9 @@ public class JTEEventHandler {
 
     public void respondToPortRequest() {
         ui.getGsm().waitAtPort(true);
-        ui.getGsm().nextPlayer();
+        if (ui.getGsm().getData().getCurrent().getsRepeat())
+            ui.getGsm().repeatPlayer();
+        else
+            ui.getGsm().nextPlayer();
     }
 }

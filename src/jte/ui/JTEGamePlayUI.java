@@ -305,7 +305,9 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void setDiceLabel(int moves) {
-        if (moves < 0)
+        if (moves < -1)
+            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE + " again");
+        else if (moves < 0)
             rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE);
         else
             rollDiceLabel.setText(gsm.getData().getCurrent().getName() + ":\n" + moves + " moves left. Select a city.");
