@@ -26,10 +26,12 @@ public class JTEEventHandler {
 
     private JTEUI ui;
     private boolean moving;
+    private boolean cardRemoved;
 
     public JTEEventHandler(JTEUI ui) {
         this.ui = ui;
         moving = false;
+        cardRemoved = false;
     }
 
     public void respondToNewGameRequest() {
@@ -69,14 +71,22 @@ public class JTEEventHandler {
                     if (player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome())) { // reached destination
                         ui.getGsm().removeCard(city);
                         player.setMoves(0);
+                        cardRemoved = true;
                     }
+
+                    if (currentCity.getShips().contains(city)) { // only one move for sailing
+                        player.setMoves(0);
+                    }
+
                     if (ui.getGsm().hasMovesLeft()) {
                         ui.getGamePlayPane().setDiceLabel(ui.getGsm().getMovesLeft());
                         ui.displayCity(city);
                     } else {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
                             ui.getGsm().waitAtPort(true);
-                        ui.getGsm().nextPlayer();
+
+                        if (!cardRemoved)
+                            ui.getGsm().nextPlayer();
                     }
                     notMoving();
                 });

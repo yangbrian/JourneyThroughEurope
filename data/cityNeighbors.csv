@@ -16,15 +16,15 @@ Land neighbour,GOTEBORG
 Land neighbour,KOBENHAVN
 City name,KIEL
 Land neighbour,ARHUS
-Land neighbour,BREMEN
+Land neighbour,HAMBURG
 City name,OULU
 Land neighbour,VAASA
-Land neighbour,TAMPERE
+Land neighbour,ROVANIEMI
 City name,MINSK
 Land neighbour,SMOLENSK
 Land neighbour,WARSZAWA
 City name,GRONINGEN
-Land neighbour,HAMBURG
+Land neighbour,BREMEN
 Land neighbour,AMSTERDAM
 City name,STAVANGER
 Land neighbour,OSLO
@@ -44,7 +44,7 @@ Land neighbour,SUNDSVALL
 Land neighbour,STOCKHOLM
 City name,LUBECK
 Land neighbour,KOBENHAVN
-Land neighbour,BREMEN
+Land neighbour,HAMBURG
 Sea neighbour,STOCKHOLM
 City name,VITEBSK
 Land neighbour,LENINGRAD
@@ -76,7 +76,7 @@ City name,NEWCASTLE
 Land neighbour,GLASGOW
 Land neighbour,LEEDS
 Sea neighbour,BERGEN
-Sea neighbour,BREMEN
+Sea neighbour,HAMBURG
 City name,ARKHANGELSK
 Land neighbour,LENINGRAD
 Land neighbour,MOSKVA
@@ -97,6 +97,7 @@ City name,TAMPERE
 Land neighbour,VAASA
 Land neighbour,HELSINKI
 City name,SUNDSVALL
+Land neighbour,TORONDHEIM
 Land neighbour,LULEA
 Land neighbour,GAVLE
 City name,LIVERPOOL
@@ -196,8 +197,9 @@ Sea neighbour,HELSINKI
 City name,HAMBURG
 Land neighbour,BREMEN
 Land neighbour,HANNOVER
-Land neighbour,KOLN
-Land neighbour,GRONINGEN
+Land neighbour,LUBECK
+Land neighbour,KIEL
+Sea neighbour,NEWCASTLE
 City name,OSLO
 Land neighbour,BERGEN
 Land neighbour,STAVANGER
@@ -459,6 +461,7 @@ Land neighbour,BUDAPEST
 Land neighbour,ZAGREB
 Land neighbour,SARAJEVO
 Land neighbour,NIS
+Sea neighbour,PALERMO
 City name,FIRENZE
 Land neighbour,BOLOGNA
 Land neighbour,ROMA
@@ -527,10 +530,10 @@ Land neighbour,REIMS
 Land neighbour,DIJON
 Land neighbour,STRASBOURG
 City name,CLERMONT-FERRAND
-Land neighbour,LUXEMBOURG
-Land neighbour,REIMS
-Land neighbour,DIJON
-Land neighbour,STRASBOURG
+Land neighbour,LIMOGES
+Land neighbour,LYON
+Land neighbour,NARBONNE
+Land neighbour,PARIS
 City name,LYON
 Land neighbour,DIJON
 Land neighbour,CLERMONT-FERRAND
@@ -538,7 +541,7 @@ Land neighbour,MARSEILLE
 Land neighbour,TORINO
 Land neighbour,GENEVE
 City name,STUTTGART
-Land neighbour,FIRENZE
+Land neighbour,FRANKFURT
 Land neighbour,STRASBOURG
 Land neighbour,MUNCHEN
 City name,REIMS
@@ -551,6 +554,7 @@ Land neighbour,DIJON
 Land neighbour,BERN
 Land neighbour,ZURICH
 City name,ODESSA
+Land neighbour,CHARKOV
 Land neighbour,VINNICA
 Land neighbour,GALATI
 Sea neighbour,CONSTANTA
@@ -693,7 +697,7 @@ Land neighbour,BRNO
 Land neighbour,BUDAPEST
 City name,BOLZANO
 Land neighbour,INNSBRUCK
-Land neighbour,BOLZANO
+Land neighbour,BOLOGNA
 City name,BUCURESTI
 Land neighbour,CLUJ-NAPOCA
 Land neighbour,SOFIJA
@@ -733,7 +737,7 @@ Land neighbour,PARIS
 Land neighbour,TOURS
 Land neighbour,BOURGES
 City name,KOLN
-Land neighbour,HAMBURG
+Land neighbour,BREMEN
 Land neighbour,AMSTERDAM
 Land neighbour,BRUXELLES
 Land neighbour,LUXEMBOURG

@@ -221,8 +221,10 @@ public class JTEGamePlayUI extends BorderPane {
         else
             portWait.setDisable(false);
 
-        if (ui.getGsm().getData().getCurrent().isPortClear())
-            ui.getGamePlayPane().getPortWaitButton().setText("Already waited");
+        if (ui.getGsm().getData().getCurrent().isPortClear()) {
+            ui.getGamePlayPane().getPortWaitButton().setText("Ready to Sail!");
+            portWait.setDisable(true);
+        }
 
         for (CityNode c : landNeighbors) {
             neighbors += "Land: " + c.getName() + "\n";
@@ -315,7 +317,23 @@ public class JTEGamePlayUI extends BorderPane {
             if (data != null) {
                 if (data instanceof String) {
                     if (data.equals(city.getName())) {
-                        cardToolbar[gsm.getData().getCurrentNumber()].getChildren().remove(node);
+
+                        Path path = new Path();
+                        path.getElements().add(new MoveTo(node.getTranslateX(), node.getTranslateY()));
+                        //path.getElements().add (new LineTo(155,260 + YOffset));
+                        path.getElements().add(new QuadCurveTo(300, 800, 600, 400));
+                        PathTransition cardDeal = new PathTransition();
+                        cardDeal.setDuration(Duration.millis(800));
+                        cardDeal.setPath(path);
+                        cardDeal.setNode(node);
+                        cardDeal.setCycleCount(1);
+                        cardDeal.play();
+
+                        cardDeal.setOnFinished(event -> {
+                            ui.getGsm().nextPlayer();
+                            cardToolbar[gsm.getData().getCurrentNumber()].getChildren().remove(node);
+                        });
+
                         return;
                     }
                 }
