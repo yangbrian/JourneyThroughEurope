@@ -336,10 +336,19 @@ public class JTEGamePlayUI extends BorderPane {
                             cardToolbar[gsm.getData().getCurrentNumber()].getChildren().remove(node);
                         });
 
+                        if (cardToolbar[gsm.getData().getCurrentNumber()].getChildren().size() == 1) {
+                            // just the label left
+                            ui.getEventHandler().respondToPlayerWin(gsm.getData().getCurrent());
+                        }
+
                         return;
                     }
                 }
             }
         }
+    }
+
+    public void setTranslate(double x, double y) {
+        ui.getGsm().getData().getCurrent().setOriginal(x, y);
     }
 }

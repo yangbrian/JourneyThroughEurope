@@ -67,7 +67,9 @@ public class JTEEventHandler {
                 move.setOnFinished(event -> {
                     Player player = ui.getGsm().getData().getCurrent();
                     System.out.println("Landed on: " + city.getName());
-                    if (player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome())) { // reached destination
+                    ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
+                    if ((player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()))
+                      || (city.getName().equals(player.getHome()) && player.getCards().size() == 1)) { // reached destination
                         ui.getGsm().removeCard(city);
                         player.setMoves(0);
                         cardRemoved = true;
@@ -96,38 +98,7 @@ public class JTEEventHandler {
                 });
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {
 
-                Stage dialogStage = new Stage();
-                dialogStage.setTitle("Error");
-                dialogStage.initModality(Modality.WINDOW_MODAL);
-                dialogStage.initOwner(ui.getPrimaryStage());
-                BorderPane aboutPane = new BorderPane();
-                aboutPane.getStylesheets().add("file:data/jte.css");
-                HBox optionPane = new HBox();
-                Button okButton = new Button("Close");
-                okButton.getStyleClass().add("dialog-button");
-
-                optionPane.setSpacing(20.0);
-                optionPane.setPadding(new Insets(20));
-                optionPane.getChildren().add(okButton);
-
-                VBox content = new VBox();
-                content.setPadding(new Insets(20));
-                content.setSpacing(20);
-
-                Label description = new Label("This isn't a deadend, so no backtracking!");
-                description.setWrapText(true);
-                description.setStyle("-fx-font-size: 1.2em");
-
-                content.getChildren().add(description);
-
-                aboutPane.setCenter(content);
-
-                aboutPane.setBottom(optionPane);
-                Scene scene = new Scene(aboutPane, 400, 150);
-                dialogStage.setScene(scene);
-                dialogStage.show();
-
-                okButton.setOnAction(e -> dialogStage.close());
+                displayDeadEndError();
 
             } else if ((currentCity.getShips().contains(city) && !ui.getGsm().waited())) {
                 Stage dialogStage = new Stage();
@@ -167,6 +138,41 @@ public class JTEEventHandler {
 
 
 
+    }
+
+    private void displayDeadEndError() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Error");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(ui.getPrimaryStage());
+        BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
+        HBox optionPane = new HBox();
+        Button okButton = new Button("Close");
+        okButton.getStyleClass().add("dialog-button");
+
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
+        optionPane.getChildren().add(okButton);
+
+        VBox content = new VBox();
+        content.setPadding(new Insets(20));
+        content.setSpacing(20);
+
+        Label description = new Label("This isn't a deadend, so no backtracking!");
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        content.getChildren().add(description);
+
+        aboutPane.setCenter(content);
+
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 400, 150);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+
+        okButton.setOnAction(e -> dialogStage.close());
     }
 
     public final void notMoving() {
@@ -284,9 +290,13 @@ public class JTEEventHandler {
     public CityNode playerDrop(Player player, double x, double y) {
         ArrayList<CityNode> neighbors = ui.getGsm().getInfo().getCities().get(player.getCurrentCity()).getRoads();
         for (CityNode city : neighbors) {
-            boolean intersect = city.intersects(x + 50, y + 50, 100, 100);
-            if (intersect)
-                return city;
+            boolean intersect = city.intersects(x + 15, y + 15, 100, 100);
+            if (intersect) {
+                if (city == ui.getGsm().getLastCity())
+                    displayDeadEndError();
+                else
+                    return city;
+            }
         }
         return null;
     }
@@ -336,5 +346,40 @@ public class JTEEventHandler {
             ui.getGsm().repeatPlayer();
         else
             ui.getGsm().nextPlayer();
+    }
+
+    public void respondToPlayerWin(Player current) {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Error");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(ui.getPrimaryStage());
+        BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
+        HBox optionPane = new HBox();
+        Button okButton = new Button("Close");
+        okButton.getStyleClass().add("dialog-button");
+
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
+        optionPane.getChildren().add(okButton);
+
+        VBox content = new VBox();
+        content.setPadding(new Insets(20));
+        content.setSpacing(20);
+
+        Label description = new Label(current.getName() + " wins!!!");
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        content.getChildren().add(description);
+
+        aboutPane.setCenter(content);
+
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 400, 150);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+
+        okButton.setOnAction(e -> dialogStage.close());
     }
 }

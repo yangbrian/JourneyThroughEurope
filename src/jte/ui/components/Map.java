@@ -32,6 +32,9 @@ public class Map extends ScrollPane {
     private double clickX;
     private double clickY;
 
+    private double originalX;
+    private double originalY;
+
     public Map(JTEUI ui) {
         this.ui = ui;
 
@@ -104,8 +107,7 @@ public class Map extends ScrollPane {
         //player.setTranslateX(getLayoutX());
         //player.setTranslateY(getLayoutY());
 
-        final double originalX = player.getTranslateX();
-        final double originalY = player.getTranslateY();
+        player.setOriginal(player.getTranslateX(), player.getTranslateY());
 
         player.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -132,19 +134,18 @@ public class Map extends ScrollPane {
             }
         });
 
-        player.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                setPannable(true); // re-enable panning
-                CityNode city;
-                if ((city = ui.getEventHandler().playerDrop(player, player.getTranslateX(), player.getTranslateY())) != null) {
-                    ui.getEventHandler().respondToCityClick(city);
-                    System.out.println("DRAG GOOD");
-                } else {
-                    System.out.println("DRAG BAD");
-                    player.setTranslateX(originalX);
-                    player.setTranslateY(originalY);
-                }
+        player.setOnMouseReleased(event -> {
+            setPannable(true); // re-enable panning
+            CityNode city;
+            if ((city = ui.getEventHandler().playerDrop(player, player.getTranslateX(), player.getTranslateY())) != null) {
+                ui.getEventHandler().respondToCityClick(city);
+                originalX = player.getTranslateX();
+                originalY = player.getTranslateY();
+                System.out.println("DRAG GOOD");
+            } else {
+                System.out.println("DRAG BAD");
+                player.setTranslateX(player.getOriginalX());
+                player.setTranslateY(player.getOriginalY());
             }
         });
 

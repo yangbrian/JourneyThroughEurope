@@ -28,6 +28,22 @@ public class Player extends ImageView {
 
     private boolean repeat;
 
+    public double getOriginalX() {
+        return originalX;
+    }
+
+    public void setOriginal(double originalX, double originalY) {
+        this.originalX = originalX;
+        this.originalY = originalY;
+    }
+
+    public double getOriginalY() {
+        return originalY;
+    }
+
+    private double originalX;
+    private double originalY;
+
     public Player(String name, boolean human, int number) {
         super(new Image("file:images/piece_" + (number + 1) + ".png"));
 
