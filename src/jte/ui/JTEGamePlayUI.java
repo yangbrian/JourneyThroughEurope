@@ -34,16 +34,16 @@ import java.util.LinkedList;
  */
 public class JTEGamePlayUI extends BorderPane {
 
-    Pane[] cardToolbar;
-    VBox playerSidebar;
-    Map map;
-    JTEUI ui;
+    private Pane[] cardToolbar;
+    private VBox playerSidebar;
+    private Map map;
+    private JTEUI ui;
 
-    Dice dice;
+    private Dice dice;
 
-    ArrayList<FadeTransition> neighborAnimation;
+    private ArrayList<FadeTransition> neighborAnimation;
 
-    Label rollDiceLabel;
+    private Label rollDiceLabel;
     public static final String ROLL_DICE = "Roll dice";
 
     private Button portWait;

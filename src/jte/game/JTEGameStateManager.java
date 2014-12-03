@@ -10,6 +10,7 @@ import jte.ui.JTEUI;
 import jte.ui.components.Dice;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * @author Brian Yang
@@ -31,12 +32,15 @@ public class JTEGameStateManager {
 
     private CityNode lastCity;
 
+    private LinkedList<String> history;
+
     /** number of cards to draw */
     public static final int CARDS = 3;
 
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
         fileHandler = new JTEFileLoader(ui);
+        history = new LinkedList<>();
         loadGameInfo();
         diceRoll = false;
     }
@@ -151,5 +155,13 @@ public class JTEGameStateManager {
 
     public void setLastCity(CityNode city) {
         this.lastCity = city;
+    }
+
+    public void addToHistory(String move) {
+        history.add(move);
+    }
+
+    public LinkedList<String> getHistory() {
+        return history;
     }
 }

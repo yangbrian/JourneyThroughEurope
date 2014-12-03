@@ -18,6 +18,8 @@ import jte.game.components.CityNode;
 import jte.game.components.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * @author
@@ -99,9 +101,10 @@ public class JTEEventHandler {
                             gsm.nextPlayer();
                     }
                     notMoving();
-                });
 
-                // Add move to game history
+                    // Add move to game history
+                    gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+                });
 
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {
 
@@ -263,7 +266,13 @@ public class JTEEventHandler {
         Label aboutLabel = new Label("JTE Game History");
         aboutLabel.setStyle("-fx-font-size: 2.0em;");
 
-        Label description = new Label("History of moves would go here.");
+        StringBuilder history = new StringBuilder();
+        LinkedList<String> historyList = gsm.getHistory();
+
+        for (String aHistoryList : historyList)
+            history.append(aHistoryList + "\n");
+
+        Label description = new Label(history.toString());
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
