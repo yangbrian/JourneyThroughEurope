@@ -3,6 +3,7 @@ package jte.game;
 import jte.game.components.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author
@@ -35,8 +36,7 @@ public class JTEGameData {
 
     public void drawCards(String[] cards) {
         ArrayList<String> playerCards = new ArrayList<>();
-        for (String c : cards)
-            playerCards.add(c);
+        Collections.addAll(playerCards, cards);
         players.get(current).setCards(playerCards);
     }
 

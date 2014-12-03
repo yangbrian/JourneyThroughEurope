@@ -27,6 +27,7 @@ public class JTEEventHandler {
     private JTEUI ui;
     private boolean moving;
     private boolean cardRemoved;
+    public JTEGameStateManager gsm;
 
     public JTEEventHandler(JTEUI ui) {
         this.ui = ui;
@@ -44,33 +45,36 @@ public class JTEEventHandler {
 
     public void respondToCityClick(CityNode city) {
 
+        if (gsm == null)
+            gsm = ui.getGsm();
+
         if (!moving && ui.getGsm().rolled()) {
-            String currentCityName = ui.getGsm().getData().getCurrent().getCurrentCity();
-            CityNode currentCity = ui.getGsm().getInfo().getCities().get(currentCityName);
+            String currentCityName = gsm.getData().getCurrent().getCurrentCity();
+            CityNode currentCity = gsm.getInfo().getCities().get(currentCityName);
 
             // check if valid move
-            if ((currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && ui.getGsm().waited())) // city is a neighbor
-              && (!city.isOccupied() || ui.getGsm().getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
-              && (city != ui.getGsm().getLastCity() || currentCity.getRoads().size() <= 1) // not an avoidable backtrack
+            if ((currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && gsm.waited())) // city is a neighbor
+              && (!city.isOccupied() || gsm.getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
+              && (city != gsm.getLastCity() || currentCity.getRoads().size() <= 1) // not an avoidable backtrack
               ) {
 
                 moving = true;
                 currentCity.setOccupied(false);
                 city.setOccupied(true);
-                ui.getGsm().waitAtPort(false);
-                ui.getGsm().setLastCity(currentCity);
+                gsm.waitAtPort(false);
+                gsm.setLastCity(currentCity);
 
                 ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
 
-                PathTransition move = ui.getGsm().movePlayer(city);
+                PathTransition move = gsm.movePlayer(city);
 
                 move.setOnFinished(event -> {
-                    Player player = ui.getGsm().getData().getCurrent();
+                    Player player = gsm.getData().getCurrent();
                     System.out.println("Landed on: " + city.getName());
                     ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
                     if ((player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()))
                       || (city.getName().equals(player.getHome()) && player.getCards().size() == 1)) { // reached destination
-                        ui.getGsm().removeCard(city);
+                        gsm.removeCard(city);
                         player.setMoves(0);
                         cardRemoved = true;
                     }
@@ -79,23 +83,26 @@ public class JTEEventHandler {
                         player.setMoves(0);
                     }
 
-                    if (ui.getGsm().hasMovesLeft()) {
-                        ui.getGamePlayPane().setDiceLabel(ui.getGsm().getMovesLeft());
+                    if (gsm.hasMovesLeft()) {
+                        ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
                         ui.displayCity(city);
-                    } else if (ui.getGsm().getData().getCurrent().getsRepeat()) {
+                    } else if (gsm.getData().getCurrent().getsRepeat()) {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
-                            ui.getGsm().waitAtPort(true);
-                        ui.getGsm().setLastCity(null);
-                        ui.getGsm().repeatPlayer();
+                            gsm.waitAtPort(true);
+                        gsm.setLastCity(null);
+                        gsm.repeatPlayer();
                     } else {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
-                            ui.getGsm().waitAtPort(true);
-                        ui.getGsm().setLastCity(null);
+                            gsm.waitAtPort(true);
+                        gsm.setLastCity(null);
                         if (!cardRemoved)
-                            ui.getGsm().nextPlayer();
+                            gsm.nextPlayer();
                     }
                     notMoving();
                 });
+
+                // Add move to game history
+
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {
 
                 displayDeadEndError();
