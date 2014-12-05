@@ -42,13 +42,12 @@ public class JTEEventHandler {
     }
 
     public void respondToGameStartRequest() {
+        if (gsm == null)
+            gsm = ui.getGsm();
         ui.changeView(JTEUI.JTEUIState.GAME_PLAY);
     }
 
     public void respondToCityClick(CityNode city) {
-
-        if (gsm == null)
-            gsm = ui.getGsm();
 
         if (!moving && ui.getGsm().rolled()) {
             String currentCityName = gsm.getData().getCurrent().getCurrentCity();
@@ -270,7 +269,7 @@ public class JTEEventHandler {
         LinkedList<String> historyList = gsm.getHistory();
 
         for (String aHistoryList : historyList)
-            history.append(aHistoryList + "\n");
+            history.append(aHistoryList).append("\n");
 
         Label description = new Label(history.toString());
         description.setWrapText(true);
@@ -357,11 +356,12 @@ public class JTEEventHandler {
     }
 
     public void respondToPortRequest() {
-        ui.getGsm().waitAtPort(true);
-        if (ui.getGsm().getData().getCurrent().getsRepeat())
-            ui.getGsm().repeatPlayer();
+        gsm.waitAtPort(true);
+        gsm.addToHistory(gsm.getData().getCurrent().getName() + " waits for a ship.");
+        if (gsm.getData().getCurrent().getsRepeat())
+            gsm.repeatPlayer();
         else
-            ui.getGsm().nextPlayer();
+            gsm.nextPlayer();
     }
 
     public void respondToPlayerWin(Player current) {

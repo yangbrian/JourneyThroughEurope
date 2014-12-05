@@ -35,7 +35,7 @@ public class JTEGameStateManager {
     private LinkedList<String> history;
 
     /** number of cards to draw */
-    public static final int CARDS = 3;
+    public static final int CARDS = 2;
 
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
@@ -127,6 +127,8 @@ public class JTEGameStateManager {
 
         ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
         ui.getGamePlayPane().setDiceLabel(roll);
+
+        addToHistory(getCurrentPlayerName() + " rolls a " + roll + "\n");
     }
 
     public boolean rolled() {
@@ -163,5 +165,13 @@ public class JTEGameStateManager {
 
     public LinkedList<String> getHistory() {
         return history;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentGame.getCurrent();
+    }
+
+    public String getCurrentPlayerName() {
+        return currentGame.getCurrent().getName();
     }
 }

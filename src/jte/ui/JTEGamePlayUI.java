@@ -325,15 +325,15 @@ public class JTEGamePlayUI extends BorderPane {
                         //path.getElements().add (new LineTo(155,260 + YOffset));
                         path.getElements().add(new QuadCurveTo(300, 800, 600, 400));
                         PathTransition cardDeal = new PathTransition();
-                        cardDeal.setDuration(Duration.millis(800));
+                        cardDeal.setDuration(Duration.millis(2000));
                         cardDeal.setPath(path);
                         cardDeal.setNode(node);
                         cardDeal.setCycleCount(1);
                         cardDeal.play();
 
                         cardDeal.setOnFinished(event -> {
-                            ui.getGsm().nextPlayer();
                             cardToolbar[gsm.getData().getCurrentNumber()].getChildren().remove(node);
+                            ui.getGsm().nextPlayer();
                         });
 
                         if (cardToolbar[gsm.getData().getCurrentNumber()].getChildren().size() == 1) {
