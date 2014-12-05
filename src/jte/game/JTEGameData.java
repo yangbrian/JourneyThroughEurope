@@ -55,4 +55,29 @@ public class JTEGameData {
     public int getMovesLeft() {
         return getCurrent().getMoves();
     }
+
+    /**
+     * Generate string used for the save file
+     * @return String data representation of the game
+     */
+    public String getSaveData() {
+        StringBuilder data = new StringBuilder();
+
+        data.append(players.size()).append("\n");
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).isHuman())
+                data.append(i).append(" ");
+        }
+        data.append("\n");
+
+        // player cards
+        for (Player player : players) {
+            for (String card : player.getCards()) {
+                data.append(card).append(" ");
+            }
+            data.append("\n");
+        }
+
+        return data.toString();
+    }
 }

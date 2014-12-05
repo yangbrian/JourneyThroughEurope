@@ -17,6 +17,7 @@ import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -88,7 +89,6 @@ public class JTEEventHandler {
                     }
 
                     if (gsm.hasMovesLeft()) {
-                        System.out.println("HAS MOVES LEFT");
                         ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
                         ui.displayCity(city);
                     } else if (gsm.getData().getCurrent().getsRepeat()) {
@@ -405,5 +405,44 @@ public class JTEEventHandler {
             ui.changeView(JTEUI.JTEUIState.SPLASH_SCREEN);
             dialogStage.close();
         });
+    }
+
+    public void respondToSaveRequest() {
+        try {
+            gsm.saveGame();
+        } catch (IOException e) {
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Error Saving Game");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(ui.getPrimaryStage());
+            BorderPane aboutPane = new BorderPane();
+            aboutPane.getStylesheets().add("file:data/jte.css");
+            HBox optionPane = new HBox();
+            Button okButton = new Button("Close");
+            okButton.getStyleClass().add("dialog-button");
+
+            optionPane.setSpacing(20.0);
+            optionPane.setPadding(new Insets(20));
+            optionPane.getChildren().add(okButton);
+
+            VBox content = new VBox();
+            content.setPadding(new Insets(20));
+            content.setSpacing(20);
+
+            Label description = new Label("Error saving game! The file might be in use or you don't have permission to write to it.");
+            description.setWrapText(true);
+            description.setStyle("-fx-font-size: 1.2em");
+
+            content.getChildren().add(description);
+
+            aboutPane.setCenter(content);
+
+            aboutPane.setBottom(optionPane);
+            Scene scene = new Scene(aboutPane, 400, 150);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+
+            okButton.setOnAction(event -> dialogStage.close());
+        }
     }
 }

@@ -194,12 +194,16 @@ public class JTEGamePlayUI extends BorderPane {
         history.getStyleClass().add("button-normal");
         history.setOnAction(e -> ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage()));
 
+        Button save = new Button("Save Game");
+        save.getStyleClass().add("button-normal");
+        save.setOnAction(e -> ui.getEventHandler().respondToSaveRequest());
+
         Button quit = new Button("Quit");
         quit.getStyleClass().add("button-normal");
         quit.setOnAction(e -> ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage()));
 
         playerSidebar.setAlignment(Pos.CENTER);
-        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, about, history, quit);
+        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, about, history, save, quit);
     }
 
     public void initMap() {
@@ -228,7 +232,6 @@ public class JTEGamePlayUI extends BorderPane {
         }
 
         for (CityNode c : landNeighbors) {
-            System.out.println("Displaying Land Neighbors: " + city.getName());
             neighbors += "Land: " + c.getName() + "\n";
 
             c.setFill(Color.GOLDENROD);

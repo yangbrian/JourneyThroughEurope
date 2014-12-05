@@ -1,5 +1,6 @@
 package jte.files;
 
+import jte.game.JTEGameStateManager;
 import jte.game.components.Card;
 import jte.game.components.CityNode;
 import jte.ui.JTEUI;
@@ -100,5 +101,18 @@ public class JTEFileLoader {
 
     public Card makeCard(String name, String color) {
         return null;
+    }
+
+    public void saveGame() throws IOException {
+        String save = ui.getGsm().getData().getSaveData();
+
+        File saveFile = new File("data/save.jte");
+        saveFile.createNewFile();
+        BufferedWriter out = new BufferedWriter(new FileWriter(saveFile));
+
+        out.write(save);
+
+        out.flush();
+        out.close();
     }
 }

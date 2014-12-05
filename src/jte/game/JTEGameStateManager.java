@@ -9,6 +9,7 @@ import jte.ui.JTEGameSetupUI;
 import jte.ui.JTEUI;
 import jte.ui.components.Dice;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -176,5 +177,9 @@ public class JTEGameStateManager {
 
     public String getCurrentPlayerName() {
         return currentGame.getCurrent().getName();
+    }
+
+    public void saveGame() throws IOException {
+        fileHandler.saveGame();
     }
 }
