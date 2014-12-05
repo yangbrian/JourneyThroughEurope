@@ -182,4 +182,21 @@ public class JTEGameStateManager {
     public void saveGame() throws IOException {
         fileHandler.saveGame();
     }
+
+    public void loadGame() throws IOException {
+        fileHandler.loadGame(this);
+    }
+
+    public void loadGame(int numPlayers, ArrayList<Integer> humans, int current, String[] currentCities, ArrayList<ArrayList<String>> cards) {
+        ArrayList<Player> players = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            Player player = new Player("Player " + (i + 1), humans.contains(i), i);
+            player.setCurrentCity(currentCities[i]);
+            player.setCards(cards.get(i));
+            players.add(player);
+        }
+
+        currentGame = new JTEGameData(players);
+        currentGame.setCurrent(current - 1);
+    }
 }

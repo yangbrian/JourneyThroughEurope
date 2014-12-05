@@ -6,6 +6,8 @@ import jte.game.components.CityNode;
 import jte.ui.JTEUI;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -107,12 +109,40 @@ public class JTEFileLoader {
         String save = ui.getGsm().getData().getSaveData();
 
         File saveFile = new File("data/save.jte");
-        saveFile.createNewFile();
         BufferedWriter out = new BufferedWriter(new FileWriter(saveFile));
 
         out.write(save);
 
         out.flush();
         out.close();
+    }
+
+    public void loadGame(JTEGameStateManager gsm) throws IOException {
+        BufferedReader in = new BufferedReader(new FileReader("data/save.jte"));
+
+        int numPlayers = Integer.parseInt(in.readLine()); // total number of players
+
+        String[] humanPlayersString = in.readLine().split(" "); // IDs of human players
+        ArrayList<Integer> humanPlayers = new ArrayList<>();
+        for (String aHumanPlayersString : humanPlayersString)
+            humanPlayers.add(Integer.parseInt(aHumanPlayersString));
+
+        int current = Integer.parseInt(in.readLine());
+
+        String[] currentCities = in.readLine().split(" "); // current cities of players
+
+        // add each player's cards
+        ArrayList<ArrayList<String>> playerCards = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            playerCards.add(new ArrayList<>());
+            ArrayList<String> playerHand = playerCards.get(i);
+
+            String[] cards = in.readLine().split(" ");
+            Collections.addAll(playerHand, cards);
+        }
+
+        in.close();
+
+        gsm.loadGame(numPlayers, humanPlayers, current, currentCities, playerCards);
     }
 }

@@ -70,6 +70,15 @@ public class JTEGameData {
         }
         data.append("\n");
 
+        // current player
+        data.append(current).append("\n");
+
+        // current cities
+        for (Player player : players) {
+            data.append(player.getCurrentCity()).append(" ");
+        }
+        data.append("\n");
+
         // player cards
         for (Player player : players) {
             for (String card : player.getCards()) {
@@ -79,5 +88,9 @@ public class JTEGameData {
         }
 
         return data.toString();
+    }
+
+    public void setCurrent(int current) {
+        this.current = current;
     }
 }

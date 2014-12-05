@@ -65,25 +65,30 @@ public class Map extends ScrollPane {
         }
     }
 
-    public void placeFlags(int playerNumber) {
+    public void placeFlags(int playerNumber, boolean newGame) {
         Player player = ui.getGsm().getData().getPlayer(playerNumber);
         CityNode home = ui.getGsm().getInfo().getCities().get(player.getHome());
 
         // set starting city
-        player.setCurrentCity(home.getName());
+        if (newGame)
+            player.setCurrentCity(home.getName());
+
+        CityNode currentCity = ui.getGsm().getInfo().getCities().get(player.getCurrentCity());
 
         ImageView flag = new ImageView(new Image("file:images/flag_" + (playerNumber+1) + ".png"));
-        flag.setX(home.getX() - 95);
-        flag.setY(home.getY() - 130);
+        flag.setX(currentCity.getX() - 95);
+        flag.setY(currentCity.getY() - 130);
 
-        // scroll to the home cities as the card is shown
-        final Timeline timeline = new Timeline();
-        timeline.setCycleCount(1);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-          new KeyValue(this.hvalueProperty(), (flag.getX() - 225)/670)));
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-          new KeyValue(this.vvalueProperty(), (flag.getY() - 400)/860)));
-        timeline.play();
+        if (newGame) {
+            // scroll to the home cities as the card is shown
+            final Timeline timeline = new Timeline();
+            timeline.setCycleCount(1);
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+              new KeyValue(this.hvalueProperty(), (flag.getX() - 225) / 670)));
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+              new KeyValue(this.vvalueProperty(), (flag.getY() - 400) / 860)));
+            timeline.play();
+        }
 
         // drop the flag onto the city
         ScaleTransition dropFlag = new ScaleTransition(Duration.millis(1000), flag);

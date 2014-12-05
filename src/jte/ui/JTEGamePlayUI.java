@@ -65,11 +65,12 @@ public class JTEGamePlayUI extends BorderPane {
         neighborAnimation = new ArrayList<>();
     }
 
-    public void drawCards() {
+    public void drawCards(boolean newGame) {
         initCardToolbar();
         this.setLeft(cardToolbar[0]);
         // draw cards
-        gsm.drawCards();
+        if (newGame)
+            gsm.drawCards();
 
         this.currentGame = gsm.getData();
 
@@ -80,47 +81,53 @@ public class JTEGamePlayUI extends BorderPane {
             boolean first = true;
             for (String c : cards) {
                 System.out.println("CARD: " + i + "file:images/cards/" + c + ".jpg");
-                ImageView cardImage;
-                try {
-                    cardImage = new ImageView(new Image("file:images/cards/" + c + ".jpg", 295, 419, true, true));
-                    cardImage.setUserData(c);
+                ImageView cardImage = new ImageView(new Image("file:images/cards/" + c + ".jpg", 295, 419, true, true));
+                cardImage.setUserData(c);
 
-                    cardImage.setOpacity(0);
-                    if (!first) // bottom most card doesn't have shadow
-                        cardImage.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 0);");
+                cardImage.setOpacity(0);
+                if (!first) // bottom most card doesn't have shadow
+                    cardImage.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 0);");
 
-                    cardToolbar[i].getChildren().add(cardImage);
+                cardToolbar[i].getChildren().add(cardImage);
 
-                    FadeTransition displayImage = new FadeTransition(Duration.millis(100), cardImage);
-                    displayImage.setFromValue(0);
-                    displayImage.setToValue(1);
-                    displayImage.setCycleCount(1);
-                    animations.add(displayImage);
+                FadeTransition displayImage = new FadeTransition(Duration.millis(100), cardImage);
+                displayImage.setFromValue(0);
+                displayImage.setToValue(1);
+                displayImage.setCycleCount(1);
+                animations.add(displayImage);
 
-                    Path path = new Path();
-                    path.getElements().add(new MoveTo(600,400));
-                    //path.getElements().add (new LineTo(155,260 + YOffset));
-                    path.getElements().add(new QuadCurveTo(300, 800, 155, 260 + YOffset));
-                    PathTransition cardDeal = new PathTransition();
-                    cardDeal.setDuration(Duration.millis(500));
-                    cardDeal.setPath(path);
-                    cardDeal.setNode(cardImage);
-                    cardDeal.setCycleCount(1);
+                Path path = new Path();
+                path.getElements().add(new MoveTo(600,400));
+                //path.getElements().add (new LineTo(155,260 + YOffset));
+                path.getElements().add(new QuadCurveTo(300, 800, 155, 260 + YOffset));
+                PathTransition cardDeal = new PathTransition();
+                cardDeal.setDuration(Duration.millis(500));
+                cardDeal.setPath(path);
+                cardDeal.setNode(cardImage);
+                cardDeal.setCycleCount(1);
 
+                if (newGame)
                     animations.add(cardDeal);
+                else {
+                    System.out.println("Loading cards of Player " + i);
+                    cardImage.setTranslateX(10);
+                    cardImage.setTranslateY(75 + YOffset);
+                }
 
-                    final int playerNumber = i;
-                    if (first) {
-                        cardDeal.setOnFinished(event -> ui.getEventHandler().placeFlag(playerNumber));
-                        first = false;
-                    }
+                final int playerNumber = i;
+                if (first && newGame) {
+                    cardDeal.setOnFinished(event -> ui.getEventHandler().placeFlag(playerNumber, true));
+                    first = false;
+                }
 
-                    YOffset += 80;
-                    if (YOffset/80 == JTEGameStateManager.CARDS && i != currentGame.getPlayers().size() - 1) {
-                        cardDeal.setOnFinished(event -> gsm.nextPlayer());
-                    }
-                } catch (IllegalArgumentException e) {
-                    System.out.println("ERROR: IMAGE NOT FOUND! " + c);
+                if (!newGame && first) {
+                    ui.getEventHandler().placeFlag(playerNumber, false);
+                    first = false;
+                }
+
+                YOffset += 80;
+                if (YOffset/80 == JTEGameStateManager.CARDS && i != currentGame.getPlayers().size() - 1) {
+                    cardDeal.setOnFinished(event -> gsm.nextPlayer());
                 }
             }
         }
@@ -297,8 +304,8 @@ public class JTEGamePlayUI extends BorderPane {
         return portWait;
     }
 
-    public void placeFlags(int player) {
-        map.placeFlags(player);
+    public void placeFlags(int player, boolean newGame) {
+        map.placeFlags(player, newGame);
     }
 
     public void focusPlayer(Player current) {

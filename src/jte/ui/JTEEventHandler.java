@@ -50,6 +50,9 @@ public class JTEEventHandler {
 
     public void respondToCityClick(CityNode city) {
 
+        if (gsm == null)
+            gsm = ui.getGsm();
+
         cardRemoved = false; // remove card removed flag
 
         if (!moving && ui.getGsm().rolled()) {
@@ -291,8 +294,8 @@ public class JTEEventHandler {
         okButton.setOnAction(e -> dialogStage.close());
     }
 
-    public void placeFlag(int player) {
-        ui.getGamePlayPane().placeFlags(player);
+    public void placeFlag(int player, boolean newGame) {
+        ui.getGamePlayPane().placeFlags(player, newGame);
     }
 
     public void hoverOverCity(boolean hover) {
@@ -430,6 +433,46 @@ public class JTEEventHandler {
             content.setSpacing(20);
 
             Label description = new Label("Error saving game! The file might be in use or you don't have permission to write to it.");
+            description.setWrapText(true);
+            description.setStyle("-fx-font-size: 1.2em");
+
+            content.getChildren().add(description);
+
+            aboutPane.setCenter(content);
+
+            aboutPane.setBottom(optionPane);
+            Scene scene = new Scene(aboutPane, 400, 150);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+
+            okButton.setOnAction(event -> dialogStage.close());
+        }
+    }
+
+    public void respondToLoadRequest(JTEUI ui, Stage primaryStage) {
+        try {
+            ui.getGsm().loadGame();
+            ui.changeView(JTEUI.JTEUIState.CONTINUE_PLAY);
+        } catch (IOException e) {
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Error Loading Game");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            BorderPane aboutPane = new BorderPane();
+            aboutPane.getStylesheets().add("file:data/jte.css");
+            HBox optionPane = new HBox();
+            Button okButton = new Button("Close");
+            okButton.getStyleClass().add("dialog-button");
+
+            optionPane.setSpacing(20.0);
+            optionPane.setPadding(new Insets(20));
+            optionPane.getChildren().add(okButton);
+
+            VBox content = new VBox();
+            content.setPadding(new Insets(20));
+            content.setSpacing(20);
+
+            Label description = new Label("Error loading game! The file might not exist or you don't have permission to access it.");
             description.setWrapText(true);
             description.setStyle("-fx-font-size: 1.2em");
 

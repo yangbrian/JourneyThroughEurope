@@ -14,7 +14,7 @@ public class JTEUI {
     public enum JTEUIState {
         SPLASH_SCREEN,
         PLAYER_SELECT,
-        GAME_PLAY
+        CONTINUE_PLAY, GAME_PLAY
     }
     private BorderPane mainPane;
     private Stage primaryStage;
@@ -46,6 +46,9 @@ public class JTEUI {
         splashScreen.getNewGameButton().setOnAction(event -> {
             eventHandler.respondToNewGameRequest();
         });
+        splashScreen.getLoadGameButton().setOnAction(event -> {
+            eventHandler.respondToLoadRequest(this, primaryStage);
+        });
         splashScreen.getAboutButton().setOnAction(event -> {
             eventHandler.respondToAboutRequest(primaryStage);
         });
@@ -70,22 +73,6 @@ public class JTEUI {
         gamePlayPane = new JTEGamePlayUI(this);
     }
 
-    public void initMap() {
-
-    }
-
-    public void initCardToolbar() {
-
-    }
-
-    public void initSidebar() {
-
-    }
-
-    public void initGamePlay() {
-
-    }
-
     public void changeView(JTEUIState view) {
         switch (view) {
             case SPLASH_SCREEN:
@@ -99,7 +86,12 @@ public class JTEUI {
                 System.out.println("Game Start");
                 gsm.setGameData(setupPane.getPlayers());
                 mainPane.setCenter(gamePlayPane);
-                gamePlayPane.drawCards();
+                gamePlayPane.drawCards(true);
+                break;
+            case CONTINUE_PLAY:
+                System.out.println("Continue");
+                mainPane.setCenter(gamePlayPane);
+                gamePlayPane.drawCards(false);
                 break;
             default:
         }
