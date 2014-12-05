@@ -70,6 +70,11 @@ public class JTEGameData {
         }
         data.append("\n");
 
+        // player names
+        for (Player player : players)
+            data.append(player.getName()).append(" ");
+        data.append("\n");
+
         // current player
         data.append(current).append("\n");
 

@@ -187,12 +187,13 @@ public class JTEGameStateManager {
         fileHandler.loadGame(this);
     }
 
-    public void loadGame(int numPlayers, ArrayList<Integer> humans, int current, String[] currentCities, ArrayList<ArrayList<String>> cards) {
+    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, String[] currentCities, ArrayList<ArrayList<String>> cards) {
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player("Player " + (i + 1), humans.contains(i), i);
             player.setCurrentCity(currentCities[i]);
             player.setCards(cards.get(i));
+            player.setName(playerNames[i]);
             players.add(player);
         }
 

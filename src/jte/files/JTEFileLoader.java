@@ -127,6 +127,8 @@ public class JTEFileLoader {
         for (String aHumanPlayersString : humanPlayersString)
             humanPlayers.add(Integer.parseInt(aHumanPlayersString));
 
+        String[] playerNames = in.readLine().split(" "); // player names
+
         int current = Integer.parseInt(in.readLine());
 
         String[] currentCities = in.readLine().split(" "); // current cities of players
@@ -143,6 +145,6 @@ public class JTEFileLoader {
 
         in.close();
 
-        gsm.loadGame(numPlayers, humanPlayers, current, currentCities, playerCards);
+        gsm.loadGame(numPlayers, humanPlayers, playerNames, current, currentCities, playerCards);
     }
 }

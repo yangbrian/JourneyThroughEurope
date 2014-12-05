@@ -76,8 +76,8 @@ public class Map extends ScrollPane {
         CityNode currentCity = ui.getGsm().getInfo().getCities().get(player.getCurrentCity());
 
         ImageView flag = new ImageView(new Image("file:images/flag_" + (playerNumber+1) + ".png"));
-        flag.setX(currentCity.getX() - 95);
-        flag.setY(currentCity.getY() - 130);
+        flag.setX(home.getX() - 95);
+        flag.setY(home.getY() - 130);
 
         if (newGame) {
             // scroll to the home cities as the card is shown
@@ -100,8 +100,8 @@ public class Map extends ScrollPane {
 
         player.setX(0);
         player.setY(0);
-        player.setTranslateX(home.getX() - 100);
-        player.setTranslateY(home.getY() - 125);
+        player.setTranslateX(currentCity.getX() - 100);
+        player.setTranslateY(currentCity.getY() - 125);
 
         if (player.getTranslateX() < 0)
             player.setTranslateX(1);
