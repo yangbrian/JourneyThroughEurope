@@ -49,6 +49,8 @@ public class JTEEventHandler {
 
     public void respondToCityClick(CityNode city) {
 
+        cardRemoved = false; // remove card removed flag
+
         if (!moving && ui.getGsm().rolled()) {
             String currentCityName = gsm.getData().getCurrent().getCurrentCity();
             CityNode currentCity = gsm.getInfo().getCities().get(currentCityName);
@@ -78,6 +80,7 @@ public class JTEEventHandler {
                         gsm.removeCard(city);
                         player.setMoves(0);
                         cardRemoved = true;
+
                     }
 
                     if (currentCity.getShips().contains(city)) { // only one move for sailing
@@ -85,6 +88,7 @@ public class JTEEventHandler {
                     }
 
                     if (gsm.hasMovesLeft()) {
+                        System.out.println("HAS MOVES LEFT");
                         ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
                         ui.displayCity(city);
                     } else if (gsm.getData().getCurrent().getsRepeat()) {
@@ -365,6 +369,7 @@ public class JTEEventHandler {
     }
 
     public void respondToPlayerWin(Player current) {
+        gsm.setGameState(JTEGameStateManager.JTEGameState.GAME_OVER);
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Error");
         dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -396,6 +401,9 @@ public class JTEEventHandler {
         dialogStage.setScene(scene);
         dialogStage.show();
 
-        okButton.setOnAction(e -> dialogStage.close());
+        okButton.setOnAction(e -> {
+            ui.changeView(JTEUI.JTEUIState.SPLASH_SCREEN);
+            dialogStage.close();
+        });
     }
 }

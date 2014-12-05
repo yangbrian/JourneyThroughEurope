@@ -117,18 +117,21 @@ public class JTEGameStateManager {
 
     public void rollDie(Dice dice) {
 
-        int roll = dice.roll();
+        if (gameState == JTEGameState.GAME_IN_PROGRESS) {
 
-        if (roll == 6)
-            currentGame.getCurrent().setRepeat(true);
+            int roll = dice.roll();
 
-        currentGame.getCurrent().setMoves(roll);
-        diceRoll = true;
+            if (roll == 6)
+                currentGame.getCurrent().setRepeat(true);
 
-        ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
-        ui.getGamePlayPane().setDiceLabel(roll);
+            currentGame.getCurrent().setMoves(roll);
+            diceRoll = true;
 
-        addToHistory(getCurrentPlayerName() + " rolls a " + roll + "\n");
+            ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+            ui.getGamePlayPane().setDiceLabel(roll);
+
+            addToHistory(getCurrentPlayerName() + " rolls a " + roll + "\n");
+        }
     }
 
     public boolean rolled() {

@@ -208,6 +208,7 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void displayCity(CityNode city) {
+        System.out.println("Displaying: " + city.getName());
         stopCityAnimation();
 //        Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
 //        Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
@@ -227,6 +228,7 @@ public class JTEGamePlayUI extends BorderPane {
         }
 
         for (CityNode c : landNeighbors) {
+            System.out.println("Displaying Land Neighbors: " + city.getName());
             neighbors += "Land: " + c.getName() + "\n";
 
             c.setFill(Color.GOLDENROD);
@@ -321,7 +323,7 @@ public class JTEGamePlayUI extends BorderPane {
                     if (data.equals(city.getName())) {
 
                         Path path = new Path();
-                        path.getElements().add(new MoveTo(node.getTranslateX(), node.getTranslateY()));
+                        path.getElements().add(new MoveTo(node.getLayoutX(), node.getLayoutY()));
                         //path.getElements().add (new LineTo(155,260 + YOffset));
                         path.getElements().add(new QuadCurveTo(300, 800, 600, 400));
                         PathTransition cardDeal = new PathTransition();
@@ -333,13 +335,21 @@ public class JTEGamePlayUI extends BorderPane {
 
                         cardDeal.setOnFinished(event -> {
                             cardToolbar[gsm.getData().getCurrentNumber()].getChildren().remove(node);
-                            ui.getGsm().nextPlayer();
+                            if (cardToolbar[gsm.getData().getCurrentNumber()].getChildren().size() == 1) {
+                                // just the label left
+                                ui.getEventHandler().respondToPlayerWin(gsm.getData().getCurrent());
+                            } else {
+                                if (gsm.getData().getCurrent().getsRepeat()) {
+                                    if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                                        gsm.waitAtPort(true);
+                                    gsm.setLastCity(null);
+                                    gsm.repeatPlayer();
+                                } else
+                                    ui.getGsm().nextPlayer();
+                            }
                         });
 
-                        if (cardToolbar[gsm.getData().getCurrentNumber()].getChildren().size() == 1) {
-                            // just the label left
-                            ui.getEventHandler().respondToPlayerWin(gsm.getData().getCurrent());
-                        }
+
 
                         return;
                     }

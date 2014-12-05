@@ -89,6 +89,7 @@ public class JTEUI {
     public void changeView(JTEUIState view) {
         switch (view) {
             case SPLASH_SCREEN:
+                mainPane.setCenter(splashScreen);
                 break;
             case PLAYER_SELECT:
                 System.out.println("Player select");
