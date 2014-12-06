@@ -498,6 +498,7 @@ public class JTEEventHandler {
         int region = currentCity.getRegion();
         int destRegion = city.getRegion();
 
+        // Adjacent Regions:
         // 1: 2, 4
         // 2: 1, 3
         // 3: 2, 4, 6
@@ -507,10 +508,13 @@ public class JTEEventHandler {
 
         if (region == destRegion) { // same region - 2 moves
             Player player = ui.getGsm().getCurrentPlayer();
-            if (player.getMoves() >= 2)
+            if (player.getMoves() >= 2) {
                 player.takeFlight(2);
-            ui.getGamePlayPane().switchToFlight(false);
-            respondToCityClick(gsm.getInfo().getCities().get(city.getName()), true);
+                ui.getGamePlayPane().switchToFlight(false);
+                respondToCityClick(gsm.getInfo().getCities().get(city.getName()), true);
+            } else {
+                respondToInvalidFlightCityClick(false);
+            }
         } else {
             boolean valid = false;
             switch (region) {
@@ -543,17 +547,25 @@ public class JTEEventHandler {
             }
             if (valid) {
                 Player player = ui.getGsm().getCurrentPlayer();
-                if (player.getMoves() >= 4)
+                if (player.getMoves() >= 4) {
                     player.takeFlight(4);
-                ui.getGamePlayPane().switchToFlight(false);
-                respondToCityClick(gsm.getInfo().getCities().get(city.getName()), true);
+                    ui.getGamePlayPane().switchToFlight(false);
+                    respondToCityClick(gsm.getInfo().getCities().get(city.getName()), true);
+                } else {
+                    respondToInvalidFlightCityClick(false);
+                }
             } else {
-                respondToInvalidFlightCityClick();
+                respondToInvalidFlightCityClick(true);
             }
         }
     }
 
-    private void respondToInvalidFlightCityClick() {
+    private void respondToInvalidFlightCityClick(boolean region) {
+        String errorMsg;
+        if (region)
+            errorMsg = "Invalid flight destination. You can only fly to cities in the same region or in a region directly adjacent.";
+        else
+            errorMsg = "Insufficient moves to fly there. Flying within the same region requires 2 moves and flying to adjacent ones requires 4 moves.";
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Invalid Flight City!");
         dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -572,7 +584,7 @@ public class JTEEventHandler {
         content.setPadding(new Insets(20));
         content.setSpacing(20);
 
-        Label description = new Label("Invalid flight destination. You can only fly to cities in the same region or in a region directly adjacent.");
+        Label description = new Label(errorMsg);
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
@@ -581,7 +593,7 @@ public class JTEEventHandler {
         aboutPane.setCenter(content);
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 400, 150);
+        Scene scene = new Scene(aboutPane, 420, 150);
         dialogStage.setScene(scene);
         dialogStage.show();
 
