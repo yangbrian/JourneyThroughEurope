@@ -56,7 +56,6 @@ public class Map extends ScrollPane {
         HashMap<String, CityNode> cities = ui.getGsm().getInfo().getCities();
         for (CityNode city : cities.values()) {
             mapPane.getChildren().add(city);
-            System.out.println("City draw: " + city.getName());
             city.setOnMouseClicked(e -> ui.getEventHandler().respondToCityClick(city, false));
 
             // change cursor when hovering over city

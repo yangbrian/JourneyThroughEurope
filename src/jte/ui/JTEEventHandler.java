@@ -105,7 +105,10 @@ public class JTEEventHandler {
                     notMoving();
 
                     // Add move to game history
-                    gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+                    if (flag)
+                        gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
+                    else
+                        gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
                 });
 
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {

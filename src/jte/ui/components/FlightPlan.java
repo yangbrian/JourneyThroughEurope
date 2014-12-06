@@ -50,7 +50,6 @@ public class FlightPlan extends ScrollPane {
         HashMap<String, CityNode> cities = ui.getGsm().getInfo().getFlightCities();
         for (CityNode city : cities.values()) {
             mapPane.getChildren().add(city);
-            System.out.println("Flight City draw: " + city.getName());
             city.setOnMouseClicked(e -> ui.getEventHandler().respondToFlightCityClick(city));
         }
     }
