@@ -44,7 +44,7 @@ public class JTEEventHandler {
         ui.changeView(JTEUI.JTEUIState.GAME_PLAY);
     }
 
-    public void respondToCityClick(CityNode city) {
+    public void respondToCityClick(CityNode city, boolean flag) {
 
         cardRemoved = false; // remove card removed flag
 
@@ -53,7 +53,8 @@ public class JTEEventHandler {
             CityNode currentCity = gsm.getInfo().getCities().get(currentCityName);
 
             // check if valid move
-            if ((currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && gsm.waited())) // city is a neighbor
+            if ((flag) // true if taking flight, so ignore other conditions, since the check is already done
+              || (currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && gsm.waited())) // city is a neighbor
               && (!city.isOccupied() || gsm.getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
               && (city != gsm.getLastCity() || currentCity.getRoads().size() <= 1) // not an avoidable backtrack
               ) {
@@ -492,6 +493,98 @@ public class JTEEventHandler {
     }
 
     public void respondToFlightCityClick(CityNode city) {
+        String currentCityName = gsm.getData().getCurrent().getCurrentCity();
+        CityNode currentCity = gsm.getInfo().getCities().get(currentCityName);
+        int region = currentCity.getRegion();
+        int destRegion = city.getRegion();
 
+        // 1: 2, 4
+        // 2: 1, 3
+        // 3: 2, 4, 6
+        // 4: 1, 3, 5
+        // 5: 4, 6
+        // 6: 3, 5
+
+        if (region == destRegion) { // same region - 2 moves
+            Player player = ui.getGsm().getCurrentPlayer();
+            if (player.getMoves() >= 2)
+                player.takeFlight(2);
+            ui.getGamePlayPane().switchToFlight(false);
+            respondToCityClick(gsm.getInfo().getCities().get(city.getName()), true);
+        } else {
+            boolean valid = false;
+            switch (region) {
+                case 1:
+                    if (destRegion == 2 || destRegion == 4)
+                        valid = true;
+                    break;
+                case 2:
+                    if (destRegion == 1 || destRegion == 3)
+                        valid = true;
+                    break;
+                case 3:
+                    if (destRegion == 2 || destRegion == 4 || destRegion == 6)
+                        valid = true;
+                    break;
+                case 4:
+                    if (destRegion == 1 || destRegion == 3 || destRegion == 5)
+                        valid = true;
+                    break;
+                case 5:
+                    if (destRegion == 4 || destRegion == 6)
+                        valid = true;
+                    break;
+                case 6:
+                    if (destRegion == 3 || destRegion == 5)
+                        valid = true;
+                    break;
+                default:
+                    System.out.println("Not a flight region...");
+            }
+            if (valid) {
+                Player player = ui.getGsm().getCurrentPlayer();
+                if (player.getMoves() >= 4)
+                    player.takeFlight(4);
+                ui.getGamePlayPane().switchToFlight(false);
+                respondToCityClick(gsm.getInfo().getCities().get(city.getName()), true);
+            } else {
+                respondToInvalidFlightCityClick();
+            }
+        }
+    }
+
+    private void respondToInvalidFlightCityClick() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Invalid Flight City!");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(ui.getPrimaryStage());
+        BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
+        HBox optionPane = new HBox();
+        Button okButton = new Button("Close");
+        okButton.getStyleClass().add("dialog-button");
+
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
+        optionPane.getChildren().add(okButton);
+
+        VBox content = new VBox();
+        content.setPadding(new Insets(20));
+        content.setSpacing(20);
+
+        Label description = new Label("Invalid flight destination. You can only fly to cities in the same region or in a region directly adjacent.");
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        content.getChildren().add(description);
+
+        aboutPane.setCenter(content);
+
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 400, 150);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+
+        okButton.setOnAction(event -> dialogStage.close());
     }
 }

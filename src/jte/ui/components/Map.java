@@ -57,7 +57,7 @@ public class Map extends ScrollPane {
         for (CityNode city : cities.values()) {
             mapPane.getChildren().add(city);
             System.out.println("City draw: " + city.getName());
-            city.setOnMouseClicked(e -> ui.getEventHandler().respondToCityClick(city));
+            city.setOnMouseClicked(e -> ui.getEventHandler().respondToCityClick(city, false));
 
             // change cursor when hovering over city
             city.setOnMouseEntered(event -> ui.getEventHandler().hoverOverCity(true));
@@ -143,7 +143,7 @@ public class Map extends ScrollPane {
             setPannable(true); // re-enable panning
             CityNode city;
             if ((city = ui.getEventHandler().playerDrop(player, player.getTranslateX(), player.getTranslateY())) != null) {
-                ui.getEventHandler().respondToCityClick(city);
+                ui.getEventHandler().respondToCityClick(city, false);
                 originalX = player.getTranslateX();
                 originalY = player.getTranslateY();
                 System.out.println("DRAG GOOD");

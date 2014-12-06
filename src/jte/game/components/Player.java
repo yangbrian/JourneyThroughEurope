@@ -28,6 +28,8 @@ public class Player extends ImageView {
 
     private boolean repeat;
 
+    private boolean flight;
+
     public double getOriginalX() {
         return originalX;
     }
@@ -53,6 +55,7 @@ public class Player extends ImageView {
         this.portClear = false;
 
         this.repeat = false;
+        this.flight = false;
     }
 
     public void setName(String name) {
@@ -98,8 +101,15 @@ public class Player extends ImageView {
         move.setCycleCount(1);
         move.play();
 
-        moves--;
+        if (!flight)
+            moves--;
+        flight = false;
         return move;
+    }
+
+    public void takeFlight(int moves) {
+        this.moves -= moves;
+        flight = true;
     }
 
     public void setCurrentCity(String city) {

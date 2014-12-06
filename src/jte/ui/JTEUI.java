@@ -80,11 +80,9 @@ public class JTEUI {
                 mainPane.setCenter(splashScreen);
                 break;
             case PLAYER_SELECT:
-                System.out.println("Player select");
                 mainPane.setCenter(setupPane);
                 break;
             case GAME_PLAY:
-                System.out.println("Game Start");
                 gsm.setGameData(setupPane.getPlayers());
                 mainPane.setCenter(gamePlayPane);
                 gamePlayPane.drawCards(true);
