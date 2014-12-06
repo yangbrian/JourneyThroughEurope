@@ -38,10 +38,10 @@ public class FlightPlan extends ScrollPane {
         this.setPannable(true);
         this.setPrefSize(670, 860);
 
-        drawCities();
-
         pin = new ImageView(new Image("file:images/map-pin.png"));
         mapPane.getChildren().add(pin);
+
+        drawCities();
 
         this.setContent(mapPane);
     }

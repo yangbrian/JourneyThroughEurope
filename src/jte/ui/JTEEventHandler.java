@@ -92,11 +92,13 @@ public class JTEEventHandler {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
                             gsm.waitAtPort(true);
                         gsm.setLastCity(null);
+                        ui.getGamePlayPane().stopCityAnimation();
                         gsm.repeatPlayer();
                     } else {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
                             gsm.waitAtPort(true);
                         gsm.setLastCity(null);
+                        ui.getGamePlayPane().stopCityAnimation();
                         if (!cardRemoved)
                             gsm.nextPlayer();
                     }

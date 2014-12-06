@@ -404,13 +404,20 @@ public class JTEGamePlayUI extends BorderPane {
             flightPlan.placePlayer(
               gsm.getInfo().getFlightCities().get(gsm.getCurrentPlayer().getCurrentCity())
             );
+            takeFlight.setText("Cancel Flight");
             this.setCenter(flightPlan);
-        } else
+        } else {
+            takeFlight.setText("Take Flight");
             this.setCenter(map);
+        }
         this.flight = flight;
     }
 
     public boolean isFlight() {
         return flight;
+    }
+
+    public Button getTakeFlight() {
+        return takeFlight;
     }
 }

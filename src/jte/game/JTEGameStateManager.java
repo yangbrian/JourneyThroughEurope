@@ -84,6 +84,7 @@ public class JTEGameStateManager {
             ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
             ui.getGamePlayPane().setDiceLabel(-1);
             getCurrentPlayer().setPortClear(true); // port clear will always be true on the first turn
+            ui.getGamePlayPane().getTakeFlight().setDisable(true);
 
             // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
 
