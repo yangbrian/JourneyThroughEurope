@@ -24,6 +24,8 @@ public class CityNode extends Circle {
 
     private Color original;
 
+    private ArrayList<Edge> edges;
+
     public CityNode(String name, int quarter, int x, int y, int region, String color) {
         super(x, y, 10, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
         this.setOpacity(1.0);
@@ -39,6 +41,8 @@ public class CityNode extends Circle {
 
         this.original = region == 0 ? Color.BLACK : Color.RED;
         this.color = color;
+
+        this.edges = new ArrayList<>();
     }
 
     public int getQuarter() {
@@ -116,5 +120,13 @@ public class CityNode extends Circle {
 
     public String getColor() {
         return color;
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public void addEdge(Edge edge) {
+        this.edges.add(edge);
     }
 }
