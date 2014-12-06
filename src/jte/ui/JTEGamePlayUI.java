@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import jte.game.JTEGameData;
 import jte.game.JTEGameInfo;
@@ -21,6 +24,7 @@ import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
 import jte.ui.components.Dice;
+import jte.ui.components.FlightPlan;
 import jte.ui.components.Map;
 
 import java.io.FileNotFoundException;
@@ -47,10 +51,16 @@ public class JTEGamePlayUI extends BorderPane {
     public static final String ROLL_DICE = "Roll dice";
 
     private Button portWait;
+    private Button takeFlight;
 
     private JTEGameInfo info;
     private JTEGameStateManager gsm;
     private JTEGameData currentGame;
+
+    private FlightPlan flightPlan;
+    private Stage flightStage;
+
+    private boolean flight;
 
     public JTEGamePlayUI(JTEUI ui) {
 
@@ -58,9 +68,11 @@ public class JTEGamePlayUI extends BorderPane {
         this.ui = ui;
         this.gsm = ui.getGsm();
         this.info = gsm.getInfo();
+        this.flight = false;
 
         this.setWidth(1280);
         initMap();
+        initFlightPlan();
 
         neighborAnimation = new ArrayList<>();
     }
@@ -193,6 +205,12 @@ public class JTEGamePlayUI extends BorderPane {
         portWait.setOnAction(e -> ui.getEventHandler().respondToPortRequest());
         portWait.setDisable(true); // disable until needed
 
+        takeFlight = new Button("Take Flight");
+        takeFlight.getStyleClass().add("button-game");
+        takeFlight.setTextFill(Color.WHITE);
+        takeFlight.setOnAction(e -> ui.getEventHandler().respondToFlightRequest(ui));
+        takeFlight.setDisable(true); // disable until needed
+
         Button about = new Button("About JTE");
         about.getStyleClass().add("button-normal");
         about.setOnAction(e -> ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage()));
@@ -210,7 +228,7 @@ public class JTEGamePlayUI extends BorderPane {
         quit.setOnAction(e -> ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage()));
 
         playerSidebar.setAlignment(Pos.CENTER);
-        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, about, history, save, quit);
+        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, takeFlight, about, history, save, quit);
     }
 
     public void initMap() {
@@ -232,6 +250,11 @@ public class JTEGamePlayUI extends BorderPane {
             portWait.setDisable(true);
         else
             portWait.setDisable(false);
+
+        if (city.getRegion() != 0)
+            takeFlight.setDisable(false);
+        else
+            takeFlight.setDisable(true);
 
         if (ui.getGsm().getData().getCurrent().isPortClear()) {
             ui.getGamePlayPane().getPortWaitButton().setText("Ready to Sail!");
@@ -370,5 +393,21 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void setTranslate(double x, double y) {
         ui.getGsm().getData().getCurrent().setOriginal(x, y);
+    }
+
+    public void initFlightPlan() {
+        flightPlan = new FlightPlan(ui);
+    }
+
+    public void switchToFlight(boolean flight) {
+        if(flight)
+            this.setCenter(flightPlan);
+        else
+            this.setCenter(map);
+        this.flight = flight;
+    }
+
+    public boolean isFlight() {
+        return flight;
     }
 }

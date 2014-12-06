@@ -1,16 +1,15 @@
 package jte.game;
 
 import javafx.animation.PathTransition;
-import javafx.animation.SequentialTransition;
 import jte.files.JTEFileLoader;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
-import jte.ui.JTEGameSetupUI;
 import jte.ui.JTEUI;
 import jte.ui.components.Dice;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -47,7 +46,8 @@ public class JTEGameStateManager {
     }
 
     public void loadGameInfo() {
-        info = new JTEGameInfo(fileHandler.loadCities());
+        HashMap<String, CityNode> cities = fileHandler.loadCities();
+        info = new JTEGameInfo(cities, fileHandler.loadFlightPlan(cities));
     }
 
     public JTEGameInfo getInfo() {
@@ -69,7 +69,7 @@ public class JTEGameStateManager {
     public void drawCards() {
 
         for (int i = 0; i < currentGame.getPlayers().size(); i++) {
-            String[] cards = info.drawCards(CARDS, currentGame.getCurrentNumber());
+            String[] cards = info.dealCards(CARDS, currentGame.getCurrentNumber());
             currentGame.drawCards(cards);
             currentGame.nextPlayer();
         }
@@ -83,6 +83,7 @@ public class JTEGameStateManager {
         if (gameState == JTEGameState.GAME_IN_PROGRESS) {
             ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
             ui.getGamePlayPane().setDiceLabel(-1);
+            getCurrentPlayer().setPortClear(true); // port clear will always be true on the first turn
             // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
 
         }
@@ -118,7 +119,7 @@ public class JTEGameStateManager {
 
     public void rollDie(Dice dice) {
 
-        if (gameState == JTEGameState.GAME_IN_PROGRESS) {
+        if (gameState == JTEGameState.GAME_IN_PROGRESS && !diceRoll) {
 
             int roll = dice.roll();
 

@@ -1,8 +1,6 @@
 package jte.ui;
 
 import javafx.animation.PathTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -19,7 +17,6 @@ import jte.game.components.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -32,10 +29,11 @@ public class JTEEventHandler {
     private boolean cardRemoved;
     public JTEGameStateManager gsm;
 
-    public JTEEventHandler(JTEUI ui) {
+    public JTEEventHandler(JTEUI ui, JTEGameStateManager gsm) {
         this.ui = ui;
         moving = false;
         cardRemoved = false;
+        this.gsm = gsm;
     }
 
     public void respondToNewGameRequest() {
@@ -43,15 +41,10 @@ public class JTEEventHandler {
     }
 
     public void respondToGameStartRequest() {
-        if (gsm == null)
-            gsm = ui.getGsm();
         ui.changeView(JTEUI.JTEUIState.GAME_PLAY);
     }
 
     public void respondToCityClick(CityNode city) {
-
-        if (gsm == null)
-            gsm = ui.getGsm();
 
         cardRemoved = false; // remove card removed flag
 
@@ -151,9 +144,6 @@ public class JTEEventHandler {
                 okButton.setOnAction(e -> dialogStage.close());
             }
         }
-
-
-
     }
 
     private void displayDeadEndError() {
@@ -411,42 +401,47 @@ public class JTEEventHandler {
     }
 
     public void respondToSaveRequest() {
+        Label description;
+        String title;
         try {
             gsm.saveGame();
+            title = "Saved Game Successfully";
+            description = new Label("Saved game! Select \"Load Game \" from the main menu to continue this game.");
         } catch (IOException e) {
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Error Saving Game");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(ui.getPrimaryStage());
-            BorderPane aboutPane = new BorderPane();
-            aboutPane.getStylesheets().add("file:data/jte.css");
-            HBox optionPane = new HBox();
-            Button okButton = new Button("Close");
-            okButton.getStyleClass().add("dialog-button");
-
-            optionPane.setSpacing(20.0);
-            optionPane.setPadding(new Insets(20));
-            optionPane.getChildren().add(okButton);
-
-            VBox content = new VBox();
-            content.setPadding(new Insets(20));
-            content.setSpacing(20);
-
-            Label description = new Label("Error saving game! The file might be in use or you don't have permission to write to it.");
-            description.setWrapText(true);
-            description.setStyle("-fx-font-size: 1.2em");
-
-            content.getChildren().add(description);
-
-            aboutPane.setCenter(content);
-
-            aboutPane.setBottom(optionPane);
-            Scene scene = new Scene(aboutPane, 400, 150);
-            dialogStage.setScene(scene);
-            dialogStage.show();
-
-            okButton.setOnAction(event -> dialogStage.close());
+            title = "Error Saving Game";
+            description = new Label("Error saving game! The file might be in use or you don't have permission to write to it");
         }
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle(title);
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(ui.getPrimaryStage());
+        BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
+        HBox optionPane = new HBox();
+        Button okButton = new Button("Close");
+        okButton.getStyleClass().add("dialog-button");
+
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
+        optionPane.getChildren().add(okButton);
+
+        VBox content = new VBox();
+        content.setPadding(new Insets(20));
+        content.setSpacing(20);
+
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        content.getChildren().add(description);
+
+        aboutPane.setCenter(content);
+
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 400, 150);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+
+        okButton.setOnAction(event -> dialogStage.close());
     }
 
     public void respondToLoadRequest(JTEUI ui, Stage primaryStage) {
@@ -487,5 +482,16 @@ public class JTEEventHandler {
 
             okButton.setOnAction(event -> dialogStage.close());
         }
+    }
+
+    public void respondToFlightRequest(JTEUI ui) {
+        if (ui.getGamePlayPane().isFlight())
+            ui.getGamePlayPane().switchToFlight(false);
+        else
+            ui.getGamePlayPane().switchToFlight(true);
+    }
+
+    public void respondToFlightCityClick(CityNode city) {
+
     }
 }

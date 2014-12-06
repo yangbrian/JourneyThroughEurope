@@ -1,5 +1,6 @@
 package jte.files;
 
+import javafx.scene.paint.Color;
 import jte.game.JTEGameStateManager;
 import jte.game.components.Card;
 import jte.game.components.CityNode;
@@ -57,7 +58,7 @@ public class JTEFileLoader {
                   Integer.parseInt(values[2]),  // quarter
                   currentX,                     // x
                   currentY,                     // y
-                  Integer.parseInt(values[5]),  // flight region
+                  0,                            // flight region - no region = 0 (default for now)
                   values[1].toUpperCase()       // card color
                 );
 
@@ -98,11 +99,36 @@ public class JTEFileLoader {
             System.out.println("Error reading neighbor data.");
             e.printStackTrace();
         }
+
         return cities;
     }
 
-    public Card makeCard(String name, String color) {
-        return null;
+    public HashMap<String, CityNode> loadFlightPlan(HashMap<String, CityNode> cities) {
+        HashMap<String, CityNode> flightPlan = new HashMap<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("data/flightPlan.csv"));
+            String nextLine = null;
+
+            while((nextLine = reader.readLine()) != null) {
+                String[] values = nextLine.split(","); // should be 6 parts
+
+                String name = values[0];
+                int x = Integer.parseInt(values[1]);
+                int y = Integer.parseInt(values[2]);
+                int region = Integer.parseInt(values[3]);
+
+                CityNode flightCity = new CityNode(name, 0, x, y, region, "N/A");
+                flightPlan.put(name, flightCity);
+
+                cities.get(name).setRegion(region);
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading flight plan data");
+            e.printStackTrace();
+        }
+        return flightPlan;
     }
 
     public void saveGame() throws IOException {

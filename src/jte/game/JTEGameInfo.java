@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public class JTEGameInfo {
     private HashMap<String, CityNode> cities;
+    private HashMap<String, CityNode> flightPlan;
 
     public static final int RED = 0;
     public static final int GREEN = 1;
@@ -21,8 +22,9 @@ public class JTEGameInfo {
     private ArrayList<String> redCards;
 
 
-    public JTEGameInfo(HashMap<String, CityNode> cities) {
+    public JTEGameInfo(HashMap<String, CityNode> cities, HashMap<String, CityNode> flightPlan) {
         this.cities = cities;
+        this.flightPlan = flightPlan;
         this.yellowCards = new ArrayList<>();
         this.greenCards = new ArrayList<>();
         this.redCards = new ArrayList<>();
@@ -48,7 +50,7 @@ public class JTEGameInfo {
         return cities;
     }
 
-    public String[] drawCards(int count, int start) {
+    public String[] dealCards(int count, int start) {
         int color = start % 3;
         String[] cards = new String[count];
 
@@ -78,5 +80,9 @@ public class JTEGameInfo {
         }
         return cards;
 
+    }
+
+    public HashMap<String, CityNode> getFlightCities() {
+        return flightPlan;
     }
 }

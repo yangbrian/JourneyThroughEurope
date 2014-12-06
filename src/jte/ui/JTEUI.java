@@ -34,8 +34,9 @@ public class JTEUI {
         this.primaryStage = primaryStage;
         this.mainPane = new BorderPane();
         mainPane.getStylesheets().add("file:data/jte.css");
-        this.eventHandler = new JTEEventHandler(this);
+
         this.gsm = new JTEGameStateManager(this);
+        this.eventHandler = new JTEEventHandler(this, gsm);
         initSplashScreen();
         initSetupPane();
         initGamePlayScreen();

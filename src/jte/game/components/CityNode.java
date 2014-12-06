@@ -63,6 +63,7 @@ public class CityNode extends Circle {
 
     public void setRegion(int region) {
         this.region = region;
+        this.setFill(region == 0 ? Color.BLACK : Color.RED);
     }
 
     public boolean isOccupied() {
