@@ -24,6 +24,8 @@ public class FlightPlan extends ScrollPane {
     private double originalX;
     private double originalY;
 
+    private ImageView pin;
+
     public FlightPlan(JTEUI ui) {
         this.ui = ui;
 
@@ -38,6 +40,9 @@ public class FlightPlan extends ScrollPane {
 
         drawCities();
 
+        pin = new ImageView(new Image("file:images/map-pin.png"));
+        mapPane.getChildren().add(pin);
+
         this.setContent(mapPane);
     }
 
@@ -48,5 +53,16 @@ public class FlightPlan extends ScrollPane {
             System.out.println("Flight City draw: " + city.getName());
             city.setOnMouseClicked(e -> ui.getEventHandler().respondToFlightCityClick(city));
         }
+    }
+
+    public void placePlayer(CityNode city) {
+
+        pin.setTranslateX(city.getX() - 20);
+        pin.setTranslateY(city.getY() - 100);
+
+        this.setHvalue(city.getX() + 100);
+        this.setVvalue(city.getY() + 100);
+        System.out.println(this.getHvalue());
+
     }
 }

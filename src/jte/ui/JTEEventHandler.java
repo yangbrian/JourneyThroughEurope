@@ -495,6 +495,7 @@ public class JTEEventHandler {
     public void respondToFlightCityClick(CityNode city) {
         String currentCityName = gsm.getData().getCurrent().getCurrentCity();
         CityNode currentCity = gsm.getInfo().getCities().get(currentCityName);
+
         int region = currentCity.getRegion();
         int destRegion = city.getRegion();
 
@@ -593,7 +594,7 @@ public class JTEEventHandler {
         aboutPane.setCenter(content);
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 420, 150);
+        Scene scene = new Scene(aboutPane, 460, 150);
         dialogStage.setScene(scene);
         dialogStage.show();
 
