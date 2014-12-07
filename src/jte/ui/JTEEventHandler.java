@@ -76,7 +76,7 @@ public class JTEEventHandler {
                 move.setOnFinished(event -> {
                     Player player = gsm.getData().getCurrent();
                     System.out.println("Landed on: " + city.getName());
-                    ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
+                    //ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
                     if ((player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()))
                       || (city.getName().equals(player.getHome()) && player.getCards().size() == 1)) { // reached destination
                         gsm.removeCard(city);
@@ -85,40 +85,47 @@ public class JTEEventHandler {
 
                     }
 
-                    if (currentCity.getShips().contains(city)) { // only one move for sailing
-                        player.setMoves(0);
-                    }
-
-                    if (gsm.hasMovesLeft()) {
-                        ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
-                        ui.displayCity(city);
-
-                    } else if (gsm.getData().getCurrent().getsRepeat()) {
-                        if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
-                            gsm.waitAtPort(true);
-                        gsm.setLastCity(null);
-                        ui.getGamePlayPane().stopCityAnimation();
-                        gsm.repeatPlayer();
-                    } else {
-                        if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
-                            gsm.waitAtPort(true);
-                        gsm.setLastCity(null);
-                        ui.getGamePlayPane().stopCityAnimation();
-                        if (!cardRemoved)
-                            gsm.nextPlayer();
-                    }
-                    notMoving();
-
-                    // Add move to game history
-                    if (flag)
-                        gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
-                    else
-                        gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
                     Timeline timeline = ui.getGamePlayPane().getMap().focusPlayer(player);
 
                     timeline.setOnFinished(e -> {
-                        if (!player.isHuman())
-                            continueComputerTurn();
+                        if (currentCity.getShips().contains(city)) { // only one move for sailing
+                            player.setMoves(0);
+                        }
+
+                        if (gsm.hasMovesLeft()) {
+                            ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
+                            ui.displayCity(city);
+
+                        } else if (gsm.getData().getCurrent().getsRepeat()) {
+                            if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                                gsm.waitAtPort(true);
+                            gsm.setLastCity(null);
+                            ui.getGamePlayPane().stopCityAnimation();
+                            gsm.repeatPlayer();
+                        } else {
+                            if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                                gsm.waitAtPort(true);
+                            gsm.setLastCity(null);
+                            ui.getGamePlayPane().stopCityAnimation();
+                            if (!cardRemoved)
+                                gsm.nextPlayer();
+                        }
+                        notMoving();
+
+                        if (!player.isHuman() && !cardRemoved) {
+                            if (player.getsRepeat())
+                                startComputerTurn();
+                            else
+                                continueComputerTurn();
+                        }
+
+                        // Add move to game history
+                        if (flag)
+                            gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
+                        else
+                            gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+
+
                     });
 
 

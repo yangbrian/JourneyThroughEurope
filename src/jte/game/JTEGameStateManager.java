@@ -33,6 +33,8 @@ public class JTEGameStateManager {
 
     private LinkedList<String> history;
 
+    private static ArrayList<CityNode> vertices;
+
     /** number of cards to draw */
     public static final int CARDS = 3;
 
@@ -42,6 +44,7 @@ public class JTEGameStateManager {
         history = new LinkedList<>();
         loadGameInfo();
         diceRoll = false;
+        vertices = new ArrayList<>();
     }
 
     public void loadGameInfo() {
@@ -212,8 +215,8 @@ public class JTEGameStateManager {
 
     public void moveComputer() {
         CityNode current = info.getCities().get(getCurrentPlayer().getCurrentCity());
-        current.previous = null;
 
+        resetVertices();
         computePaths(current);
         double minDistance = 0;
         List<CityNode> shortestPath = new ArrayList<>();
@@ -225,18 +228,24 @@ public class JTEGameStateManager {
             List<CityNode> path = getShortestPathTo(v);
             System.out.println("Path: " + path);
 
-            if (!getCurrentPlayer().getHome().equals(name) && (v.minDistance < minDistance || minDistance == 0)) {
-                minDistance = v.minDistance;
-                shortestPath = path;
-            }
+//            if ((getCurrentPlayer().getCards().size() == 1 ||  !getCurrentPlayer().getHome().equals(name)) && (v.minDistance < minDistance || minDistance == 0)) {
+//                minDistance = v.minDistance;
+//                shortestPath = path;
+//            }
+
+            shortestPath = path;
         }
 
-        CityNode destination = shortestPath.get(1);
+        CityNode destination;
+        if (shortestPath.size() == 1)
+            destination = shortestPath.get(0);
+        else
+            destination = shortestPath.get(1);
 
         boolean flight = false;
         if (!current.getRoads().contains(destination) && !current.getShips().contains(destination))
             flight = true;
-        ui.getEventHandler().respondToCityClick(shortestPath.get(1), flight);
+        ui.getEventHandler().respondToCityClick(destination, flight);
         System.out.println("\n\n");
     }
 
@@ -248,6 +257,7 @@ public class JTEGameStateManager {
             CityNode u = vertexQueue.poll();
             for (Edge e : u.getEdges()) {
                 CityNode v = e.target;
+                vertices.add(v);
                 double weight = e.weight;
                 double distanceThroughU = u.minDistance + weight;
                 if (distanceThroughU < v.minDistance) {
@@ -260,8 +270,16 @@ public class JTEGameStateManager {
         }
     }
 
+    public static void resetVertices() {
+        for (CityNode v : vertices) {
+            v.previous = null;
+            v.minDistance = Double.POSITIVE_INFINITY;
+        }
+        vertices.clear();
+    }
+
     public static List<CityNode> getShortestPathTo(CityNode target) {
-        List<CityNode> path = new ArrayList<CityNode>();
+        List<CityNode> path = new ArrayList<>();
         for (CityNode vertex = target; vertex != null; vertex = vertex.previous) {
             path.add(vertex);
         }
