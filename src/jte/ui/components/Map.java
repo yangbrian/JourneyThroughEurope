@@ -170,15 +170,16 @@ public class Map extends ScrollPane {
         dropPlayer.play();
     }
 
-    public void focusPlayer(Player current) {
+    public Timeline focusPlayer(Player current) {
         // scroll to the home cities as the card is shown
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000),
           new KeyValue(this.hvalueProperty(), (current.getTranslateX() - 225) / 670)));
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000),
           new KeyValue(this.vvalueProperty(), (current.getTranslateY() - 400)/860)));
         timeline.play();
+        return timeline;
     }
 
     public PathTransition movePlayer(Player current, CityNode city) {

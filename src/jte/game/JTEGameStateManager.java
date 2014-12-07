@@ -212,6 +212,7 @@ public class JTEGameStateManager {
 
     public void moveComputer() {
         CityNode current = info.getCities().get(getCurrentPlayer().getCurrentCity());
+        current.previous = null;
 
         computePaths(current);
         double minDistance = 0;

@@ -92,6 +92,7 @@ public class JTEEventHandler {
                     if (gsm.hasMovesLeft()) {
                         ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
                         ui.displayCity(city);
+
                     } else if (gsm.getData().getCurrent().getsRepeat()) {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
                             gsm.waitAtPort(true);
@@ -113,7 +114,14 @@ public class JTEEventHandler {
                         gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
                     else
                         gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
-                    ui.getGamePlayPane().getMap().focusPlayer(player);
+                    Timeline timeline = ui.getGamePlayPane().getMap().focusPlayer(player);
+
+                    timeline.setOnFinished(e -> {
+                        if (!player.isHuman())
+                            continueComputerTurn();
+                    });
+
+
                 });
 
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {
@@ -613,6 +621,10 @@ public class JTEEventHandler {
 
     public void startComputerTurn() {
         gsm.rollDie(ui.getGamePlayPane().getDie());
+        gsm.moveComputer();
+    }
+
+    public void continueComputerTurn() {
         gsm.moveComputer();
     }
 }

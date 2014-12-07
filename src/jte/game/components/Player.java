@@ -95,7 +95,7 @@ public class Player extends ImageView {
 
 
         PathTransition move = new PathTransition();
-        move.setDuration(Duration.millis(500));
+        move.setDuration(Duration.millis(1000));
         move.setPath(path);
         move.setNode(this);
         move.setCycleCount(1);
