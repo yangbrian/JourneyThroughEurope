@@ -18,6 +18,8 @@ import java.util.*;
 public class JTEGameStateManager {
 
 
+
+
     public enum JTEGameState {
         SPLASH_SCREEN, PLAYER_SELECT, CARD_DEALING, GAME_IN_PROGRESS, GAME_OVER
     }
@@ -35,6 +37,8 @@ public class JTEGameStateManager {
     private LinkedList<String> history;
 
     private static ArrayList<CityNode> vertices;
+
+    private int roll;
 
     /** number of cards to draw */
     public static final int CARDS = 3;
@@ -107,6 +111,15 @@ public class JTEGameStateManager {
         ui.getGamePlayPane().setDiceLabel(-2);
     }
 
+    public void repeatComputer() {
+        diceRoll = false;
+        ui.getGamePlayPane().getPortWaitButton().setDisable(true);
+        ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
+        currentGame.getCurrent().setRepeat(false);
+        ui.getGamePlayPane().setDiceLabel(-2);
+        ui.getEventHandler().startComputerTurn();
+    }
+
     public void startGame() {
         gameState = JTEGameState.GAME_IN_PROGRESS;
         nextPlayer();
@@ -131,7 +144,7 @@ public class JTEGameStateManager {
 
         if (gameState == JTEGameState.GAME_IN_PROGRESS && !diceRoll) {
 
-            int roll = dice.roll();
+            roll = dice.roll();
 
             if (roll == 6)
                 currentGame.getCurrent().setRepeat(true);
@@ -217,6 +230,8 @@ public class JTEGameStateManager {
     }
 
     public void moveComputer() {
+        // regenerate edges array to account for sea routes
+        fileHandler.createEdgeArray(info.getCities(), info.getFlightCities(), getRoll());
         CityNode current = info.getCities().get(getCurrentPlayer().getCurrentCity());
 
         resetVertices();
@@ -231,12 +246,10 @@ public class JTEGameStateManager {
             List<CityNode> path = getShortestPathTo(v);
             System.out.println("Path: " + path);
 
-//            if ((getCurrentPlayer().getCards().size() == 1 ||  !getCurrentPlayer().getHome().equals(name)) && (v.minDistance < minDistance || minDistance == 0)) {
-//                minDistance = v.minDistance;
-//                shortestPath = path;
-//            }
-
-            shortestPath = path;
+            if ((getCurrentPlayer().getCards().size() == 1 ||  !getCurrentPlayer().getHome().equals(name)) && (v.minDistance < minDistance || minDistance == 0)) {
+                minDistance = v.minDistance;
+                shortestPath = path;
+            }
         }
 
         CityNode destination;
@@ -288,5 +301,9 @@ public class JTEGameStateManager {
         }
         Collections.reverse(path);
         return path;
+    }
+
+    public int getRoll() {
+        return roll;
     }
 }

@@ -128,7 +128,7 @@ public class JTEFileLoader {
             System.out.println("Error reading flight plan data");
             e.printStackTrace();
         }
-        createEdgeArray(cities, flightPlan);
+        //createEdgeArray(cities, flightPlan, 6);
         return flightPlan;
     }
 
@@ -140,7 +140,7 @@ public class JTEFileLoader {
      * @param cities main HashMap of cities
      * @param flightPlan flight plan of cities
      */
-    private void createEdgeArray(HashMap<String, CityNode> cities, HashMap<String, CityNode> flightPlan) {
+    public void createEdgeArray(HashMap<String, CityNode> cities, HashMap<String, CityNode> flightPlan, int roll) {
 
         for (CityNode city : cities.values()) {
             ArrayList<CityNode> vertices = new ArrayList<>();
@@ -150,7 +150,7 @@ public class JTEFileLoader {
             }
 
             for (CityNode ferry : city.getShips()) { // ships cost all possible moves
-                city.addEdge(new Edge(ferry, 6));
+                city.addEdge(new Edge(ferry, roll));
                 vertices.add(ferry);
             }
 

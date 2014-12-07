@@ -48,7 +48,7 @@ public class JTEEventHandler {
         ui.changeView(JTEUI.JTEUIState.GAME_PLAY);
     }
 
-    public void respondToCityClick(CityNode city, boolean flag) {
+    public void respondToCityClick(CityNode city, boolean flight) {
 
         cardRemoved = false; // remove card removed flag
 
@@ -57,79 +57,123 @@ public class JTEEventHandler {
             CityNode currentCity = gsm.getInfo().getCities().get(currentCityName);
 
             // check if valid move
-            if ((flag) // true if taking flight, so ignore other conditions, since the check is already done
+            if ((flight) // true if taking flight, so ignore other conditions, since the check is already done
+              || (!gsm.getCurrentPlayer().isHuman()) // illegal moves check for computer players
               || (currentCity.getRoads().contains(city) || (currentCity.getShips().contains(city) && gsm.waited())) // city is a neighbor
               && (!city.isOccupied() || gsm.getMovesLeft() > 1) // city is not occupied OR its not player's final move (can't stay in occupied city)
               && (city != gsm.getLastCity() || currentCity.getRoads().size() <= 1) // not an avoidable backtrack
               ) {
 
-                moving = true;
-                currentCity.setOccupied(false);
-                city.setOccupied(true);
-                gsm.waitAtPort(false);
-                gsm.setLastCity(currentCity);
 
-                ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
 
-                PathTransition move = gsm.movePlayer(city);
 
-                move.setOnFinished(event -> {
-                    Player player = gsm.getData().getCurrent();
-                    System.out.println("Landed on: " + city.getName());
-                    //ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
-                    if ((player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()))
-                      || (city.getName().equals(player.getHome()) && player.getCards().size() == 1)) { // reached destination
-                        gsm.removeCard(city);
-                        player.setMoves(0);
-                        cardRemoved = true;
-
-                    }
-
-                    Timeline timeline = ui.getGamePlayPane().getMap().focusPlayer(player);
-
-                    timeline.setOnFinished(e -> {
-                        if (currentCity.getShips().contains(city)) { // only one move for sailing
-                            player.setMoves(0);
-                        }
-
-                        if (gsm.hasMovesLeft()) {
-                            ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
-                            ui.displayCity(city);
-
-                        } else if (gsm.getData().getCurrent().getsRepeat()) {
-                            if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
-                                gsm.waitAtPort(true);
-                            gsm.setLastCity(null);
-                            ui.getGamePlayPane().stopCityAnimation();
-                            gsm.repeatPlayer();
-                        } else {
-                            if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
-                                gsm.waitAtPort(true);
-                            gsm.setLastCity(null);
-                            ui.getGamePlayPane().stopCityAnimation();
-                            if (!cardRemoved)
-                                gsm.nextPlayer();
-                        }
-                        notMoving();
-
-                        if (!player.isHuman() && !cardRemoved) {
-                            if (player.getsRepeat())
-                                startComputerTurn();
+                boolean moveReady = true;
+                Player currentPlayer = gsm.getData().getCurrent();
+                if (!currentPlayer.isHuman()) { // check for legal move
+                    if (currentCity.getShips().contains(city)) {
+                        if (!currentPlayer.isPortClear()) {
+                            moveReady = false;
+                        } else if (city.getRegion() == currentCity.getRegion() && flight) {
+                            if (currentPlayer.getMoves() < 2)
+                                moveReady = false;
                             else
-                                continueComputerTurn();
+                                currentPlayer.setMoves(currentPlayer.getMoves() - 2);
+                        } else if (city.getRegion() != currentCity.getRegion()) {
+                            if (currentPlayer.getMoves() < 4)
+                                moveReady = false;
+                            else
+                                currentPlayer.setMoves(currentPlayer.getMoves() - 4);
+                        }
+                    }
+                }
+
+                if (moveReady) {
+
+                    moving = true;
+                    currentCity.setOccupied(false);
+                    city.setOccupied(true);
+                    gsm.waitAtPort(false);
+                    gsm.setLastCity(currentCity);
+
+                    ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
+
+                    PathTransition move = gsm.movePlayer(city);
+                    move.setOnFinished(event -> {
+                        Player player = gsm.getData().getCurrent();
+                        System.out.println("Landed on: " + city.getName());
+                        //ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
+                        if ((player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()))
+                          || (city.getName().equals(player.getHome()) && player.getCards().size() == 1)) { // reached destination
+                            gsm.removeCard(city);
+                            player.setMoves(0);
+                            cardRemoved = true;
+
                         }
 
-                        // Add move to game history
-                        if (flag)
-                            gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
-                        else
-                            gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+                        Timeline timeline = ui.getGamePlayPane().getMap().focusPlayer(player);
+
+                        timeline.setOnFinished(e -> {
+                            if (currentCity.getShips().contains(city)) { // only one move for sailing
+                                player.setMoves(0);
+                            }
+
+
+                            if (gsm.hasMovesLeft()) {
+                                ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
+                                ui.displayCity(city);
+
+                            } else if (gsm.getData().getCurrent().getsRepeat()) {
+                                if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                                    gsm.waitAtPort(true);
+                                gsm.setLastCity(null);
+                                ui.getGamePlayPane().stopCityAnimation();
+                                if (player.isHuman())
+                                    gsm.repeatPlayer();
+                                else {
+                                    ui.getGamePlayPane().focusPlayer(player).setOnFinished(pcFocus -> {
+                                        gsm.repeatComputer();
+                                    });
+                                }
+                            } else {
+                                if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                                    gsm.waitAtPort(true);
+                                gsm.setLastCity(null);
+                                ui.getGamePlayPane().stopCityAnimation();
+                                if (!cardRemoved)
+                                    gsm.nextPlayer();
+                            }
+                            notMoving();
+
+                            if (!player.isHuman() && !cardRemoved)
+                                continueComputerTurn();
+
+                            // Add move to game history
+                            if (flight)
+                                gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
+                            else
+                                gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+
+
+                        });
 
 
                     });
-
-
-                });
+                } else {
+                    gsm.addToHistory(currentPlayer.getName() + " waited at " + currentCityName);
+                    if (gsm.getData().getCurrent().getsRepeat()) {
+                        if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
+                            gsm.waitAtPort(true);
+                        gsm.setLastCity(null);
+                        ui.getGamePlayPane().stopCityAnimation();
+                        ui.getGamePlayPane().focusPlayer(currentPlayer).setOnFinished(pcFocus -> {
+                            gsm.repeatComputer();
+                        });
+                    } else {
+                        gsm.setLastCity(null);
+                        ui.getGamePlayPane().stopCityAnimation();
+                        gsm.nextPlayer();
+                    }
+                }
 
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {
 
