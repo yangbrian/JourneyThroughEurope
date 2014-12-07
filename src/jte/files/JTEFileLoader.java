@@ -182,7 +182,7 @@ public class JTEFileLoader {
                             if (region == 1 || region == 3 || region == 5)
                                 city.addEdge(new Edge(airCity, 4));
                             else if (region == 4)
-                                city.addEdge(new Edge(airCity, 4));
+                                city.addEdge(new Edge(airCity, 2));
                             break;
                         case 5:
                             if (region == 4 || region == 6)

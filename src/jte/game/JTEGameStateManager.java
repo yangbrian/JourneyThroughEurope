@@ -211,7 +211,11 @@ public class JTEGameStateManager {
     }
 
     public void moveComputer() {
-        computePaths(info.getCities().get(getCurrentPlayer().getCurrentCity()));
+        CityNode current = info.getCities().get(getCurrentPlayer().getCurrentCity());
+
+        computePaths(current);
+        double minDistance = 0;
+        List<CityNode> shortestPath = new ArrayList<>();
         for (String name : getCurrentPlayer().getCards()) {
             CityNode v = info.getCities().get(name);
 
@@ -219,8 +223,20 @@ public class JTEGameStateManager {
               + v.minDistance);
             List<CityNode> path = getShortestPathTo(v);
             System.out.println("Path: " + path);
+
+            if (v.minDistance != 0 && (v.minDistance < minDistance || minDistance == 0)) {
+                minDistance = v.minDistance;
+                shortestPath = path;
+            }
         }
-        System.out.println("\n");
+
+        CityNode destination = shortestPath.get(1);
+
+        boolean flight = false;
+        if (!current.getRoads().contains(destination) && !current.getShips().contains(destination))
+            flight = true;
+        ui.getEventHandler().respondToCityClick(shortestPath.get(1), flight);
+        System.out.println("\n\n");
     }
 
     public static void computePaths(CityNode source) {
