@@ -332,8 +332,8 @@ public class JTEGamePlayUI extends BorderPane {
         map.placeFlags(player, newGame);
     }
 
-    public void focusPlayer(Player current) {
-        map.focusPlayer(current);
+    public Timeline focusPlayer(Player current) {
+        return map.focusPlayer(current);
     }
 
     public PathTransition movePlayer(Player current, CityNode city) {
@@ -357,7 +357,7 @@ public class JTEGamePlayUI extends BorderPane {
                     if (data.equals(city.getName())) {
 
                         Path path = new Path();
-                        path.getElements().add(new MoveTo(node.getLayoutX(), node.getLayoutY()));
+                        path.getElements().add(new MoveTo(node.getTranslateX(), node.getTranslateY()));
                         //path.getElements().add (new LineTo(155,260 + YOffset));
                         path.getElements().add(new QuadCurveTo(300, 800, 600, 400));
                         PathTransition cardDeal = new PathTransition();

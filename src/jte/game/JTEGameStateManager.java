@@ -1,6 +1,7 @@
 package jte.game;
 
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import jte.files.JTEFileLoader;
 import jte.game.components.CityNode;
 import jte.game.components.Edge;
@@ -83,15 +84,17 @@ public class JTEGameStateManager {
         currentGame.nextPlayer();
         ui.getGamePlayPane().changeSidebar();
         if (gameState == JTEGameState.GAME_IN_PROGRESS) {
-            ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
-            ui.getGamePlayPane().setDiceLabel(-1);
-            getCurrentPlayer().setPortClear(true); // port clear will always be true on the first turn
-            ui.getGamePlayPane().getTakeFlight().setDisable(true);
+            Timeline focus = ui.getGamePlayPane().focusPlayer(currentGame.getCurrent());
+            focus.setOnFinished(e -> {
+                ui.getGamePlayPane().setDiceLabel(-1);
+                getCurrentPlayer().setPortClear(true); // port clear will always be true on the first turn
+                ui.getGamePlayPane().getTakeFlight().setDisable(true);
 
-            if (!isHuman())
-                ui.getEventHandler().startComputerTurn();
+                if (!isHuman())
+                    ui.getEventHandler().startComputerTurn();
 
-            // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+                // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+            });
 
         }
     }
