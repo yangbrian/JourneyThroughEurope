@@ -605,4 +605,9 @@ public class JTEEventHandler {
 
         okButton.setOnAction(event -> dialogStage.close());
     }
+
+    public void startComputerTurn() {
+        gsm.rollDie(ui.getGamePlayPane().getDie());
+        gsm.moveComputer();
+    }
 }

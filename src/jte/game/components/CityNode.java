@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * @author Brian Yang
  */
-public class CityNode extends Circle {
+public class CityNode extends Circle implements Comparable<CityNode> {
 
     private int quarter;
 
@@ -25,6 +25,9 @@ public class CityNode extends Circle {
     private Color original;
 
     private ArrayList<Edge> edges;
+    public double minDistance = Double.POSITIVE_INFINITY;
+    public CityNode previous;
+    private ArrayList<CityNode> vertices;
 
     public CityNode(String name, int quarter, int x, int y, int region, String color) {
         super(x, y, 10, region == 0 ? Color.BLACK : Color.RED); // red nodes for airport cities, black otherwise
@@ -43,6 +46,7 @@ public class CityNode extends Circle {
         this.color = color;
 
         this.edges = new ArrayList<>();
+        this.vertices = new ArrayList<>();
     }
 
     public int getQuarter() {
@@ -128,5 +132,22 @@ public class CityNode extends Circle {
 
     public void addEdge(Edge edge) {
         this.edges.add(edge);
+    }
+
+    public ArrayList<CityNode> getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(ArrayList<CityNode> vertices) {
+        this.vertices = vertices;
+    }
+
+    @Override
+    public int compareTo(CityNode o) {
+        return Double.compare(minDistance, o.minDistance);
+    }
+
+    public String toString() {
+        return name;
     }
 }

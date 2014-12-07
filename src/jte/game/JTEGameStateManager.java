@@ -3,14 +3,13 @@ package jte.game;
 import javafx.animation.PathTransition;
 import jte.files.JTEFileLoader;
 import jte.game.components.CityNode;
+import jte.game.components.Edge;
 import jte.game.components.Player;
 import jte.ui.JTEUI;
 import jte.ui.components.Dice;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @author Brian Yang
@@ -85,6 +84,9 @@ public class JTEGameStateManager {
             ui.getGamePlayPane().setDiceLabel(-1);
             getCurrentPlayer().setPortClear(true); // port clear will always be true on the first turn
             ui.getGamePlayPane().getTakeFlight().setDisable(true);
+
+            if (!isHuman())
+                ui.getEventHandler().startComputerTurn();
 
             // ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
 
@@ -182,6 +184,10 @@ public class JTEGameStateManager {
         return currentGame.getCurrent().getName();
     }
 
+    public boolean isHuman() {
+        return getCurrentPlayer().isHuman();
+    }
+
     public void saveGame() throws IOException {
         fileHandler.saveGame();
     }
@@ -202,5 +208,47 @@ public class JTEGameStateManager {
 
         currentGame = new JTEGameData(players);
         currentGame.setCurrent(current - 1);
+    }
+
+    public void moveComputer() {
+        computePaths(info.getCities().get(getCurrentPlayer().getCurrentCity()));
+        for (String name : getCurrentPlayer().getCards()) {
+            CityNode v = info.getCities().get(name);
+
+            System.out.println("Distance from " + getCurrentPlayer().getCurrentCity() + " to " + v + ": "
+              + v.minDistance);
+            List<CityNode> path = getShortestPathTo(v);
+            System.out.println("Path: " + path);
+        }
+        System.out.println("\n");
+    }
+
+    public static void computePaths(CityNode source) {
+        source.minDistance = 0.;
+        PriorityQueue<CityNode> vertexQueue = new PriorityQueue<>();
+        vertexQueue.add(source);
+        while (!vertexQueue.isEmpty()) {
+            CityNode u = vertexQueue.poll();
+            for (Edge e : u.getEdges()) {
+                CityNode v = e.target;
+                double weight = e.weight;
+                double distanceThroughU = u.minDistance + weight;
+                if (distanceThroughU < v.minDistance) {
+                    vertexQueue.remove(v);
+                    v.minDistance = distanceThroughU;
+                    v.previous = u;
+                    vertexQueue.add(v);
+                }
+            }
+        }
+    }
+
+    public static List<CityNode> getShortestPathTo(CityNode target) {
+        List<CityNode> path = new ArrayList<CityNode>();
+        for (CityNode vertex = target; vertex != null; vertex = vertex.previous) {
+            path.add(vertex);
+        }
+        Collections.reverse(path);
+        return path;
     }
 }

@@ -143,16 +143,22 @@ public class JTEFileLoader {
     private void createEdgeArray(HashMap<String, CityNode> cities, HashMap<String, CityNode> flightPlan) {
 
         for (CityNode city : cities.values()) {
-            for (CityNode road : city.getRoads()) // roads cost 1
+            ArrayList<CityNode> vertices = new ArrayList<>();
+            for (CityNode road : city.getRoads()) { // roads cost 1
                 city.addEdge(new Edge(road, 1));
+                vertices.add(road);
+            }
 
-            for (CityNode ferry : city.getShips()) // ships cost all possible moves
+            for (CityNode ferry : city.getShips()) { // ships cost all possible moves
                 city.addEdge(new Edge(ferry, 6));
+                vertices.add(ferry);
+            }
 
             if (city.getRegion() != 0) {
                 for (CityNode flight : flightPlan.values()) {
                     int region = flight.getRegion();
                     CityNode airCity = cities.get(flight.getName()); // get the flight city fom the main hashmap
+                    int size = city.getEdges().size();
                     switch (city.getRegion()) {
                         case 1:
                             if (region == 2 || region == 4)
@@ -192,12 +198,16 @@ public class JTEFileLoader {
                             break;
                         default:
                     } // end switch case for flights
+                    if (city.getEdges().size() > size)
+                        vertices.add(airCity);
                 } // end loop through flight cities
             } // end adding flight edges
 
             for (Edge edge : city.getEdges())
-                System.out.println(city.getName() + ": " + edge.vertex.getName() + " - " + edge.weight);
+                System.out.println(city.getName() + ": " + edge.target.getName() + " - " + edge.weight);
             System.out.println("\n\n");
+
+            city.setVertices(vertices);
         } // end loop for cities
 
         System.out.println("End adjacency matrix making");

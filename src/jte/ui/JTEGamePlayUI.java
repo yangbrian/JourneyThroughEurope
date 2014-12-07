@@ -195,7 +195,8 @@ public class JTEGamePlayUI extends BorderPane {
         this.dice.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gsm.rollDie(dice);
+                if (gsm.isHuman())
+                    gsm.rollDie(dice);
             }
         });
 
@@ -419,5 +420,9 @@ public class JTEGamePlayUI extends BorderPane {
 
     public Button getTakeFlight() {
         return takeFlight;
+    }
+
+    public Dice getDie() {
+        return dice;
     }
 }

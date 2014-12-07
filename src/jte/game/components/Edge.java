@@ -5,11 +5,11 @@ package jte.game.components;
  */
 public class Edge {
 
-    public final CityNode vertex;
+    public final CityNode target;
     public final double weight;
 
-    public Edge(CityNode vertex, double weight) {
-        this.vertex = vertex;
+    public Edge(CityNode target, double weight) {
+        this.target = target;
         this.weight = weight;
     }
 }

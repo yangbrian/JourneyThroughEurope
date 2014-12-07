@@ -1,6 +1,5 @@
 package jte.game;
 
-import jte.game.components.Card;
 import jte.game.components.CityNode;
 
 import java.util.ArrayList;
