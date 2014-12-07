@@ -34,7 +34,7 @@ public class JTEGameStateManager {
     private LinkedList<String> history;
 
     /** number of cards to draw */
-    public static final int CARDS = 2;
+    public static final int CARDS = 3;
 
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
@@ -224,7 +224,7 @@ public class JTEGameStateManager {
             List<CityNode> path = getShortestPathTo(v);
             System.out.println("Path: " + path);
 
-            if (v.minDistance != 0 && (v.minDistance < minDistance || minDistance == 0)) {
+            if (!getCurrentPlayer().getHome().equals(name) && (v.minDistance < minDistance || minDistance == 0)) {
                 minDistance = v.minDistance;
                 shortestPath = path;
             }

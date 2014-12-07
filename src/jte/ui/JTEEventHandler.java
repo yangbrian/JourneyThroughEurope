@@ -1,6 +1,9 @@
 package jte.ui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -11,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
@@ -109,6 +113,7 @@ public class JTEEventHandler {
                         gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
                     else
                         gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+                    ui.getGamePlayPane().getMap().focusPlayer(player);
                 });
 
             } else if (city == ui.getGsm().getLastCity() && currentCity.getRoads().size() > 1) {

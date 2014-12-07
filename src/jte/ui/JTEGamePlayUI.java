@@ -425,4 +425,8 @@ public class JTEGamePlayUI extends BorderPane {
     public Dice getDie() {
         return dice;
     }
+
+    public Map getMap() {
+        return map;
+    }
 }
