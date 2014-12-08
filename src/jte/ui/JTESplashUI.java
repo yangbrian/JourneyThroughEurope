@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import jte.files.PropertiesManager;
 
 /**
  * @author
@@ -28,13 +29,13 @@ public class JTESplashUI extends StackPane {
         menu = new VBox();
         menu.setPadding(new Insets(30));
 
-        newGameButton = new Button("New Game");
+        newGameButton = new Button(PropertiesManager.getValue("NEW"));
         newGameButton.getStyleClass().add("button-large");
-        loadGameButton = new Button("Load Game");
+        loadGameButton = new Button(PropertiesManager.getValue("LOAD"));
         loadGameButton.getStyleClass().add("button-large");
-        aboutButton = new Button("About Game");
+        aboutButton = new Button(PropertiesManager.getValue("ABOUT"));
         aboutButton.getStyleClass().add("button-large");
-        quitButton = new Button("Quit Game");
+        quitButton = new Button(PropertiesManager.getValue("QUIT"));
         quitButton.getStyleClass().add("button-large");
 
         menu.getChildren().addAll(newGameButton, loadGameButton, aboutButton, quitButton);

@@ -18,6 +18,7 @@ import javafx.scene.shape.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jte.files.PropertiesManager;
 import jte.game.JTEGameData;
 import jte.game.JTEGameInfo;
 import jte.game.JTEGameStateManager;
@@ -48,7 +49,7 @@ public class JTEGamePlayUI extends BorderPane {
     private ArrayList<FadeTransition> neighborAnimation;
 
     private Label rollDiceLabel;
-    public static final String ROLL_DICE = "Roll dice";
+    public static final String ROLL_DICE = PropertiesManager.getValue("ROLLDICE");
 
     private Button portWait;
     private Button takeFlight;
@@ -192,43 +193,40 @@ public class JTEGamePlayUI extends BorderPane {
         rollDiceLabel.setWrapText(true);
 
         this.dice = new Dice();
-        this.dice.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (gsm.isHuman())
-                    gsm.rollDie(dice);
-            }
+        this.dice.setOnMouseClicked(event -> {
+            if (gsm.isHuman())
+                gsm.rollDie(dice);
         });
 
-        portWait = new Button("Wait for Ship");
+        portWait = new Button(PropertiesManager.getValue("WAIT"));
         portWait.getStyleClass().add("button-game");
         portWait.setTextFill(Color.WHITE);
         portWait.setOnAction(e -> ui.getEventHandler().respondToPortRequest());
         portWait.setDisable(true); // disable until needed
 
-        takeFlight = new Button("Take Flight");
+        takeFlight = new Button(PropertiesManager.getValue("FLIGHT"));
         takeFlight.getStyleClass().add("button-game");
         takeFlight.setTextFill(Color.WHITE);
         takeFlight.setOnAction(e -> ui.getEventHandler().respondToFlightRequest(ui));
         takeFlight.setDisable(true); // disable until needed
 
-        Button about = new Button("About JTE");
+        Button about = new Button(PropertiesManager.getValue("ABOUT"));
         about.getStyleClass().add("button-normal");
         about.setOnAction(e -> ui.getEventHandler().respondToAboutRequest(ui.getPrimaryStage()));
 
-        Button history = new Button("Game History");
+        Button history = new Button(PropertiesManager.getValue("HISTORY"));
         history.getStyleClass().add("button-normal");
         history.setOnAction(e -> ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage()));
 
-        Button save = new Button("Save Game");
+        Button save = new Button(PropertiesManager.getValue("SAVE"));
         save.getStyleClass().add("button-normal");
         save.setOnAction(e -> ui.getEventHandler().respondToSaveRequest());
 
-        Button info = new Button("Show City Info");
+        Button info = new Button(PropertiesManager.getValue("INFO"));
         info.getStyleClass().add("button-normal");
         info.setOnAction(e -> ui.getEventHandler().respondToCityInfoRequest(ui.getPrimaryStage(), gsm.getCurrentPlayer().getCurrentCity()));
 
-        Button quit = new Button("Quit");
+        Button quit = new Button(PropertiesManager.getValue("QUIT"));
         quit.getStyleClass().add("button-normal");
         quit.setOnAction(e -> ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage()));
 
@@ -242,12 +240,11 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public void displayCity(CityNode city) {
-        System.out.println("Displaying: " + city.getName());
         stopCityAnimation();
 //        Label currentCity = new Label(city.getName() + " at coordinates \n(" + city.getX() + ", " + city.getY() + ")");
 //        Label cityDetails = new Label(city.getRegion() == 0 ? "City does not contain an airport." : "City contains an airport of region " + city.getRegion());
 
-        String neighbors = "";
+
         ArrayList<CityNode> landNeighbors = city.getRoads();
         ArrayList<CityNode> seaNeighbors = city.getShips();
 
@@ -262,12 +259,11 @@ public class JTEGamePlayUI extends BorderPane {
             takeFlight.setDisable(true);
 
         if (ui.getGsm().getData().getCurrent().isPortClear()) {
-            ui.getGamePlayPane().getPortWaitButton().setText("Ready to Sail!");
+            ui.getGamePlayPane().getPortWaitButton().setText(PropertiesManager.getValue("SAIL"));
             portWait.setDisable(true);
         }
 
         for (CityNode c : landNeighbors) {
-            neighbors += "Land: " + c.getName() + "\n";
 
             c.setFill(Color.GOLDENROD);
 
@@ -281,7 +277,6 @@ public class JTEGamePlayUI extends BorderPane {
             neighborAnimation.add(neighborFade); // keep track of them so the animation can be stopped on click
         }
         for (CityNode c : seaNeighbors) {
-            neighbors += "Sea: " + c.getName() + "\n";
 
             c.setFill(Color.GOLDENROD);
 
@@ -409,10 +404,10 @@ public class JTEGamePlayUI extends BorderPane {
             flightPlan.placePlayer(
               gsm.getInfo().getFlightCities().get(gsm.getCurrentPlayer().getCurrentCity())
             );
-            takeFlight.setText("Cancel Flight");
+            takeFlight.setText(PropertiesManager.getValue("CANCEL_FLIGHT"));
             this.setCenter(flightPlan);
         } else {
-            takeFlight.setText("Take Flight");
+            takeFlight.setText(PropertiesManager.getValue("FLIGHT"));
             this.setCenter(map);
         }
         this.flight = flight;

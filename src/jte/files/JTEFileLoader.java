@@ -249,21 +249,31 @@ public class JTEFileLoader {
     }
 
     public void loadDescriptions() {
-        HashMap<String, String> descriptions = new HashMap<>();
+        PropertiesManager.setDescriptions(loadValues("cityDescriptions.csv"));
+    }
+
+    public void loadStrings() {
+        PropertiesManager.setValues(loadValues("strings.csv"));
+    }
+
+    public HashMap<String, String> loadValues(String file) {
+        HashMap<String, String> values = new HashMap<>();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/cityDescriptions.csv")));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/" + file)));
 
             String nextLine = null;
 
             while ((nextLine = reader.readLine()) != null) {
-                String[] values = nextLine.split(" -- ");
-                descriptions.put(values[0].toUpperCase(), values[1]);
+                String[] valuesSplit = nextLine.split(" , ");
+                if (valuesSplit.length == 2)
+                    values.put(valuesSplit[0].toUpperCase(), valuesSplit[1]);
             }
         } catch (IOException e) {
-            System.out.println("Error reading city descriptions file!");
+            System.out.println("Error reading " + file + " file!");
         }
-
-        PropertiesManager.setDescriptions(descriptions);
+        return values;
     }
+
+
 }

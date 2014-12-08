@@ -99,7 +99,7 @@ public class JTEEventHandler {
                     gsm.waitAtPort(false);
                     gsm.setLastCity(currentCity);
 
-                    ui.getGamePlayPane().getPortWaitButton().setText("Wait for Ship");
+                    ui.getGamePlayPane().getPortWaitButton().setText(PropertiesManager.getValue("WAIT"));
 
                     PathTransition move = gsm.movePlayer(city);
                     move.setOnFinished(event -> {
@@ -158,14 +158,14 @@ public class JTEEventHandler {
 
                             // Add move to game history
                             if (flight)
-                                gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("FLEWFROM") + currentCityName + " to " + city.getName());
                             else if (ship) {
-                                gsm.addToHistory(player.getName() + " sailed from " + currentCityName + " to " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("SAILEDFROM") + currentCityName + " to " + city.getName());
                             } else {
-                                gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("MOVEDFROM") + currentCityName + " to " + city.getName());
                             }
                             if (cardRemoved)
-                                gsm.addToHistory(player.getName() + " reached a destination at " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("DESTINATION") + city.getName());
 
 
                         });
@@ -173,7 +173,7 @@ public class JTEEventHandler {
 
                     });
                 } else {
-                    gsm.addToHistory(currentPlayer.getName() + " waited at " + currentCityName);
+                    gsm.addToHistory(currentPlayer.getName() + PropertiesManager.getValue("WAITEDAT") + currentCityName);
                     if (gsm.getData().getCurrent().getsRepeat()) {
                         if (!city.getShips().isEmpty()) // if has port, then player has waited this turn
                             gsm.waitAtPort(true);
@@ -195,13 +195,13 @@ public class JTEEventHandler {
 
             } else if ((currentCity.getShips().contains(city) && !ui.getGsm().waited())) {
                 Stage dialogStage = new Stage();
-                dialogStage.setTitle("Error");
+                dialogStage.setTitle(PropertiesManager.getValue("GENERALERROR"));
                 dialogStage.initModality(Modality.WINDOW_MODAL);
                 dialogStage.initOwner(ui.getPrimaryStage());
                 BorderPane aboutPane = new BorderPane();
                 aboutPane.getStylesheets().add("file:data/jte.css");
                 HBox optionPane = new HBox();
-                Button okButton = new Button("Close");
+                Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
                 okButton.getStyleClass().add("dialog-button");
 
                 optionPane.setSpacing(20.0);
@@ -212,7 +212,7 @@ public class JTEEventHandler {
                 content.setPadding(new Insets(20));
                 content.setSpacing(20);
 
-                Label description = new Label("You must wait at the port for one turn before traveling by sea.");
+                Label description = new Label(PropertiesManager.getValue("PORTERROR"));
                 description.setWrapText(true);
                 description.setStyle("-fx-font-size: 1.2em");
 
@@ -232,13 +232,13 @@ public class JTEEventHandler {
 
     private void displayDeadEndError() {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Error");
+        dialogStage.setTitle(PropertiesManager.getValue("GENERALERROR"));
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(ui.getPrimaryStage());
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -249,7 +249,7 @@ public class JTEEventHandler {
         content.setPadding(new Insets(20));
         content.setSpacing(20);
 
-        Label description = new Label("This isn't a deadend, so no backtracking!");
+        Label description = new Label(PropertiesManager.getValue("BACKTRACK"));
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
@@ -280,13 +280,13 @@ public class JTEEventHandler {
 
     public void respondToAboutRequest(Stage primaryStage) {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("About Journey Through Europe");
+        dialogStage.setTitle(PropertiesManager.getValue("ABOUTTITLE"));
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Return to Game");
+        Button okButton = new Button(PropertiesManager.getValue("RETURN"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -297,17 +297,17 @@ public class JTEEventHandler {
         content.setPadding(new Insets(20));
         content.setSpacing(20);
 
-        Label aboutLabel = new Label("About Journey Through Europe");
+        Label aboutLabel = new Label(PropertiesManager.getValue("ABOUTTITLE"));
         aboutLabel.setStyle("-fx-font-size: 2.0em;");
 
         Label version = new Label("Version 0.1");
         version.setStyle("-fx-font-size: 1.0em;");
 
-        Label description = new Label("Journey through Europe is a family board game published by Ravensburger. The board is a map of Europe with various major cities marked, for example, Athens, Amsterdam and London. The players are given a home city from which they will begin and are then dealt a number of cards with various other cities on them. They must plan a route between each of the cities in their hand of cards. On each turn they throw a die and move between the cities. The winner is the first player to visit each of their cities and then return to their home base.");
+        Label description = new Label(PropertiesManager.getValue("ABOUTDESC"));
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
-        Label company = new Label("This version of JTE is by Brian Yang for CSE 219 at Stony Brook University. He can be contacted via email at brian.yang@stonybrook.edu.");
+        Label company = new Label(PropertiesManager.getValue("CONTACT"));
         company.setWrapText(true);
         company.setStyle("-fx-font-size: 1.2em");
 
@@ -326,13 +326,13 @@ public class JTEEventHandler {
 
     public void respondToHistoryRequest(Stage primaryStage) {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Current Game History");
+        dialogStage.setTitle(PropertiesManager.getValue("HISTORYTITLE"));
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -343,7 +343,7 @@ public class JTEEventHandler {
         content.setPadding(new Insets(20));
         content.setSpacing(20);
 
-        Label aboutLabel = new Label("JTE Game History");
+        Label aboutLabel = new Label(PropertiesManager.getValue("HISTORYTITLE2"));
         aboutLabel.setStyle("-fx-font-size: 2.0em;");
 
         StringBuilder history = new StringBuilder();
@@ -413,7 +413,7 @@ public class JTEEventHandler {
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -424,7 +424,7 @@ public class JTEEventHandler {
         content.setPadding(new Insets(20));
         content.setSpacing(20);
 
-        Label description = new Label("Starting a game with no players? That's no fun...");
+        Label description = new Label(PropertiesManager.getValue("NOPLAYERS"));
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
@@ -442,7 +442,7 @@ public class JTEEventHandler {
 
     public void respondToPortRequest() {
         gsm.waitAtPort(true);
-        gsm.addToHistory(gsm.getData().getCurrent().getName() + " waits for a ship.");
+        gsm.addToHistory(gsm.getData().getCurrent().getName() + PropertiesManager.getValue("WAITSSHIP"));
         if (gsm.getData().getCurrent().getsRepeat())
             gsm.repeatPlayer();
         else
@@ -460,10 +460,10 @@ public class JTEEventHandler {
 
         HBox optionPane = new HBox();
         optionPane.setSpacing(10);
-        Button okButton = new Button("Return to Splash Screen");
+        Button okButton = new Button(PropertiesManager.getValue("RETURNSPLASH"));
         okButton.getStyleClass().add("dialog-button");
 
-        Button historyButton = new Button("View Game History");
+        Button historyButton = new Button(PropertiesManager.getValue("HISTORY"));
         historyButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -480,7 +480,7 @@ public class JTEEventHandler {
         content.getChildren().add(description);
 
         if (!current.isHuman()) {
-            Label lose = new Label(current.getName() + " is a computer player, which means all humans lose!");
+            Label lose = new Label(current.getName() + PropertiesManager.getValue("COMPUTERPLAYER"));
             lose.setWrapText(true);
             lose.setStyle("-fx-font-size: 1.2em");
 
@@ -507,11 +507,11 @@ public class JTEEventHandler {
         String title;
         try {
             gsm.saveGame();
-            title = "Saved Game Successfully";
-            description = new Label("Saved game! Select \"Load Game \" from the main menu to continue this game.");
+            title = PropertiesManager.getValue("SAVEGAMETITLE");
+            description = new Label(PropertiesManager.getValue("SAVEGAME"));
         } catch (IOException e) {
-            title = "Error Saving Game";
-            description = new Label("Error saving game! The file might be in use or you don't have permission to write to it");
+            title = PropertiesManager.getValue("SAVEGAMEERRORTITLE");
+            description = new Label(PropertiesManager.getValue("SAVEGAMEERROR"));
         }
         Stage dialogStage = new Stage();
         dialogStage.setTitle(title);
@@ -520,7 +520,7 @@ public class JTEEventHandler {
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -552,13 +552,13 @@ public class JTEEventHandler {
             ui.changeView(JTEUI.JTEUIState.CONTINUE_PLAY);
         } catch (IOException e) {
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Error Loading Game");
+            dialogStage.setTitle(PropertiesManager.getValue("LOADERRORTITLE"));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             BorderPane aboutPane = new BorderPane();
             aboutPane.getStylesheets().add("file:data/jte.css");
             HBox optionPane = new HBox();
-            Button okButton = new Button("Close");
+            Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
             okButton.getStyleClass().add("dialog-button");
 
             optionPane.setSpacing(20.0);
@@ -569,7 +569,7 @@ public class JTEEventHandler {
             content.setPadding(new Insets(20));
             content.setSpacing(20);
 
-            Label description = new Label("Error loading game! The file might not exist or you don't have permission to access it.");
+            Label description = new Label(PropertiesManager.getValue("LOADERROR"));
             description.setWrapText(true);
             description.setStyle("-fx-font-size: 1.2em");
 
@@ -665,17 +665,17 @@ public class JTEEventHandler {
     private void respondToInvalidFlightCityClick(boolean region) {
         String errorMsg;
         if (region)
-            errorMsg = "Invalid flight destination. You can only fly to cities in the same region or in a region directly adjacent.";
+            errorMsg = PropertiesManager.getValue("INVALIDFLIGHTREGION");
         else
-            errorMsg = "Insufficient moves to fly there. Flying within the same region requires 2 moves and flying to adjacent ones requires 4 moves.";
+            errorMsg = PropertiesManager.getValue("INVALIDFLIGHTMOVES");
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Invalid Flight City!");
+        dialogStage.setTitle(PropertiesManager.getValue("INVALIDFLIGHT"));
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(ui.getPrimaryStage());
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -713,13 +713,13 @@ public class JTEEventHandler {
 
     public void respondToCityInfoRequest(Stage primaryStage, String currentCity) {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("About " + currentCity);
+        dialogStage.setTitle(PropertiesManager.getValue("ABOUTCITY") + currentCity);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button(PropertiesManager.getValue("CLOSE"));
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -743,7 +743,7 @@ public class JTEEventHandler {
         aboutPane.setCenter(content);
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 600, 250);
+        Scene scene = new Scene(aboutPane, 600, 300);
         dialogStage.setScene(scene);
         dialogStage.show();
 

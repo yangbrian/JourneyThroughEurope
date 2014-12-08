@@ -3,6 +3,7 @@ package jte.app;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import jte.files.PropertiesManager;
 import jte.ui.JTEUI;
 
 /**
@@ -17,10 +18,11 @@ public class App extends Application{
      */
     @Override
     public void start(Stage primaryStage) {
-        String title = "Journey Through Europe";
-        primaryStage.setTitle(title);
 
         JTEUI root = new JTEUI(primaryStage);
+
+        String title = PropertiesManager.getValue("TITLE");
+        primaryStage.setTitle(title);
 
         Scene scene = new Scene(root.getMainPane(), 1280, 861);
         primaryStage.setScene(scene);

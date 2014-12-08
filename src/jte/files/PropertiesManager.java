@@ -19,7 +19,7 @@ public class PropertiesManager {
     }
 
     public static String getValue(String key) {
-        return values.get(key);
+        return values.containsKey(key) ? values.get(key) : "";
     }
 
     public static String getDescription(String city) {

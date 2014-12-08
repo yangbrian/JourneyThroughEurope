@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import jte.files.PropertiesManager;
 import jte.game.components.Player;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class JTEGameSetupUI extends FlowPane {
         players = new ArrayList<>();
 
         HBox toolbar = new HBox();
-        Label playerSelect = new Label("Select the number of players: ");
+        Label playerSelect = new Label(PropertiesManager.getValue("SELECT"));
         ComboBox<Integer> playerCount = new ComboBox<>();
         playerCount.getItems().addAll(
                 1, 2, 3, 4, 5, 6
@@ -42,7 +43,7 @@ public class JTEGameSetupUI extends FlowPane {
                 createSelections(oldValue, newValue);
         });
 
-        startGame = new Button("GO!!");
+        startGame = new Button(PropertiesManager.getValue("GO"));
         startGame.getStyleClass().add("start-game-button");
         startGame.setTextFill(Color.WHITE);
 
@@ -62,13 +63,13 @@ public class JTEGameSetupUI extends FlowPane {
         if (oldPlayers < players) {
             for (int i = oldPlayers; i < players; i++) {
 
-                this.players.add(i, new Player("Player " + (i + 1), true, i));
+                this.players.add(i, new Player(PropertiesManager.getValue("PLAYER") + (i + 1), true, i));
                 BorderPane playerSelect = new BorderPane();
                 playerSelect.setPrefSize(400, 350);
                 playerSelect.setStyle("-fx-background-color: #004ba7; -fx-background-radius: 10px; -fx-background-insets: 10px");
                 playerSelect.setPadding(new Insets(20));
 
-                Label newPlayer = new Label("New Player " + (i + 1));
+                Label newPlayer = new Label(PropertiesManager.getValue("NEWPLAYER") + (i + 1));
                 newPlayer.setTextFill(Color.WHITE);
                 playerSelect.setTop(newPlayer);
 
@@ -79,21 +80,21 @@ public class JTEGameSetupUI extends FlowPane {
                 ToggleGroup playerType = new ToggleGroup();
 
                 RadioButton human = new RadioButton();
-                human.setText("Human");
-                human.setUserData("Human");
+                human.setText(PropertiesManager.getValue("HUMAN"));
+                human.setUserData(PropertiesManager.getValue("HUMAN"));
                 human.setTextFill(Color.WHITE);
                 human.setSelected(true);
                 human.setToggleGroup(playerType);
 
                 RadioButton computer = new RadioButton();
-                computer.setText("Computer");
-                computer.setUserData("Computer");
+                computer.setText(PropertiesManager.getValue("COMPUTER"));
+                computer.setUserData(PropertiesManager.getValue("COMPUTER"));
                 computer.setTextFill(Color.WHITE);
                 computer.setToggleGroup(playerType);
 
                 final int finalI = i;
                 playerType.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                    if (playerType.getSelectedToggle().getUserData().toString().equals("Computer"))
+                    if (playerType.getSelectedToggle().getUserData().toString().equals(PropertiesManager.getValue("COMPUTER")))
                         this.players.get(finalI).robotize(true);
                     else
                         this.players.get(finalI).robotize(false);
@@ -101,13 +102,13 @@ public class JTEGameSetupUI extends FlowPane {
 
                 TextField name = new TextField();
                 name.setPrefColumnCount(50);
-                name.setPromptText("Player name");
+                name.setPromptText(PropertiesManager.getValue("PLAYERNAME"));
 
                 name.textProperty().addListener((observable, oldValue, newValue) -> {
-                    if(!newValue.equals("Player name"))
+                    if(!newValue.equals(PropertiesManager.getValue("PLAYERNAME")))
                         this.players.get(finalI).setName(newValue);
                     else
-                        this.players.get(finalI).setName("Player " + (finalI + 1));
+                        this.players.get(finalI).setName(PropertiesManager.getValue("PLAYER") + (finalI + 1));
                 });
 
                 playerOptions.getChildren().addAll(human, computer, name);
@@ -126,10 +127,6 @@ public class JTEGameSetupUI extends FlowPane {
                 System.out.println(i);
                 this.getChildren().remove(i);
             }
-        }
-
-        for (Player p : this.players) {
-            System.out.println("Player " + p.getName() + " " + p.isHuman());
         }
     }
 
