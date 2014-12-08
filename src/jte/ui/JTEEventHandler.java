@@ -1,9 +1,6 @@
 package jte.ui;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -115,8 +112,11 @@ public class JTEEventHandler {
                         }
 
                         Timeline timeline = ui.getGamePlayPane().getMap().focusPlayer(player);
+                        PauseTransition computerPause = new PauseTransition(Duration.millis(1000));
 
                         timeline.setOnFinished(e -> {
+                            if (!player.isHuman())
+                                computerPause.play();
                             if (currentCity.getShips().contains(city)) { // only one move for sailing
                                 player.setMoves(0);
                             }
@@ -134,7 +134,7 @@ public class JTEEventHandler {
                                 if (player.isHuman())
                                     gsm.repeatPlayer();
                                 else {
-                                    ui.getGamePlayPane().focusPlayer(player).setOnFinished(pcFocus -> {
+                                    computerPause.setOnFinished(pcFocus -> {
                                         gsm.repeatComputer();
                                     });
                                 }
@@ -149,7 +149,7 @@ public class JTEEventHandler {
                             notMoving();
 
                             if (!player.isHuman() && !cardRemoved)
-                                continueComputerTurn();
+                                computerPause.setOnFinished(pcFocus -> continueComputerTurn());
 
                             // Add move to game history
                             if (flight)

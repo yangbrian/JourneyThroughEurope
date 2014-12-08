@@ -179,10 +179,6 @@ public class Map extends ScrollPane {
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000),
           new KeyValue(this.vvalueProperty(), (current.getTranslateY() - 400)/860)));
 
-        SequentialTransition sequence = new SequentialTransition();
-
-        PauseTransition pause = new PauseTransition(Duration.millis(1000));
-
         timeline.play();
         return timeline;
     }
