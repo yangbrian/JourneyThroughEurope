@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -117,7 +118,9 @@ public class JTEEventHandler {
                         timeline.setOnFinished(e -> {
                             if (!player.isHuman())
                                 computerPause.play();
+                            boolean ship = false;
                             if (currentCity.getShips().contains(city)) { // only one move for sailing
+                                ship = true;
                                 player.setMoves(0);
                             }
 
@@ -154,8 +157,11 @@ public class JTEEventHandler {
                             // Add move to game history
                             if (flight)
                                 gsm.addToHistory(player.getName() + " flew from " + currentCityName + " to " + city.getName());
-                            else
+                            else if (ship) {
+                                gsm.addToHistory(player.getName() + " sailed from " + currentCityName + " to " + city.getName());
+                            } else {
                                 gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
+                            }
 
 
                         });
@@ -342,16 +348,20 @@ public class JTEEventHandler {
         for (String aHistoryList : historyList)
             history.append(aHistoryList).append("\n");
 
+        ScrollPane historyPane = new ScrollPane();
+
         Label description = new Label(history.toString());
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
-        content.getChildren().addAll(aboutLabel, description);
+        historyPane.setContent(description);
+
+        content.getChildren().addAll(aboutLabel, historyPane);
 
         aboutPane.setCenter(content);
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 500, 450);
+        Scene scene = new Scene(aboutPane, 500, 650);
         dialogStage.setScene(scene);
         dialogStage.show();
 
@@ -444,7 +454,7 @@ public class JTEEventHandler {
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
         HBox optionPane = new HBox();
-        Button okButton = new Button("Close");
+        Button okButton = new Button("Return to Splash Screen");
         okButton.getStyleClass().add("dialog-button");
 
         optionPane.setSpacing(20.0);
@@ -463,7 +473,23 @@ public class JTEEventHandler {
 
         aboutPane.setCenter(content);
 
-        aboutPane.setBottom(optionPane);
+        // display history
+        ScrollPane historyPane = new ScrollPane();
+
+        StringBuilder history = new StringBuilder();
+        LinkedList<String> historyList = gsm.getHistory();
+
+        for (String aHistoryList : historyList)
+            history.append(aHistoryList).append("\n");
+
+        Label historyDisplay = new Label(history.toString());
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        historyPane.setContent(description);
+
+        aboutPane.setBottom(historyPane);
+        aboutPane.setRight(optionPane);
         Scene scene = new Scene(aboutPane, 400, 150);
         dialogStage.setScene(scene);
         dialogStage.show();

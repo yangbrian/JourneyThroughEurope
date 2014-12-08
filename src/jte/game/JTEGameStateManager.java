@@ -155,7 +155,7 @@ public class JTEGameStateManager {
             ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
             ui.getGamePlayPane().setDiceLabel(roll);
 
-            addToHistory(getCurrentPlayerName() + " rolls a " + roll + "\n");
+            addToHistory("\n" + getCurrentPlayerName() + " rolls a " + roll + "\n");
         }
     }
 
