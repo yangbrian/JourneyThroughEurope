@@ -46,6 +46,7 @@ public class JTEGameStateManager {
     public JTEGameStateManager(JTEUI ui) {
         this.ui = ui;
         fileHandler = new JTEFileLoader(ui);
+        fileHandler.loadDescriptions();
         history = new LinkedList<>();
         loadGameInfo();
         diceRoll = false;

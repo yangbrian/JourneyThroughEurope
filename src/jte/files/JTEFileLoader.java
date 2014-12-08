@@ -247,4 +247,25 @@ public class JTEFileLoader {
 
         gsm.loadGame(numPlayers, humanPlayers, playerNames, current, currentCities, playerCards);
     }
+
+    public void loadDescriptions() {
+        HashMap<String, String> descriptions = new HashMap<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream("data/cityDescriptions.csv")));
+
+            String nextLine = null;
+
+            while ((nextLine = reader.readLine()) != null) {
+                String[] values = nextLine.split(" -- ");
+                descriptions.put(values[0], values[1]);
+                System.out.println(values[0] + " - " + values[1]);
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading city descriptions file!");
+        }
+
+        PropertiesManager.setDescriptions(descriptions);
+    }
 }
