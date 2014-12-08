@@ -21,6 +21,7 @@ public class CityNode extends Circle implements Comparable<CityNode> {
     private int x;
     private int y;
     private String color;
+    private String description;
 
     private Color original;
 
@@ -149,5 +150,13 @@ public class CityNode extends Circle implements Comparable<CityNode> {
 
     public String toString() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

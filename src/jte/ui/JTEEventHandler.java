@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -162,6 +163,8 @@ public class JTEEventHandler {
                             } else {
                                 gsm.addToHistory(player.getName() + " moved from " + currentCityName + " to " + city.getName());
                             }
+                            if (cardRemoved)
+                                gsm.addToHistory(player.getName() + " reached a destination at " + city.getName());
 
 
                         });
@@ -303,7 +306,7 @@ public class JTEEventHandler {
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
-        Label company = new Label("This version of JTE is created by Debugging Enterprises, a company that exists for the purposes of CSE 219. By Brian Yang.");
+        Label company = new Label("This version of JTE is by Brian Yang for CSE 219 at Stony Brook University. He can be contacted via email at brian.yang@stonybrook.edu.");
         company.setWrapText(true);
         company.setStyle("-fx-font-size: 1.2em");
 
@@ -313,7 +316,7 @@ public class JTEEventHandler {
 
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 500, 450);
+        Scene scene = new Scene(aboutPane, 550, 450);
         dialogStage.setScene(scene);
         dialogStage.show();
 
@@ -448,18 +451,23 @@ public class JTEEventHandler {
     public void respondToPlayerWin(Player current) {
         gsm.setGameState(JTEGameStateManager.JTEGameState.GAME_OVER);
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Error");
+        dialogStage.setTitle(current.getName() + " wins!");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(ui.getPrimaryStage());
         BorderPane aboutPane = new BorderPane();
         aboutPane.getStylesheets().add("file:data/jte.css");
+
         HBox optionPane = new HBox();
+        optionPane.setSpacing(10);
         Button okButton = new Button("Return to Splash Screen");
         okButton.getStyleClass().add("dialog-button");
 
+        Button historyButton = new Button("View Game History");
+        historyButton.getStyleClass().add("dialog-button");
+
         optionPane.setSpacing(20.0);
         optionPane.setPadding(new Insets(20));
-        optionPane.getChildren().add(okButton);
+        optionPane.getChildren().addAll(okButton, historyButton);
 
         VBox content = new VBox();
         content.setPadding(new Insets(20));
@@ -467,30 +475,21 @@ public class JTEEventHandler {
 
         Label description = new Label(current.getName() + " wins!!!");
         description.setWrapText(true);
-        description.setStyle("-fx-font-size: 1.2em");
-
+        description.setStyle("-fx-font-size: 2.0em");
         content.getChildren().add(description);
+
+        if (!current.isHuman()) {
+            Label lose = new Label(current.getName() + " is a computer player, which means all humans lose!");
+            lose.setWrapText(true);
+            lose.setStyle("-fx-font-size: 1.2em");
+
+            content.getChildren().add(lose);
+        }
 
         aboutPane.setCenter(content);
 
-        // display history
-        ScrollPane historyPane = new ScrollPane();
-
-        StringBuilder history = new StringBuilder();
-        LinkedList<String> historyList = gsm.getHistory();
-
-        for (String aHistoryList : historyList)
-            history.append(aHistoryList).append("\n");
-
-        Label historyDisplay = new Label(history.toString());
-        description.setWrapText(true);
-        description.setStyle("-fx-font-size: 1.2em");
-
-        historyPane.setContent(description);
-
-        aboutPane.setBottom(historyPane);
-        aboutPane.setRight(optionPane);
-        Scene scene = new Scene(aboutPane, 400, 150);
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 500, 250);
         dialogStage.setScene(scene);
         dialogStage.show();
 
@@ -498,6 +497,8 @@ public class JTEEventHandler {
             ui.changeView(JTEUI.JTEUIState.SPLASH_SCREEN);
             dialogStage.close();
         });
+
+        historyButton.setOnAction(e -> respondToHistoryRequest(dialogStage));
     }
 
     public void respondToSaveRequest() {
@@ -707,5 +708,40 @@ public class JTEEventHandler {
 
     public void continueComputerTurn() {
         gsm.moveComputer();
+    }
+
+    public void respondToCityInfoRequest(Stage primaryStage) {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Error");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        BorderPane aboutPane = new BorderPane();
+        aboutPane.getStylesheets().add("file:data/jte.css");
+        HBox optionPane = new HBox();
+        Button okButton = new Button("Close");
+        okButton.getStyleClass().add("dialog-button");
+
+        optionPane.setSpacing(20.0);
+        optionPane.setPadding(new Insets(20));
+        optionPane.getChildren().add(okButton);
+
+        VBox content = new VBox();
+        content.setPadding(new Insets(20));
+        content.setSpacing(20);
+
+        Label description = new Label("Starting a game with no players? That's no fun...");
+        description.setWrapText(true);
+        description.setStyle("-fx-font-size: 1.2em");
+
+        content.getChildren().add(description);
+
+        aboutPane.setCenter(content);
+
+        aboutPane.setBottom(optionPane);
+        Scene scene = new Scene(aboutPane, 400, 150);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+
+        okButton.setOnAction(e -> dialogStage.close());
     }
 }

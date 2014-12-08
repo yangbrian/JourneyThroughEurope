@@ -174,7 +174,7 @@ public class JTEGamePlayUI extends BorderPane {
         playerSidebar = new VBox();
         playerSidebar.setMinWidth(305);
         playerSidebar.setPadding(new Insets(15));
-        playerSidebar.setSpacing(50);
+        playerSidebar.setSpacing(40);
         playerSidebar.getStyleClass().add("sidebar");
         this.setRight(playerSidebar);
 
@@ -224,12 +224,16 @@ public class JTEGamePlayUI extends BorderPane {
         save.getStyleClass().add("button-normal");
         save.setOnAction(e -> ui.getEventHandler().respondToSaveRequest());
 
+        Button info = new Button("Show City Info");
+        info.getStyleClass().add("button-normal");
+        info.setOnAction(e -> ui.getEventHandler().respondToCityInfoRequest(ui.getPrimaryStage()));
+
         Button quit = new Button("Quit");
         quit.getStyleClass().add("button-normal");
         quit.setOnAction(e -> ui.getEventHandler().respondToExitRequest(ui.getPrimaryStage()));
 
         playerSidebar.setAlignment(Pos.CENTER);
-        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, takeFlight, about, history, save, quit);
+        playerSidebar.getChildren().addAll(rollDiceLabel, dice, portWait, takeFlight, about, history, save, info, quit);
     }
 
     public void initMap() {

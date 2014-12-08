@@ -1,6 +1,5 @@
 package jte.files;
 
-import javafx.scene.paint.Color;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 import jte.game.components.Edge;
@@ -59,7 +58,7 @@ public class JTEFileLoader {
                   currentX,                     // x
                   currentY,                     // y
                   0,                            // flight region - no region = 0 (default for now)
-                  values[1].toUpperCase()       // card color
+                  values[1].toUpperCase()      // card color
                 );
 
                 cities.put(values[0], city);
@@ -99,7 +98,6 @@ public class JTEFileLoader {
             System.out.println("Error reading neighbor data.");
             e.printStackTrace();
         }
-
         return cities;
     }
 
