@@ -186,4 +186,8 @@ public class Map extends ScrollPane {
     public PathTransition movePlayer(Player current, CityNode city) {
         return current.move(city.getX() - 100, city.getY() - 125);
     }
+
+    public Pane getPane() {
+        return mapPane;
+    }
 }

@@ -64,6 +64,8 @@ public class JTEGamePlayUI extends BorderPane {
     private boolean flight;
     private Button save;
 
+    ArrayList<Line> neighborLines;
+
     public JTEGamePlayUI(JTEUI ui) {
 
         initPlayerSidebar();
@@ -77,6 +79,7 @@ public class JTEGamePlayUI extends BorderPane {
         initFlightPlan();
 
         neighborAnimation = new ArrayList<>();
+        neighborLines = new ArrayList<>();
     }
 
     public void drawCards(boolean newGame) {
@@ -278,6 +281,13 @@ public class JTEGamePlayUI extends BorderPane {
             neighborFade.play();
 
             neighborAnimation.add(neighborFade); // keep track of them so the animation can be stopped on click
+
+            Line line = new Line(city.getX(), city.getY(), c.getX(), c.getY());
+            line.setStrokeWidth(3);
+            line.setStroke(Color.RED);
+            map.getPane().getChildren().add(1, line);
+
+            neighborLines.add(line);
         }
         for (CityNode c : seaNeighbors) {
 
@@ -291,6 +301,13 @@ public class JTEGamePlayUI extends BorderPane {
             neighborFade.play();
 
             neighborAnimation.add(neighborFade); // keep track of them so the animation can be stopped on click
+
+            Line line = new Line(city.getX(), city.getY(), c.getX(), c.getY());
+            line.setStrokeWidth(3);
+            line.setStroke(Color.RED);
+            map.getPane().getChildren().add(1, line);
+
+            neighborLines.add(line);
         }
 
 //        Label neighborDetails = new Label(neighbors);
@@ -324,6 +341,11 @@ public class JTEGamePlayUI extends BorderPane {
             ((CityNode)(fade.getNode())).resetColor();
         }
         neighborAnimation.clear();
+
+        for (Line line : neighborLines) {
+            map.getPane().getChildren().remove(line);
+        }
+        neighborLines.clear();
     }
 
     public Button getPortWaitButton() {
