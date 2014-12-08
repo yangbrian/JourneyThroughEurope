@@ -258,9 +258,7 @@ public class JTEFileLoader {
 
             while ((nextLine = reader.readLine()) != null) {
                 String[] values = nextLine.split(" -- ");
-                descriptions.put(values[0], values[1]);
-                System.out.println(values[0] + " - " + values[1]);
-
+                descriptions.put(values[0].toUpperCase(), values[1]);
             }
         } catch (IOException e) {
             System.out.println("Error reading city descriptions file!");

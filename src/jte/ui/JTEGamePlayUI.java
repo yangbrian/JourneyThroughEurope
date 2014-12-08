@@ -226,7 +226,7 @@ public class JTEGamePlayUI extends BorderPane {
 
         Button info = new Button("Show City Info");
         info.getStyleClass().add("button-normal");
-        info.setOnAction(e -> ui.getEventHandler().respondToCityInfoRequest(ui.getPrimaryStage()));
+        info.setOnAction(e -> ui.getEventHandler().respondToCityInfoRequest(ui.getPrimaryStage(), gsm.getCurrentPlayer().getCurrentCity()));
 
         Button quit = new Button("Quit");
         quit.getStyleClass().add("button-normal");

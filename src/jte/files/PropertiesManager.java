@@ -23,6 +23,6 @@ public class PropertiesManager {
     }
 
     public static String getDescription(String city) {
-        return descriptions.get(city);
+        return descriptions.containsKey(city) ? descriptions.get(city) : "No description of " + city + " available.";
     }
 }

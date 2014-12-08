@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jte.files.PropertiesManager;
 import jte.game.JTEGameStateManager;
 import jte.game.components.CityNode;
 import jte.game.components.Player;
@@ -710,9 +711,9 @@ public class JTEEventHandler {
         gsm.moveComputer();
     }
 
-    public void respondToCityInfoRequest(Stage primaryStage) {
+    public void respondToCityInfoRequest(Stage primaryStage, String currentCity) {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Error");
+        dialogStage.setTitle("About " + currentCity);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         BorderPane aboutPane = new BorderPane();
@@ -729,16 +730,20 @@ public class JTEEventHandler {
         content.setPadding(new Insets(20));
         content.setSpacing(20);
 
-        Label description = new Label("Starting a game with no players? That's no fun...");
+        Label title = new Label(currentCity.replace('_', ' '));
+        title.setWrapText(true);
+        title.setStyle("-fx-font-size: 2.0em");
+
+        Label description = new Label(PropertiesManager.getDescription(currentCity));
         description.setWrapText(true);
         description.setStyle("-fx-font-size: 1.2em");
 
-        content.getChildren().add(description);
+        content.getChildren().addAll(title, description);
 
         aboutPane.setCenter(content);
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 400, 150);
+        Scene scene = new Scene(aboutPane, 600, 250);
         dialogStage.setScene(scene);
         dialogStage.show();
 
