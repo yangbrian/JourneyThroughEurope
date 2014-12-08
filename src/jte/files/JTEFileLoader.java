@@ -246,7 +246,8 @@ public class JTEFileLoader {
 
         String[] currentPlayerLine = in.readLine().split(" ");
         int current = Integer.parseInt(currentPlayerLine[0]);
-        int currentMoves = Integer.parseInt(currentPlayerLine[1]);
+        int totalMoves = Integer.parseInt(currentPlayerLine[1]);
+        int currentMoves = Integer.parseInt(currentPlayerLine[2]);
 
         LinkedList<String> history = new LinkedList<>();
         String nextLine;
@@ -257,7 +258,7 @@ public class JTEFileLoader {
 
         in.close();
 
-        gsm.loadGame(numPlayers, humanPlayers, playerNames, current, currentMoves, currentCities, playerCards, history);
+        gsm.loadGame(numPlayers, humanPlayers, playerNames, current, totalMoves, currentMoves, currentCities, playerCards, history);
     }
 
     public void loadDescriptions() {

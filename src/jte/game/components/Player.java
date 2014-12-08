@@ -29,6 +29,7 @@ public class Player extends ImageView {
     private boolean repeat;
 
     private boolean flight;
+    private int roll;
 
     public double getOriginalX() {
         return originalX;
@@ -146,5 +147,13 @@ public class Player extends ImageView {
 
     public void setRepeat(boolean repeat) {
         this.repeat = repeat;
+    }
+
+    public void setRoll(int roll) {
+        this.roll = roll;
+    }
+
+    public int getRoll() {
+        return roll;
     }
 }

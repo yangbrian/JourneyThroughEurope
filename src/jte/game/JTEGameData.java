@@ -98,7 +98,7 @@ public class JTEGameData {
 
         // current player info
         Player player = players.get(current);
-        data.append(current).append(" ").append(player.getMoves());
+        data.append(current).append(" ").append(player.getRoll()).append(" ").append(player.getMoves());
 
         data.append("\n");
         // game history

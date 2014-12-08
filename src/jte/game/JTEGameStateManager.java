@@ -154,6 +154,7 @@ public class JTEGameStateManager {
                 currentGame.getCurrent().setRepeat(true);
 
             currentGame.getCurrent().setMoves(roll);
+            currentGame.getCurrent().setRoll(roll);
             diceRoll = true;
 
             ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
@@ -219,7 +220,7 @@ public class JTEGameStateManager {
         fileHandler.loadGame(this);
     }
 
-    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, int currentMoves, String[] currentCities, ArrayList<ArrayList<String>> cards, LinkedList<String> history) {
+    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, int totalMoves, int currentMoves, String[] currentCities, ArrayList<ArrayList<String>> cards, LinkedList<String> history) {
         continuedGame = true;
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
@@ -238,9 +239,11 @@ public class JTEGameStateManager {
             currentMoves = -1;
             diceRoll = false;
         } else {
+            if (totalMoves == 6)
+                currentGame.getCurrent().setRepeat(true);
             roll = currentMoves;
             diceRoll = true;
-            ui.getGamePlayPane().getDie().setFace(5);
+            ui.getGamePlayPane().getDie().setFace(totalMoves - 1);
             ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
         }
 
