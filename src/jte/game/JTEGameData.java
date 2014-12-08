@@ -4,6 +4,7 @@ import jte.game.components.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 /**
  * @author
@@ -11,10 +12,12 @@ import java.util.Collections;
 public class JTEGameData {
     private ArrayList<Player> players;
     private int current;
+    private LinkedList<String> history;
 
     public JTEGameData(ArrayList<Player> players) {
         this.players = players;
         this.current = 0;
+        history = new LinkedList<>();
     }
 
     public int getCurrentNumber() {
@@ -97,10 +100,27 @@ public class JTEGameData {
         Player player = players.get(current);
         data.append(current).append(" ").append(player.getMoves());
 
+        // game history
+        for (String move : history) {
+            data.append(move).append("\n");
+        }
+
         return data.toString();
     }
 
     public void setCurrent(int current) {
         this.current = current;
+    }
+
+    public void addToHistory(String move) {
+        history.add(move);
+    }
+
+    public LinkedList<String> getHistory() {
+        return history;
+    }
+
+    public void setHistory(LinkedList<String> history) {
+        this.history = history;
     }
 }

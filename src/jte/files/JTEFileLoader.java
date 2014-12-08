@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Loads all files associated with Journey Through Europe
@@ -247,9 +248,16 @@ public class JTEFileLoader {
         int current = Integer.parseInt(currentPlayerLine[0]);
         int currentMoves = Integer.parseInt(currentPlayerLine[1]);
 
+        LinkedList<String> history = new LinkedList<>();
+        String nextLine;
+        // remainder of file is history
+        while((nextLine = in.readLine()) != null) {
+            history.add(nextLine);
+        }
+
         in.close();
 
-        gsm.loadGame(numPlayers, humanPlayers, playerNames, current, currentMoves, currentCities, playerCards);
+        gsm.loadGame(numPlayers, humanPlayers, playerNames, current, currentMoves, currentCities, playerCards, history);
     }
 
     public void loadDescriptions() {

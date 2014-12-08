@@ -32,7 +32,7 @@ public class JTEGameStateManager {
 
     private CityNode lastCity;
 
-    private LinkedList<String> history;
+
 
     private static ArrayList<CityNode> vertices;
 
@@ -46,7 +46,7 @@ public class JTEGameStateManager {
         fileHandler = new JTEFileLoader(ui);
         fileHandler.loadDescriptions();
         fileHandler.loadStrings();
-        history = new LinkedList<>();
+
         loadGameInfo();
         diceRoll = false;
         vertices = new ArrayList<>();
@@ -192,11 +192,11 @@ public class JTEGameStateManager {
     }
 
     public void addToHistory(String move) {
-        history.add(move);
+        currentGame.addToHistory(move);
     }
 
     public LinkedList<String> getHistory() {
-        return history;
+        return currentGame.getHistory();
     }
 
     public Player getCurrentPlayer() {
@@ -219,7 +219,7 @@ public class JTEGameStateManager {
         fileHandler.loadGame(this);
     }
 
-    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, int currentMoves, String[] currentCities, ArrayList<ArrayList<String>> cards) {
+    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, int currentMoves, String[] currentCities, ArrayList<ArrayList<String>> cards, LinkedList<String> history) {
         continuedGame = true;
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
@@ -245,6 +245,8 @@ public class JTEGameStateManager {
         }
 
         ui.getGamePlayPane().setDiceLabel(currentMoves);
+
+        currentGame.setHistory(history);
     }
 
     public void moveComputer() {
