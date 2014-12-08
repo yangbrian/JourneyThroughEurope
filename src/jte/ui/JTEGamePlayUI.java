@@ -62,6 +62,7 @@ public class JTEGamePlayUI extends BorderPane {
     private Stage flightStage;
 
     private boolean flight;
+    private Button save;
 
     public JTEGamePlayUI(JTEUI ui) {
 
@@ -144,11 +145,12 @@ public class JTEGamePlayUI extends BorderPane {
                 }
             }
         }
+
         SequentialTransition sequence = new SequentialTransition();
         sequence.getChildren().addAll(animations);
         sequence.setCycleCount(1);
         sequence.play();
-        sequence.setOnFinished(e -> ui.getEventHandler().startGame()); // cards done dealing, let's start the game!
+        sequence.setOnFinished(e -> ui.getEventHandler().startGame(newGame)); // cards done dealing, let's start the game!
 
     }
 
@@ -218,7 +220,7 @@ public class JTEGamePlayUI extends BorderPane {
         history.getStyleClass().add("button-normal");
         history.setOnAction(e -> ui.getEventHandler().respondToHistoryRequest(ui.getPrimaryStage()));
 
-        Button save = new Button(PropertiesManager.getValue("SAVE"));
+        save = new Button(PropertiesManager.getValue("SAVE"));
         save.getStyleClass().add("button-normal");
         save.setOnAction(e -> ui.getEventHandler().respondToSaveRequest());
 
@@ -257,6 +259,7 @@ public class JTEGamePlayUI extends BorderPane {
             takeFlight.setDisable(false);
         else
             takeFlight.setDisable(true);
+
 
         if (ui.getGsm().getData().getCurrent().isPortClear()) {
             ui.getGamePlayPane().getPortWaitButton().setText(PropertiesManager.getValue("SAIL"));
@@ -332,6 +335,12 @@ public class JTEGamePlayUI extends BorderPane {
     }
 
     public Timeline focusPlayer(Player current) {
+        if (!currentGame.getCurrent().isHuman()) {
+            save.setDisable(true);
+        } else {
+            save.setDisable(false);
+        }
+
         return map.focusPlayer(current);
     }
 

@@ -17,9 +17,6 @@ import java.util.*;
  */
 public class JTEGameStateManager {
 
-
-
-
     public enum JTEGameState {
         SPLASH_SCREEN, PLAYER_SELECT, CARD_DEALING, GAME_IN_PROGRESS, GAME_OVER
     }
@@ -31,6 +28,7 @@ public class JTEGameStateManager {
     private JTEUI ui;
     private boolean diceRoll;
     private boolean portWait;
+    private boolean continuedGame;
 
     private CityNode lastCity;
 
@@ -96,6 +94,7 @@ public class JTEGameStateManager {
                 getCurrentPlayer().setPortClear(true); // port clear will always be true on the first turn
                 ui.getGamePlayPane().getTakeFlight().setDisable(true);
 
+
                 if (!isHuman())
                     ui.getEventHandler().startComputerTurn();
 
@@ -122,9 +121,12 @@ public class JTEGameStateManager {
         ui.getEventHandler().startComputerTurn();
     }
 
-    public void startGame() {
+    public void startGame(boolean newGame) {
         gameState = JTEGameState.GAME_IN_PROGRESS;
-        nextPlayer();
+        if (newGame)
+            nextPlayer();
+        else
+            ui.getGamePlayPane().focusPlayer(getCurrentPlayer());
     }
 
 
@@ -217,7 +219,8 @@ public class JTEGameStateManager {
         fileHandler.loadGame(this);
     }
 
-    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, String[] currentCities, ArrayList<ArrayList<String>> cards) {
+    public void loadGame(int numPlayers, ArrayList<Integer> humans, String[] playerNames, int current, int currentMoves, String[] currentCities, ArrayList<ArrayList<String>> cards) {
+        continuedGame = true;
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player("Player " + (i + 1), humans.contains(i), i);
@@ -228,7 +231,15 @@ public class JTEGameStateManager {
         }
 
         currentGame = new JTEGameData(players);
-        currentGame.setCurrent(current - 1);
+        currentGame.setCurrent(current);
+
+        currentGame.getCurrent().setMoves(currentMoves);
+        roll = currentMoves;
+        diceRoll = true;
+
+        ui.getGamePlayPane().getDie().setFace(5);
+        ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+        ui.getGamePlayPane().setDiceLabel(roll);
     }
 
     public void moveComputer() {

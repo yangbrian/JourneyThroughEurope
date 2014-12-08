@@ -158,9 +158,9 @@ public class JTEEventHandler {
                             int movesLeft = player.getMoves();
                             // Add move to game history
                             if (flight)
-                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("FLEWFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + " with " + movesLeft + " moves left.");
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("FLEWFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + PropertiesManager.getValue("WITH")+ movesLeft + PropertiesManager.getValue("MOVESLEFT"));
                             else if (ship) {
-                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("SAILEDFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + " with " + movesLeft + " moves left.");
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("SAILEDFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + PropertiesManager.getValue("WITH")+ movesLeft + PropertiesManager.getValue("MOVESLEFT"));
                             } else {
                                 gsm.addToHistory(player.getName() + PropertiesManager.getValue("MOVEDFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + PropertiesManager.getValue("WITH")+ movesLeft + PropertiesManager.getValue("MOVESLEFT"));
                             }
@@ -383,8 +383,8 @@ public class JTEEventHandler {
             ui.getMainPane().getScene().setCursor(Cursor.DEFAULT);
     }
 
-    public void startGame() {
-        ui.getGsm().startGame();
+    public void startGame(boolean newGame) {
+        ui.getGsm().startGame(newGame);
     }
 
     public CityNode playerDrop(Player player, double x, double y) {

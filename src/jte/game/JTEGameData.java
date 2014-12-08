@@ -79,9 +79,6 @@ public class JTEGameData {
         }
         data.append("\n");
 
-        // current player
-        data.append(current).append("\n");
-
         // current cities
         for (Player player : players) {
             data.append(player.getCurrentCity()).append(" ");
@@ -95,6 +92,10 @@ public class JTEGameData {
             }
             data.append("\n");
         }
+
+        // current player info
+        Player player = players.get(current);
+        data.append(current).append(" ").append(player.getMoves());
 
         return data.toString();
     }

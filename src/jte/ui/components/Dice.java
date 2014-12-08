@@ -28,4 +28,8 @@ public class Dice extends StackPane {
         faces[roll].toFront();
         return roll + 1;
     }
+
+    public void setFace(int face) {
+        faces[face].toFront();
+    }
 }
