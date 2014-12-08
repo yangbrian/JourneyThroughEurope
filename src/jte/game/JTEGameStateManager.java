@@ -230,7 +230,7 @@ public class JTEGameStateManager {
     }
 
     public void moveComputer() {
-        // regenerate edges array to account for sea routes
+        // regenerate edges array to account for sea routes and occupied spots
         fileHandler.createEdgeArray(info.getCities(), info.getFlightCities(), getRoll());
         CityNode current = info.getCities().get(getCurrentPlayer().getCurrentCity());
 
@@ -253,15 +253,18 @@ public class JTEGameStateManager {
         }
 
         CityNode destination;
-        if (shortestPath.size() == 1)
-            destination = shortestPath.get(0);
-        else
-            destination = shortestPath.get(1);
+        if (shortestPath.size() != 0) {
 
-        boolean flight = false;
-        if (!current.getRoads().contains(destination) && !current.getShips().contains(destination))
-            flight = true;
-        ui.getEventHandler().respondToCityClick(destination, flight);
+            if (shortestPath.size() == 1)
+                destination = shortestPath.get(0);
+            else
+                destination = shortestPath.get(1);
+
+            boolean flight = false;
+            if (!current.getRoads().contains(destination) && !current.getShips().contains(destination))
+                flight = true;
+            ui.getEventHandler().respondToCityClick(destination, flight);
+        }
         System.out.println("\n\n");
     }
 

@@ -203,14 +203,8 @@ public class JTEFileLoader {
                 } // end loop through flight cities
             } // end adding flight edges
 
-            for (Edge edge : city.getEdges())
-                System.out.println(city.getName() + ": " + edge.target.getName() + " - " + edge.weight);
-            System.out.println("\n\n");
-
             city.setVertices(vertices);
         } // end loop for cities
-
-        System.out.println("End adjacency matrix making");
     }
 
     public void saveGame() throws IOException {

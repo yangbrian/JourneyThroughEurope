@@ -71,21 +71,25 @@ public class JTEEventHandler {
                 Player currentPlayer = gsm.getData().getCurrent();
                 if (!currentPlayer.isHuman()) { // check for legal move
                     if (currentCity.getShips().contains(city)) {
-                        if (!currentPlayer.isPortClear()) {
+                        if (!currentPlayer.isPortClear())
                             moveReady = false;
-                        } else if (city.getRegion() == currentCity.getRegion() && flight) {
-                            if (currentPlayer.getMoves() < 2)
-                                moveReady = false;
-                            else
-                                currentPlayer.setMoves(currentPlayer.getMoves() - 2);
-                        } else if (city.getRegion() != currentCity.getRegion()) {
-                            if (currentPlayer.getMoves() < 4)
-                                moveReady = false;
-                            else
-                                currentPlayer.setMoves(currentPlayer.getMoves() - 4);
+                    }
+                    if (city.getRegion() == currentCity.getRegion() && flight) {
+                        if (currentPlayer.getMoves() < 2)
+                            moveReady = false;
+                        else {
+                            currentPlayer.setMoves(currentPlayer.getMoves() - 1);
+                        }
+                    } else if (city.getRegion() != currentCity.getRegion() && flight) {
+                        if (currentPlayer.getMoves() < 4)
+                            moveReady = false;
+                        else {
+
+                            currentPlayer.setMoves(currentPlayer.getMoves() - 3);
                         }
                     }
                 }
+
 
                 if (moveReady) {
 
@@ -117,7 +121,7 @@ public class JTEEventHandler {
                                 player.setMoves(0);
                             }
 
-
+                            System.out.println(player.getName() + " " + gsm.getMovesLeft() + " " + player.getMoves());
                             if (gsm.hasMovesLeft()) {
                                 ui.getGamePlayPane().setDiceLabel(gsm.getMovesLeft());
                                 ui.displayCity(city);
