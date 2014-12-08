@@ -243,11 +243,13 @@ public class JTEGameStateManager {
                 currentGame.getCurrent().setRepeat(true);
             roll = currentMoves;
             diceRoll = true;
-            ui.getGamePlayPane().getDie().setFace(totalMoves - 1);
+            if (totalMoves > 0 && totalMoves <= 6)
+                ui.getGamePlayPane().getDie().setFace(totalMoves - 1);
             ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
         }
 
         ui.getGamePlayPane().setDiceLabel(currentMoves);
+
 
         currentGame.setHistory(history);
     }

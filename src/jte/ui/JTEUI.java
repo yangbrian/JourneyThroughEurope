@@ -96,6 +96,7 @@ public class JTEUI {
                 System.out.println("Continue");
                 mainPane.setCenter(gamePlayPane);
                 gamePlayPane.drawCards(false);
+                getGamePlayPane().changeSidebar();
                 break;
             default:
         }
