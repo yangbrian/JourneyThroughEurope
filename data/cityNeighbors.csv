@@ -457,10 +457,8 @@ Land neighbour,ZAGREB
 Land neighbour,SARAJEVO
 Land neighbour,NIS
 City name,CAGLIARI
-Land neighbour,BUDAPEST
-Land neighbour,ZAGREB
-Land neighbour,SARAJEVO
-Land neighbour,NIS
+Land neighbour,SASSARI
+Sea neighbour,NAPOLI
 Sea neighbour,PALERMO
 City name,FIRENZE
 Land neighbour,BOLOGNA

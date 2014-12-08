@@ -71,8 +71,12 @@ public class JTEGameData {
         data.append("\n");
 
         // player names
-        for (Player player : players)
-            data.append(player.getName()).append(" ");
+        for (int i = 0; i < players.size(); i++) {
+            if (i == players.size() - 1)
+                data.append(players.get(i).getName());
+            else
+                data.append(players.get(i).getName()).append(",");
+        }
         data.append("\n");
 
         // current player

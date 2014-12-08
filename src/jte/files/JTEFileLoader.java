@@ -224,10 +224,12 @@ public class JTEFileLoader {
 
         String[] humanPlayersString = in.readLine().split(" "); // IDs of human players
         ArrayList<Integer> humanPlayers = new ArrayList<>();
-        for (String aHumanPlayersString : humanPlayersString)
-            humanPlayers.add(Integer.parseInt(aHumanPlayersString));
+        if (humanPlayersString.length != 0) {
+            for (String aHumanPlayersString : humanPlayersString)
+                humanPlayers.add(Integer.parseInt(aHumanPlayersString));
+        }
 
-        String[] playerNames = in.readLine().split(" "); // player names
+        String[] playerNames = in.readLine().split(","); // player names
 
         int current = Integer.parseInt(in.readLine());
 

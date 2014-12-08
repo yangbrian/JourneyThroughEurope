@@ -77,7 +77,12 @@ public class JTEUI {
     public void changeView(JTEUIState view) {
         switch (view) {
             case SPLASH_SCREEN:
+
+                this.gsm = new JTEGameStateManager(this);
+                this.eventHandler = new JTEEventHandler(this, gsm);
+
                 mainPane.setCenter(splashScreen);
+                initGamePlayScreen();
                 break;
             case PLAYER_SELECT:
                 mainPane.setCenter(setupPane);
