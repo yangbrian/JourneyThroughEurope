@@ -234,12 +234,17 @@ public class JTEGameStateManager {
         currentGame.setCurrent(current);
 
         currentGame.getCurrent().setMoves(currentMoves);
-        roll = currentMoves;
-        diceRoll = true;
+        if (currentMoves == 0) {
+            currentMoves = -1;
+            diceRoll = false;
+        } else {
+            roll = currentMoves;
+            diceRoll = true;
+            ui.getGamePlayPane().getDie().setFace(5);
+            ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
+        }
 
-        ui.getGamePlayPane().getDie().setFace(5);
-        ui.getGamePlayPane().displayCity(info.getCities().get(currentGame.getCurrent().getCurrentCity()));
-        ui.getGamePlayPane().setDiceLabel(roll);
+        ui.getGamePlayPane().setDiceLabel(currentMoves);
     }
 
     public void moveComputer() {
