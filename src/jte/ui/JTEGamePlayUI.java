@@ -391,8 +391,6 @@ public class JTEGamePlayUI extends BorderPane {
                             }
                         });
 
-
-
                         return;
                     }
                 }

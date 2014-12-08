@@ -64,9 +64,6 @@ public class JTEEventHandler {
               && (city != gsm.getLastCity() || currentCity.getRoads().size() <= 1) // not an avoidable backtrack
               ) {
 
-
-
-
                 boolean moveReady = true;
                 Player currentPlayer = gsm.getData().getCurrent();
                 if (!currentPlayer.isHuman()) { // check for legal move
@@ -87,6 +84,10 @@ public class JTEEventHandler {
 
                             currentPlayer.setMoves(currentPlayer.getMoves() - 3);
                         }
+                    }
+                    if (city.isOccupied()) {
+                        System.out.println(city.getName() + " occupied.");
+                        moveReady = false;
                     }
                 }
 
