@@ -341,11 +341,11 @@ public class JTEGamePlayUI extends BorderPane {
 
     public void setDiceLabel(int moves) {
         if (moves < -1)
-            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE + " again");
+            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE + PropertiesManager.getValue("AGAIN"));
         else if (moves < 0)
             rollDiceLabel.setText(gsm.getData().getCurrent().getName() + " " + ROLL_DICE);
         else
-            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + ":\n" + moves + " moves left. Select a city.");
+            rollDiceLabel.setText(gsm.getData().getCurrent().getName() + ":\n" + moves + PropertiesManager.getValue("MOVESLEFTSELECT"));
     }
 
     public void removeCard(CityNode city) {
@@ -389,10 +389,6 @@ public class JTEGamePlayUI extends BorderPane {
                 }
             }
         }
-    }
-
-    public void setTranslate(double x, double y) {
-        ui.getGsm().getData().getCurrent().setOriginal(x, y);
     }
 
     public void initFlightPlan() {

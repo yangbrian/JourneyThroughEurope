@@ -13,6 +13,8 @@ flight , Take Flight
 cancel_flight , Cancel Flight
 wait , Wait for Ship
 sail , Ready to Sail
+movesLeftSelect ,  points left. Select a city.
+again ,  again
 
 select , Select the number of players: 
 go , Start Journey!
@@ -31,6 +33,8 @@ movedFrom ,  moved from
 destination ,  reached a destination at 
 waitedAt ,  waited at 
 to ,  to 
+with ,  with 
+movesLeft ,  points left
 waitsShip ,  waits for a ship
 historyTitle , Current Game History
 historyTitle2 , JTE Game History
@@ -41,7 +45,7 @@ backtrack , This isn't a deadend, so no backtracking!
 portError , You must wait at the port for one turn before traveling by sea.
 
 aboutDesc , Journey through Europe is a family board game published by Ravensburger. The board is a map of Europe with various major cities marked, for example, Athens, Amsterdam and London. The players are given a home city from which they will begin and are then dealt a number of cards with various other cities on them. They must plan a route between each of the cities in their hand of cards. On each turn they throw a die and move between the cities. The winner is the first player to visit each of their cities and then return to their home base.
-contact , This version of JTE is by Brian Yang for CSE 219 at Stony Brook University. He can be contacted via email at brian.yang@stonybrook.edu.
+contact , This version of JTE is created by Brian Yang for CSE 219 at Stony Brook University. He can be contacted via email at brian.yang@stonybrook.edu.
 
 computerPlayer ,  is a computer player, which means all humans lose!
 returnSplash , Return to Splash Screen
@@ -56,7 +60,7 @@ loadError , Error loading game! The file might not exist or you don't have permi
 
 invalidFlight , Invalid Flight City!
 invalidFlightRegion , Invalid flight destination. You can only fly to cities in the same region or in a region directly adjacent.
-invalidFlightMoves , Insufficient moves to fly there. Flying within the same region requires 2 moves and flying to adjacent ones requires 4 moves.
+invalidFlightMoves , Insufficient points to fly there. Flying within the same region requires 2 points and flying to adjacent ones requires 4 points.
 
 aboutCity , About 
 generalError , Error

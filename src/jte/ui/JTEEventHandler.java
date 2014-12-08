@@ -105,7 +105,6 @@ public class JTEEventHandler {
                     move.setOnFinished(event -> {
                         Player player = gsm.getData().getCurrent();
                         System.out.println("Landed on: " + city.getName());
-                        //ui.getGamePlayPane().setTranslate(city.getX() - 100, city.getY() - 125);
                         if ((player.getCards().contains(city.getName()) && !city.getName().equals(player.getHome()))
                           || (city.getName().equals(player.getHome()) && player.getCards().size() == 1)) { // reached destination
                             gsm.removeCard(city);
@@ -153,16 +152,17 @@ public class JTEEventHandler {
                             }
                             notMoving();
 
-                            if (!player.isHuman() && !cardRemoved)
+                            if (!player.isHuman() && !cardRemoved && !ship)
                                 computerPause.setOnFinished(pcFocus -> continueComputerTurn());
 
+                            int movesLeft = player.getMoves();
                             // Add move to game history
                             if (flight)
-                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("FLEWFROM") + currentCityName + " to " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("FLEWFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + " with " + movesLeft + " moves left.");
                             else if (ship) {
-                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("SAILEDFROM") + currentCityName + " to " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("SAILEDFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + " with " + movesLeft + " moves left.");
                             } else {
-                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("MOVEDFROM") + currentCityName + " to " + city.getName());
+                                gsm.addToHistory(player.getName() + PropertiesManager.getValue("MOVEDFROM") + currentCityName + PropertiesManager.getValue("TO") + city.getName() + PropertiesManager.getValue("WITH")+ movesLeft + PropertiesManager.getValue("MOVESLEFT"));
                             }
                             if (cardRemoved)
                                 gsm.addToHistory(player.getName() + PropertiesManager.getValue("DESTINATION") + city.getName());
