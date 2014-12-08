@@ -100,6 +100,7 @@ public class JTEGameData {
         Player player = players.get(current);
         data.append(current).append(" ").append(player.getMoves());
 
+        data.append("\n");
         // game history
         for (String move : history) {
             data.append(move).append("\n");

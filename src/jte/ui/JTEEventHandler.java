@@ -744,7 +744,7 @@ public class JTEEventHandler {
         aboutPane.setCenter(content);
 
         aboutPane.setBottom(optionPane);
-        Scene scene = new Scene(aboutPane, 600, 300);
+        Scene scene = new Scene(aboutPane, 600, 350);
         dialogStage.setScene(scene);
         dialogStage.show();
 
