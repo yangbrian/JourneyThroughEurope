@@ -128,12 +128,10 @@ Land neighbour,LONDON
 Land neighbour,BRISTOL
 Land neighbour,LIVERPOOL
 City name,BREMEN
-Land neighbour,KIEL
-Land neighbour,LUBECK
+Land neighbour,GRONINGEN
+Land neighbour,KOLN
 Land neighbour,HANNOVER
 Land neighbour,HAMBURG
-Land neighbour,BERLIN
-Sea neighbour,NEWCASTLE
 City name,ABERDEEN
 Land neighbour,INVERNESS
 Land neighbour,GLASGOW
@@ -197,6 +195,7 @@ Sea neighbour,HELSINKI
 City name,HAMBURG
 Land neighbour,BREMEN
 Land neighbour,HANNOVER
+Land neighbour,BERLIN
 Land neighbour,LUBECK
 Land neighbour,KIEL
 Sea neighbour,NEWCASTLE
@@ -224,7 +223,7 @@ Land neighbour,KRAKOV
 Land neighbour,LODZ
 Land neighbour,GDANSK
 City name,BERLIN
-Land neighbour,BREMEN
+Land neighbour,HAMBURG
 Land neighbour,ROSTOCK
 Land neighbour,POZNAN
 Land neighbour,DRESDEN
